@@ -1,0 +1,11 @@
+.venv/
+__pycache__/
+*.pyc
+.env
+sql_app.db
+static/uploads/hero/*
+!static/uploads/hero/.gitkeep
+static/uploads/logo/*
+!static/uploads/logo/.gitkeep
+.vscode/
+.idea/

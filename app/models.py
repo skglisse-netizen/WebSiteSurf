@@ -1,0 +1,87 @@
+from sqlalchemy import Column, Integer, String, Text, Numeric, Boolean, ForeignKey
+from sqlalchemy.orm import relationship
+from .database import Base
+
+class Service(Base):
+    __tablename__ = "services"
+
+    id = Column(Integer, primary_key=True, index=True)
+    title = Column(String, index=True)
+    description = Column(Text)
+    price = Column(Numeric(10, 2))
+    discount_percent = Column(Numeric(5, 2), default=0)  # 0-100
+    image_url = Column(String)
+    is_active = Column(Boolean, default=True)
+
+class Inquiry(Base):
+    __tablename__ = "inquiries"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    email = Column(String)
+    phone = Column(String)
+    message = Column(Text)
+    
+    # New reservation fields
+    service_id = Column(Integer, ForeignKey("services.id"), nullable=True)
+    booking_date = Column(String, nullable=True)
+    people_count = Column(Integer, nullable=True)
+    level = Column(String, nullable=True)
+    
+    is_processed = Column(Boolean, default=False)
+
+    service = relationship("Service")
+
+class User(Base):
+    __tablename__ = "users"
+    id = Column(Integer, primary_key=True, index=True)
+    username = Column(String, unique=True, index=True)
+    hashed_password = Column(String)
+
+    contact_email = Column(String, default="allo@waverider.fr")
+
+class SiteConfig(Base):
+    __tablename__ = "site_config"
+
+    id = Column(Integer, primary_key=True, index=True)
+    hero_title = Column(String, default="Domptez les Vagues avec WaveRider")
+    hero_subtitle = Column(Text, default="L'école de surf où la passion rencontre l'océan. Des cours pour tous les niveaux, du débutant au surfeur confirmé.")
+    hero_button_text = Column(String, default="Découvrir nos Formules")
+    contact_button_text = Column(String, default="Contactez-nous")
+    
+    school_name = Column(String, default="WaveRider")
+    contact_address = Column(String, default="123 Plage des Vagues, 64200 Biarritz")
+    contact_phone = Column(String, default="+33 6 12 34 56 78")
+    contact_email = Column(String, default="allo@waverider.fr")
+
+    # Apparence
+    navbar_bg_color = Column(String, default="#ffffff")
+    navbar_text_color = Column(String, default="#1f2937")
+    footer_bg_color = Column(String, default="#111827")
+    footer_text_color = Column(String, default="#ffffff")
+    logo_filename = Column(String, default=None)
+
+    # Section "Pourquoi nous ?"
+    why_title = Column(String, default="Pourquoi rider avec nous ?")
+    why_description = Column(Text, default="Notre école s'engage à vous offrir la meilleure expérience possible sur les vagues, alliant sécurité, progression et un maximum de fun.")
+    why_image_filename = Column(String, default=None)
+    why_feature1_icon = Column(String, default="👨‍🏫")
+    why_feature1_title = Column(String, default="Moniteurs Diplômés d'État")
+    why_feature1_desc = Column(String, default="Des experts passionnés pour vous guider en toute sécurité.")
+    why_feature2_icon = Column(String, default="🏄")
+    why_feature2_title = Column(String, default="Matériel Premium")
+    why_feature2_desc = Column(String, default="Planches et combinaisons haut de gamme adaptées à chaque gabarit.")
+    why_feature3_icon = Column(String, default="🌊")
+    why_feature3_title = Column(String, default="Choix des Spots")
+    why_feature3_desc = Column(String, default="Nous sélectionnons chaque jour la meilleure plage selon les conditions.")
+
+    # Relationship to multiple hero images
+    hero_images = relationship("HeroImage", back_populates="config", cascade="all, delete-orphan")
+
+class HeroImage(Base):
+    __tablename__ = "hero_images"
+    id = Column(Integer, primary_key=True, index=True)
+    filename = Column(String)
+    config_id = Column(Integer, ForeignKey("site_config.id"))
+
+    config = relationship("SiteConfig", back_populates="hero_images")

@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard | WaveRider{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-100 py-6">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Tableau de Bord Administrateur</h1>
+            <div>
+                <a href="/" class="text-primary-600 hover:text-primary-800 mr-4 font-medium">Voir le site</a>
+                <a href="/admin/logout" class="bg-red-500 text-white px-4 py-2 rounded shadow hover:bg-red-600 transition">Déconnexion</a>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Site Config Form -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">Configuration du Site</h2>
+                <form action="/admin/dashboard" method="POST" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Titre Principal (Hero)</label>
+                        <input type="text" name="hero_title" value="{{ config.hero_title }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 p-2 border">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Sous-Titre (Hero)</label>
+                        <textarea name="hero_subtitle" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 p-2 border">{{ config.hero_subtitle }}</textarea>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Bouton Services</label>
+                            <input type="text" name="hero_button_text" value="{{ config.hero_button_text }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 p-2 border">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700">Bouton Contact</label>
+                            <input type="text" name="contact_button_text" value="{{ config.contact_button_text }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 p-2 border">
+                        </div>
+                    </div>
+                    <div class="pt-4 border-t">
+                        <h3 class="font-bold mb-3 text-gray-800">Général & Contact</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Nom de l'école</label>
+                                <input type="text" name="school_name" value="{{ config.school_name }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 p-2 border">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Adresse</label>
+                                <input type="text" name="contact_address" value="{{ config.contact_address }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 p-2 border">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Téléphone</label>
+                                    <input type="text" name="contact_phone" value="{{ config.contact_phone }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 p-2 border">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Email</label>
+                                    <input type="text" name="contact_email" value="{{ config.contact_email }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 p-2 border">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pt-4 border-t">
+                        <h3 class="font-bold mb-3 text-gray-800">Apparence (Couleurs)</h3>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="space-y-4">
+                                <h4 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Header (Navigation)</h4>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500">Couleur de fond (au défilement)</label>
+                                    <input type="color" name="navbar_bg_color" value="{{ config.navbar_bg_color }}" class="mt-1 block w-full h-10 rounded border-gray-300 shadow-sm cursor-pointer border">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500">Couleur du texte</label>
+                                    <input type="color" name="navbar_text_color" value="{{ config.navbar_text_color }}" class="mt-1 block w-full h-10 rounded border-gray-300 shadow-sm cursor-pointer border">
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <h4 class="text-sm font-semibold text-gray-600 uppercase tracking-wider">Footer</h4>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500">Couleur de fond</label>
+                                    <input type="color" name="footer_bg_color" value="{{ config.footer_bg_color }}" class="mt-1 block w-full h-10 rounded border-gray-300 shadow-sm cursor-pointer border">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-500">Couleur du texte</label>
+                                    <input type="color" name="footer_text_color" value="{{ config.footer_text_color }}" class="mt-1 block w-full h-10 rounded border-gray-300 shadow-sm cursor-pointer border">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Pourquoi nous ? -->
+                    <div class="pt-4 border-t">
+                        <h3 class="font-bold mb-3 text-gray-800">Section "Pourquoi nous ?"</h3>
+                        <div class="space-y-3">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Titre de la section</label>
+                                <input type="text" name="why_title" value="{{ config.why_title }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700">Description</label>
+                                <textarea name="why_description" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border text-sm">{{ config.why_description }}</textarea>
+                            </div>
+                            {% for i in [1,2,3] %}
+                            <div class="p-3 bg-gray-50 rounded-lg border">
+                                <p class="text-xs font-bold text-gray-600 mb-2">Avantage #{{ i }}</p>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div>
+                                        <label class="block text-xs text-gray-500">Icône</label>
+                                        <input type="text" name="why_feature{{ i }}_icon" value="{{ config['why_feature'~i~'_icon'] if config['why_feature'~i~'_icon'] else '' }}" class="mt-1 w-full border rounded p-1.5 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-gray-500">Titre</label>
+                                        <input type="text" name="why_feature{{ i }}_title" value="{{ config['why_feature'~i~'_title'] if config['why_feature'~i~'_title'] else '' }}" class="mt-1 w-full border rounded p-1.5 text-sm">
+                                    </div>
+                                    <div>
+                                        <label class="block text-xs text-gray-500">Description</label>
+                                        <input type="text" name="why_feature{{ i }}_desc" value="{{ config['why_feature'~i~'_desc'] if config['why_feature'~i~'_desc'] else '' }}" class="mt-1 w-full border rounded p-1.5 text-sm">
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full bg-primary-600 text-white px-4 py-2 mt-6 rounded shadow hover:bg-primary-700 font-bold transition">Enregistrer les Modifications</button>
+                </form>
+            </div>
+
+            <!-- Logo Upload -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">Logo du Site</h2>
+
+                <!-- Current logo preview -->
+                {% if config.logo_filename %}
+                <div class="mb-4 flex items-center gap-4">
+                    <img src="/static/uploads/logo/{{ config.logo_filename }}" alt="Logo actuel" class="h-16 object-contain rounded border p-1 bg-gray-50">
+                    <div>
+                        <p class="text-xs text-gray-500 mb-1">Logo actuel</p>
+                        <form action="/admin/logo/delete" method="POST" onsubmit="return confirm('Supprimer le logo ?')">
+                            <button type="submit" class="text-xs text-red-500 hover:text-red-700 font-semibold transition">🗑 Supprimer</button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <div class="mb-4 flex items-center gap-3 p-3 bg-gray-50 rounded border-2 border-dashed border-gray-200">
+                    <span class="text-gray-400 text-2xl">🖼</span>
+                    <p class="text-xs text-gray-500 italic">Aucun logo uploadé — le nom du site est affiché à la place.</p>
+                </div>
+                {% endif %}
+
+                <!-- Upload form -->
+                <form action="/admin/logo/upload" method="POST" enctype="multipart/form-data" class="p-3 bg-primary-50 rounded-lg border border-primary-100">
+                    <label class="block text-sm font-medium text-primary-800 mb-2">Uploader un nouveau logo (PNG, SVG, WEBP recommandé)</label>
+                    <div class="flex items-center gap-3">
+                        <input type="file" name="file" accept="image/*" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-600 file:text-white hover:file:bg-primary-700 cursor-pointer">
+                        <button type="submit" class="bg-primary-600 text-white px-4 py-2 rounded-full font-bold shadow hover:bg-primary-700 transition text-sm whitespace-nowrap">Uploader</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Why Section Image Upload -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">Image — Section "Pourquoi nous ?"</h2>
+
+                {% if config.why_image_filename %}
+                <div class="mb-4 flex items-center gap-4">
+                    <img src="/static/uploads/why/{{ config.why_image_filename }}" alt="Image actuelle" class="h-20 w-32 object-cover rounded border">
+                    <div>
+                        <p class="text-xs text-gray-500 mb-1">Image actuelle</p>
+                        <form action="/admin/why-image/delete" method="POST" onsubmit="return confirm('Supprimer cette image ?')">
+                            <button type="submit" class="text-xs text-red-500 hover:text-red-700 font-semibold transition">🗑 Supprimer</button>
+                        </form>
+                    </div>
+                </div>
+                {% else %}
+                <div class="mb-4 flex items-center gap-3 p-3 bg-gray-50 rounded border-2 border-dashed border-gray-200">
+                    <span class="text-gray-400 text-2xl">🏄</span>
+                    <p class="text-xs text-gray-500 italic">Aucune image — l'image Unsplash par défaut est affichée.</p>
+                </div>
+                {% endif %}
+
+                <form action="/admin/why-image/upload" method="POST" enctype="multipart/form-data" class="p-3 bg-primary-50 rounded-lg border border-primary-100">
+                    <label class="block text-sm font-medium text-primary-800 mb-2">Uploader une image (JPG, PNG, WEBP)</label>
+                    <div class="flex items-center gap-3">
+                        <input type="file" name="file" accept="image/*" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-600 file:text-white hover:file:bg-primary-700 cursor-pointer">
+                        <button type="submit" class="bg-primary-600 text-white px-4 py-2 rounded-full font-bold shadow hover:bg-primary-700 transition text-sm whitespace-nowrap">Uploader</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Hero Images Gallery -->
+            <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">Images du Slider (Hero)</h2>
+                
+                <!-- Upload Form -->
+                <form action="/admin/hero-images/upload" method="POST" enctype="multipart/form-data" class="mb-8 p-4 bg-primary-50 rounded-lg border border-primary-100">
+                    <label class="block text-sm font-medium text-primary-800 mb-2">Ajouter de nouvelles images (depuis votre PC)</label>
+                    <div class="flex items-center space-x-4">
+                        <input type="file" name="files" multiple accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary-600 file:text-white hover:file:bg-primary-700 cursor-pointer">
+                        <button type="submit" class="bg-primary-600 text-white px-6 py-2 rounded-full font-bold shadow hover:bg-primary-700 transition">Uploader</button>
+                    </div>
+                </form>
+
+                <!-- Gallery -->
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    {% for img in hero_images %}
+                    <div class="relative group rounded-lg overflow-hidden border shadow-sm h-48">
+                        <img src="/static/uploads/hero/{{ img.filename }}" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <form action="/admin/hero-images/{{ img.id }}/delete" method="POST" onsubmit="return confirm('Supprimer cette image ?')">
+                                <button type="submit" class="bg-red-500 text-white p-2 rounded-full hover:bg-red-600 transition shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z" />
+                                    </svg>
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-span-full py-10 text-center text-gray-500 italic bg-gray-50 rounded-lg border-2 border-dashed">
+                        Aucune image d'uploadée. Le site utilise l'image par défaut.
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Services / Formules Management -->
+            <div class="bg-white rounded-lg shadow p-6 lg:col-span-2">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">Gestion des Cours / Formules</h2>
+
+                <!-- Add new service form -->
+                <details class="mb-6 p-4 bg-green-50 rounded-lg border border-green-100">
+                    <summary class="font-semibold text-green-800 cursor-pointer select-none">➕ Ajouter une nouvelle formule</summary>
+                    <form action="/admin/services/add" method="POST" enctype="multipart/form-data" class="mt-4 space-y-3">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-xs font-medium text-gray-600">Titre</label>
+                                <input type="text" name="title" required class="mt-1 w-full border rounded p-2 text-sm" placeholder="Ex: Stage débutant">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600">Prix (MAD)</label>
+                                    <input type="number" step="0.01" name="price" required class="mt-1 w-full border rounded p-2 text-sm" placeholder="500">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600">Remise (%)</label>
+                                    <input type="number" step="1" min="0" max="100" name="discount_percent" class="mt-1 w-full border rounded p-2 text-sm" placeholder="0" value="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Description</label>
+                            <textarea name="description" rows="2" required class="mt-1 w-full border rounded p-2 text-sm" placeholder="Description de la formule..."></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600">Image (optionnel)</label>
+                            <input type="file" name="image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700 cursor-pointer">
+                        </div>
+                        <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded font-bold text-sm hover:bg-green-700 transition">Ajouter</button>
+                    </form>
+                </details>
+
+                <!-- Existing services list -->
+                <div class="space-y-4">
+                    {% for svc in services %}
+                    <details class="border rounded-lg">
+                        <summary class="flex items-center justify-between p-3 cursor-pointer select-none bg-gray-50 hover:bg-gray-100 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                {% if svc.image_url %}
+                                <img src="{{ svc.image_url }}" class="h-10 w-14 object-cover rounded" alt="">
+                                {% else %}
+                                <div class="h-10 w-14 bg-gray-200 rounded flex items-center justify-center text-gray-400 text-xl">🏄</div>
+                                {% endif %}
+                                <div>
+                                    <span class="font-semibold text-gray-800 text-sm">{{ svc.title }}</span>
+                                    <span class="ml-2 text-xs text-primary-600 font-bold">{{ svc.price }} €</span>
+                                </div>
+                            </div>
+                            <span class="text-xs text-gray-400">▼ Modifier</span>
+                        </summary>
+                        <div class="p-4 border-t">
+                            <form action="/admin/services/{{ svc.id }}/edit" method="POST" enctype="multipart/form-data" class="space-y-3">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-xs font-medium text-gray-600">Titre</label>
+                                        <input type="text" name="title" value="{{ svc.title }}" required class="mt-1 w-full border rounded p-2 text-sm">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600">Prix (MAD)</label>
+                                            <input type="number" step="0.01" name="price" value="{{ svc.price }}" required class="mt-1 w-full border rounded p-2 text-sm">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600">Remise (%)</label>
+                                            <input type="number" step="1" min="0" max="100" name="discount_percent" value="{{ svc.discount_percent or 0 }}" class="mt-1 w-full border rounded p-2 text-sm">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600">Description</label>
+                                    <textarea name="description" rows="2" required class="mt-1 w-full border rounded p-2 text-sm">{{ svc.description }}</textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-medium text-gray-600">Nouvelle image (laisser vide pour garder l'actuelle)</label>
+                                    <input type="file" name="image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-primary-600 file:text-white hover:file:bg-primary-700 cursor-pointer">
+                                </div>
+                                <div class="flex gap-3">
+                                    <button type="submit" class="bg-primary-600 text-white px-4 py-2 rounded font-bold text-sm hover:bg-primary-700 transition">💾 Enregistrer</button>
+                                </div>
+                            </form>
+                            <form action="/admin/services/{{ svc.id }}/delete" method="POST" class="mt-2" onsubmit="return confirm('Supprimer cette formule ?')">
+                                <button type="submit" class="text-xs text-red-500 hover:text-red-700 font-semibold transition">🗑 Supprimer cette formule</button>
+                            </form>
+                        </div>
+                    </details>
+                    {% else %}
+                    <div class="text-center py-6 text-gray-400 italic bg-gray-50 rounded border-2 border-dashed">Aucune formule pour le moment. Ajoutez-en une ci-dessus !</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Inquiries List -->
+
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">Réservations & Messages</h2>
+                <div class="overflow-y-auto max-h-96 space-y-4">
+                    {% for inquiry in inquiries %}
+                    <div class="bg-gray-50 p-4 border rounded shadow-sm relative">
+                        {% if inquiry.booking_date %}
+                        <div class="absolute top-4 right-4 bg-primary-100 text-primary-800 text-xs font-bold px-2 py-1 rounded">RÉSERVATION</div>
+                        {% endif %}
+                        
+                        <div class="font-bold text-gray-800">{{ inquiry.name }} <span class="text-xs text-gray-500 font-normal">({{ inquiry.email }})</span></div>
+                        <div class="text-sm text-gray-600 mb-2">📞 {{ inquiry.phone }}</div>
+                        
+                        {% if inquiry.booking_date %}
+                        <div class="grid grid-cols-3 gap-2 mt-3 mb-3 p-3 bg-white border rounded text-sm">
+                            <div>
+                                <span class="text-gray-500 block text-xs uppercase font-bold">Formule</span>
+                                <span class="font-semibold text-primary-700">{{ inquiry.service.title if inquiry.service else 'Non spécifié' }}</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 block text-xs uppercase font-bold">Date & Pax</span>
+                                <span class="font-semibold text-xs">{{ inquiry.booking_date }}</span>
+                                <span class="text-gray-400">|</span>
+                                <span class="font-semibold">{{ inquiry.people_count }} pers.</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 block text-xs uppercase font-bold">Niveau</span>
+                                <span class="font-semibold px-2 py-0.5 bg-accent-100 text-accent-800 rounded text-xs">{{ inquiry.level }}</span>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="text-gray-700 mt-2 p-2 bg-white border rounded">
+                            <span class="text-gray-500 block text-xs uppercase font-bold mb-1">Plus d'information</span>
+                            {{ inquiry.message }}
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="text-gray-500 italic">Aucune réservation pour le moment.</div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

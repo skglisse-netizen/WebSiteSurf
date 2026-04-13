@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+
+{% block title %}WaveRider | Surf Camp & École de Surf{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section id="accueil" class="relative h-screen flex items-center justify-center overflow-hidden">
+    <!-- Background Slider -->
+    <div class="absolute inset-0 z-0" id="hero-slider">
+        {% if config.hero_images %}
+            {% for img in config.hero_images %}
+            <div class="hero-slide absolute inset-0 opacity-0 transition-opacity duration-1000 ease-in-out {% if loop.first %}opacity-100 z-10{% endif %}">
+                <img src="/static/uploads/hero/{{ img.filename }}" alt="Hero Background" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/40"></div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="hero-slide absolute inset-0 opacity-100 z-10">
+                <div class="w-full h-full bg-primary-900"></div>
+                <div class="absolute inset-0 bg-gradient-to-r from-gray-900/80 to-gray-900/40 opacity-60 flex items-center justify-center">
+                    <span class="text-white/20 text-lg italic">Aucune image d'arrière-plan configurée</span>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Navigation Arrows -->
+    <div class="absolute inset-0 flex items-center justify-between px-4 md:px-10 z-20 pointer-events-none">
+        <button id="prev-btn" class="pointer-events-auto p-3 rounded-full bg-white/10 backdrop-blur text-white hover:bg-white/30 transition-all transform hover:scale-110 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+            </svg>
+        </button>
+        <button id="next-btn" class="pointer-events-auto p-3 rounded-full bg-white/10 backdrop-blur text-white hover:bg-white/30 transition-all transform hover:scale-110 focus:outline-none">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+        </button>
+    </div>
+    
+    <!-- Hero Content -->
+    <div class="relative z-10 text-center px-4 max-w-4xl mx-auto fade-in">
+        <span class="text-accent-400 font-bold tracking-widest uppercase text-xs mb-3 block">Votre aventure commence ici</span>
+        <h1 class="text-2xl md:text-4xl font-heading font-extrabold text-white leading-tight mb-3">
+            {{ config.hero_title }}
+        </h1>
+        <p class="text-sm md:text-base text-gray-200 mb-5 max-w-2xl mx-auto font-light">
+            {{ config.hero_subtitle }}
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center space-y-3 sm:space-y-0 sm:space-x-4">
+            <a href="#services" class="px-5 py-2 rounded-full bg-accent-500 text-white font-bold text-sm hover:bg-accent-400 hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+                {{ config.hero_button_text }}
+            </a>
+            <a href="#footer" class="glass px-5 py-2 rounded-full text-white font-bold text-sm hover:bg-white/20 hover:shadow-xl transition-all duration-300">
+                {{ config.contact_button_text }}
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Success Message Alert -->
+{% if success_message %}
+<div class="max-w-4xl mx-auto mt-8 px-4" id="alert-message">
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-md" role="alert">
+        <p class="font-bold">Succès</p>
+        <p>{{ success_message }}</p>
+    </div>
+</div>
+<script>
+    setTimeout(() => {
+        document.getElementById('alert-message').style.display = 'none';
+    }, 5000);
+</script>
+{% endif %}
+
+<!-- Services Section -->
+<section id="services" class="py-10 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 fade-in">
+            <h2 class="text-xl md:text-2xl font-heading font-bold text-gray-900 mb-2">Nos Formules de Surf</h2>
+            <div class="w-12 h-1 bg-accent-500 mx-auto rounded-full mb-3"></div>
+            <p class="text-gray-600 max-w-2xl mx-auto text-sm">Choisissez la formule qui vous correspond, que vous soyez débutant ou surfeur confirmé cherchant à perfectionner sa technique.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {% for service in services %}
+            <div class="group bg-gray-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 fade-in flex flex-col h-full transform hover:-translate-y-2">
+                <div class="relative h-52 overflow-hidden">
+                    {% if service.image_url %}
+                    <img src="{{ service.image_url }}" alt="{{ service.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    {% else %}
+                    <div class="w-full h-full bg-primary-100 flex items-center justify-center">
+                        <span class="text-primary-500 text-4xl">🏄‍♂️</span>
+                    </div>
+                    {% endif %}
+                    <div class="absolute bottom-3 right-3 bg-white/95 backdrop-blur text-gray-900 px-3 py-1.5 rounded-full shadow-md text-xs font-bold flex flex-col items-end">
+                        {% if service.discount_percent and service.discount_percent > 0 %}
+                            <span class="line-through text-gray-400 text-xs">{{ service.price }} MAD</span>
+                            <span class="text-blue-600 font-extrabold">
+                                {{ "%.0f"|format(service.price|float * (1 - service.discount_percent|float / 100)) }} MAD
+                            </span>
+                            <span class="bg-blue-600 text-white text-xs px-1.5 py-0.5 rounded-full mt-0.5">-{{ service.discount_percent|int }}%</span>
+                        {% else %}
+                            <span>{{ service.price }} MAD</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="p-4 flex flex-col flex-grow">
+                    <h3 class="text-base font-bold font-heading text-gray-900 mb-1">{{ service.title }}</h3>
+                    <p class="text-gray-600 text-xs mb-3 flex-grow leading-relaxed">{{ service.description }}</p>
+                    <a href="#contact" class="inline-block w-full text-center px-3 py-1.5 border-2 border-primary-500 text-primary-600 font-bold rounded-lg hover:bg-primary-500 hover:text-white transition-colors duration-300 text-xs">
+                        Réserver le cours
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-span-1 md:col-span-4 text-center py-12 text-gray-500">
+                Aucune formule disponible pour le moment.
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Features Section (Why Choose Us) -->
+<section class="py-10 bg-primary-900 text-white relative overflow-hidden">
+    <!-- Decorative element -->
+    <div class="absolute -top-24 -left-24 w-96 h-96 bg-primary-500 rounded-full mix-blend-multiply filter blur-3xl opacity-30"></div>
+    <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-accent-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20"></div>
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div class="fade-in">
+                <h2 class="text-xl md:text-2xl font-heading font-bold mb-3">{{ config.why_title }}</h2>
+                <p class="text-primary-100 mb-4 text-sm leading-relaxed">{{ config.why_description }}</p>
+                
+                <ul class="space-y-3">
+                    <li class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-sm mt-0.5 shadow-lg">{{ config.why_feature1_icon }}</div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-bold">{{ config.why_feature1_title }}</h4>
+                            <p class="text-primary-100 text-xs mt-0.5">{{ config.why_feature1_desc }}</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-sm mt-0.5 shadow-lg">{{ config.why_feature2_icon }}</div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-bold">{{ config.why_feature2_title }}</h4>
+                            <p class="text-primary-100 text-xs mt-0.5">{{ config.why_feature2_desc }}</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center text-sm mt-0.5 shadow-lg">{{ config.why_feature3_icon }}</div>
+                        <div class="ml-3">
+                            <h4 class="text-sm font-bold">{{ config.why_feature3_title }}</h4>
+                            <p class="text-primary-100 text-xs mt-0.5">{{ config.why_feature3_desc }}</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="relative fade-in">
+                {% if config.why_image_filename %}
+                <img src="/static/uploads/why/{{ config.why_image_filename }}" alt="{{ config.why_title }}" class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-[260px]">
+                {% else %}
+                <img src="https://images.unsplash.com/photo-1516307365426-bea591f05011?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Surfer catching wave" class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-[260px]">
+                {% endif %}
+                <div class="absolute -bottom-6 -right-6 w-full h-full border-4 border-accent-400 rounded-2xl z-0"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Contact Section -->
+<section id="reservation" class="py-10 bg-gray-50">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-6 fade-in">
+            <h2 class="text-xl md:text-2xl font-heading font-bold text-gray-900 mb-2">Réservez votre cours</h2>
+            <p class="text-gray-600 text-sm">Choisissez votre formule et vos dates, nous confirmerons votre réservation sous 24h.</p>
+        </div>
+
+        <div class="bg-white rounded-xl shadow-lg p-5 md:p-6 fade-in relative overflow-hidden">
+            <!-- Decorative accent inside card -->
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-500 to-accent-500"></div>
+
+            <form action="/reservation" method="POST" class="space-y-4 relative z-10">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nom complet *</label>
+                        <input type="text" id="name" name="name" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm" placeholder="Nom et prénom">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Adresse Email *</label>
+                        <input type="email" id="email" name="email" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm" placeholder="votre@email.com">
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="phone" class="block text-sm font-medium text-gray-700 mb-1">Téléphone</label>
+                        <input type="tel" id="phone" name="phone" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm" placeholder="+212 6 00 00 00 00">
+                    </div>
+                    <div>
+                        <label for="service_id" class="block text-sm font-medium text-gray-700 mb-1">Formule souhaitée *</label>
+                        <select id="service_id" name="service_id" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm">
+                            <option value="">-- Sélectionner une formule --</option>
+                            {% for svc in services %}
+                            <option value="{{ svc.id }}">{{ svc.title }} ({{ svc.price }} MAD)</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="booking_date" class="block text-sm font-medium text-gray-700 mb-1">Date souhaitée *</label>
+                        <input type="date" id="booking_date" name="booking_date" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm">
+                    </div>
+                    <div class="grid grid-cols-2 gap-2">
+                        <div>
+                            <label for="people_count" class="block text-sm font-medium text-gray-700 mb-1">Pers. *</label>
+                            <input type="number" id="people_count" name="people_count" min="1" max="20" value="1" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm">
+                        </div>
+                        <div>
+                            <label for="level" class="block text-sm font-medium text-gray-700 mb-1">Niveau *</label>
+                            <select id="level" name="level" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm">
+                                <option value="Débutant (Jamais surfé)">Débutant (Jamais surfé)</option>
+                                <option value="Initié (Déjà pris des cours)">Initié (Déjà pris des cours)</option>
+                                <option value="Intermédiaire (Prend ses propres vagues)">Intermédiaire (Prend ses propres vagues)</option>
+                                <option value="Confirmé / Expert">Confirmé / Expert</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <div>
+                    <label for="message" class="block text-sm font-medium text-gray-700 mb-1">Plus d'information (Optionnel)</label>
+                    <textarea id="message" name="message" rows="2" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm" placeholder="Précisez votre niveau de surf ou toute demande particulière..."></textarea>
+                </div>
+                
+                <div class="flex justify-center pt-2">
+                    <button type="submit" class="w-full md:w-auto px-10 bg-primary-600 text-white font-bold py-3 rounded-lg hover:bg-primary-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 text-sm uppercase tracking-wide">
+                        Réserver ma place
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+    <!-- Hero Slider Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const slides = document.querySelectorAll('.hero-slide');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            if (slides.length > 1) {
+                let currentSlide = 0;
+                let slideInterval;
+
+                function showSlide(index) {
+                    slides[currentSlide].classList.remove('opacity-100', 'z-10');
+                    slides[currentSlide].classList.add('opacity-0');
+                    
+                    currentSlide = (index + slides.length) % slides.length;
+                    
+                    slides[currentSlide].classList.remove('opacity-0');
+                    slides[currentSlide].classList.add('opacity-100', 'z-10');
+                }
+
+                function nextSlide() {
+                    showSlide(currentSlide + 1);
+                }
+
+                function prevSlide() {
+                    showSlide(currentSlide - 1);
+                }
+
+                function startInterval() {
+                    stopInterval();
+                    slideInterval = setInterval(nextSlide, 6000); // 6 seconds for each slide
+                }
+
+                function stopInterval() {
+                    if (slideInterval) clearInterval(slideInterval);
+                }
+
+                nextBtn.addEventListener('click', () => {
+                    nextSlide();
+                    startInterval(); // Reset timer on manual click
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    prevSlide();
+                    startInterval(); // Reset timer on manual click
+                });
+
+                // Start automatic slider
+                startInterval();
+                
+                // Pause on hover
+                const sliderContainer = document.getElementById('hero-slider').parentElement;
+                sliderContainer.addEventListener('mouseenter', stopInterval);
+                sliderContainer.addEventListener('mouseleave', startInterval);
+            } else {
+                // If only one image, hide arrows
+                if (prevBtn) prevBtn.style.display = 'none';
+                if (nextBtn) nextBtn.style.display = 'none';
+            }
+        });
+    </script>
+{% endblock %}
