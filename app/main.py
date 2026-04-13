@@ -13,20 +13,19 @@ from sqlalchemy import text
 from .database import engine, get_db, SessionLocal
 from .auth import get_current_user, verify_password, create_access_token, get_password_hash
 
-# Creation of database tables (in a real project, use Alembic migrations)
-models.Base.metadata.create_all(bind=engine)
-
 # Ensure upload directories exist
 UPLOAD_DIR = "static/uploads/hero"
 LOGO_DIR = "static/uploads/logo"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(LOGO_DIR, exist_ok=True)
 
-# Seed initial data
-db = SessionLocal()
-try:
-    # 1. Ensure columns exist before EVERYTHING ELSE
+def init_db():
+    db = SessionLocal()
     try:
+        # Tables creation
+        models.Base.metadata.create_all(bind=engine)
+        
+        # Migrations and sync
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS school_name VARCHAR DEFAULT 'WaveRider'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_address VARCHAR DEFAULT '123 Plage des Vagues, 64200 Biarritz'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_phone VARCHAR DEFAULT '+33 6 12 34 56 78'"))
@@ -51,30 +50,33 @@ try:
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature3_title VARCHAR DEFAULT 'Choix des Spots'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature3_desc VARCHAR DEFAULT ''"))
         
-        # 0. Reservation fields migrations
+        # Reservation fields
         db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS service_id INTEGER REFERENCES services(id)"))
         db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS booking_date VARCHAR"))
         db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS people_count INTEGER"))
         db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS level VARCHAR"))
         
         db.commit()
+
+        # Seed Admin user
+        admin_user = db.query(models.User).filter_by(username="admin").first()
+        if not admin_user:
+            db.add(models.User(username="admin", hashed_password=get_password_hash("admin")))
+            db.commit()
+
+        # Seed initial config
+        site_config = db.query(models.SiteConfig).first()
+        if not site_config:
+            db.add(models.SiteConfig())
+            db.commit()
     except Exception as e:
-        print(f"Migration notice (expected if columns already exist): {e}")
+        print(f"Database Init Notice: {e}")
         db.rollback()
+    finally:
+        db.close()
 
-    # 2. Seed Admin user
-    admin_user = db.query(models.User).filter_by(username="admin").first()
-    if not admin_user:
-        db.add(models.User(username="admin", hashed_password=get_password_hash("admin")))
-        db.commit()
-
-    # 3. Seed initial config
-    site_config = db.query(models.SiteConfig).first()
-    if not site_config:
-        db.add(models.SiteConfig())
-        db.commit()
-finally:
-    db.close()
+# Run initialization
+init_db()
 
 app = FastAPI(title="Surf Camp Web App")
 
