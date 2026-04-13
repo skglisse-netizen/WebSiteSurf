@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Surf Camp & École de Surf{% endblock %}</title>
+    <title>{% block title %}{{ config.school_name }}{% endblock %}</title>
+    
+    <!-- Favicon -->
+    {% if config.logo_filename %}
+    <link rel="icon" type="image/x-icon" href="/static/uploads/logo/{{ config.logo_filename }}">
+    {% endif %}
     
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">

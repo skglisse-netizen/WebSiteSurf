@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}WaveRider | Surf Camp & École de Surf{% endblock %}
+{% block title %}{{ config.school_name }}{% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
@@ -85,9 +85,9 @@
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {% for service in services %}
             <div class="group bg-gray-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 fade-in flex flex-col h-full transform hover:-translate-y-2">
-                <div class="relative h-52 overflow-hidden">
+                <div class="relative h-52 overflow-hidden bg-gray-100/50 flex items-center justify-center p-4">
                     {% if service.image_url %}
-                    <img src="{{ service.image_url }}" alt="{{ service.title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                    <img src="{{ service.image_url }}" alt="{{ service.title }}" class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700">
                     {% else %}
                     <div class="w-full h-full bg-primary-100 flex items-center justify-center">
                         <span class="text-primary-500 text-4xl">🏄‍♂️</span>
