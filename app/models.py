@@ -37,8 +37,9 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String, unique=True, index=True)
     hashed_password = Column(String)
-
     contact_email = Column(String, default="allo@waverider.fr")
+    mfa_secret = Column(String, nullable=True)
+    mfa_enabled = Column(Boolean, default=False)
 
 class SiteConfig(Base):
     __tablename__ = "site_config"

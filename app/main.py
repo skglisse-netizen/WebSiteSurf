@@ -7,6 +7,7 @@ from typing import List, Optional
 import os
 import uuid
 import shutil
+import pyotp
 
 from . import models, schemas
 from sqlalchemy import text
@@ -44,6 +45,8 @@ def init_db():
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS navbar_text_color VARCHAR DEFAULT '#1f2937'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS footer_bg_color VARCHAR DEFAULT '#111827'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS footer_text_color VARCHAR DEFAULT '#ffffff'"))
+        db.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS mfa_secret VARCHAR DEFAULT NULL"))
+        db.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS mfa_enabled BOOLEAN DEFAULT FALSE"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS logo_filename VARCHAR DEFAULT NULL"))
         db.execute(text("ALTER TABLE services ADD COLUMN IF NOT EXISTS discount_percent NUMERIC(5,2) DEFAULT 0"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_title VARCHAR DEFAULT 'Pourquoi rider avec nous ?'"))
@@ -195,22 +198,111 @@ async def footer_contact(
 
 # --- ADMIN ROUTES ---
 
-@app.get("/admin/login", response_class=HTMLResponse)
-async def login_page(request: Request, db: Session = Depends(get_db)):
-    config = db.query(models.SiteConfig).first()
-    return templates.TemplateResponse(request=request, name="admin/login.html", context={"request": request, "config": config})
-
-@app.post("/admin/login")
-async def login_post(request: Request, username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
-    user = db.query(models.User).filter(models.User.username == username).first()
-    config = db.query(models.SiteConfig).first()
     if not user or not verify_password(password, user.hashed_password):
         return templates.TemplateResponse(request=request, name="admin/login.html", context={"request": request, "error": "Identifiants invalides", "config": config})
     
+    # Check if MFA is enabled
+    if user.mfa_enabled:
+        # Create a temporary token for MFA verification (valid for 5 mins)
+        temp_token = create_access_token(data={"sub": user.username, "mfa_pending": True}, expires_delta=timedelta(minutes=5))
+        response = RedirectResponse(url="/admin/login/mfa", status_code=302)
+        response.set_cookie(key="mfa_pending_token", value=temp_token, httponly=True)
+        return response
+
     access_token = create_access_token(data={"sub": user.username})
     response = RedirectResponse(url="/admin/dashboard", status_code=302)
     response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
     return response
+
+@app.get("/admin/login/mfa", response_class=HTMLResponse)
+async def login_mfa_page(request: Request, db: Session = Depends(get_db)):
+    config = db.query(models.SiteConfig).first()
+    return templates.TemplateResponse(request=request, name="admin/mfa_verify.html", context={"request": request, "config": config})
+
+@app.post("/admin/login/mfa")
+async def login_mfa_post(request: Request, code: str = Form(...), db: Session = Depends(get_db)):
+    token = request.cookies.get("mfa_pending_token")
+    if not token:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    
+    try:
+        from .auth import SECRET_KEY, ALGORITHM
+        from jose import jwt
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+    except:
+        return RedirectResponse(url="/admin/login", status_code=302)
+        
+    user = db.query(models.User).filter(models.User.username == username).first()
+    if not user or not user.mfa_secret:
+        return RedirectResponse(url="/admin/login", status_code=302)
+        
+    totp = pyotp.TOTP(user.mfa_secret)
+    if not totp.verify(code):
+        config = db.query(models.SiteConfig).first()
+        return templates.TemplateResponse(request=request, name="admin/mfa_verify.html", context={"request": request, "config": config, "error": "Code incorrect"})
+    
+    # Final JWT
+    access_token = create_access_token(data={"sub": user.username})
+    response = RedirectResponse(url="/admin/dashboard", status_code=302)
+    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
+    response.delete_cookie("mfa_pending_token")
+    return response
+
+# --- MFA SETUP ROUTES ---
+
+@app.get("/admin/mfa/setup", response_class=HTMLResponse)
+async def mfa_setup_page(request: Request, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    
+    config = db.query(models.SiteConfig).first()
+    
+    # Generate secret if not exists
+    if not user.mfa_secret:
+        user.mfa_secret = pyotp.random_base32()
+        db.commit()
+        
+    totp = pyotp.TOTP(user.mfa_secret)
+    provisioning_uri = totp.provisioning_uri(name=user.username, issuer_name=config.school_name)
+    
+    return templates.TemplateResponse(
+        request=request, 
+        name="admin/mfa_setup.html", 
+        context={"request": request, "config": config, "user": user, "uri": provisioning_uri}
+    )
+
+@app.post("/admin/mfa/activate")
+async def mfa_activate(request: Request, code: str = Form(...), db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user or not user.mfa_secret:
+        return RedirectResponse(url="/admin/login", status_code=302)
+        
+    totp = pyotp.TOTP(user.mfa_secret)
+    if totp.verify(code):
+        user.mfa_enabled = True
+        db.commit()
+        return RedirectResponse(url="/admin/dashboard?mfa_success=1", status_code=302)
+    else:
+        config = db.query(models.SiteConfig).first()
+        provisioning_uri = totp.provisioning_uri(name=user.username, issuer_name=config.school_name)
+        return templates.TemplateResponse(
+            request=request, 
+            name="admin/mfa_setup.html", 
+            context={"request": request, "config": config, "user": user, "uri": provisioning_uri, "error": "Code de vérification invalide"}
+        )
+
+@app.post("/admin/mfa/disable")
+async def mfa_disable(request: Request, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    
+    user.mfa_enabled = False
+    user.mfa_secret = None
+    db.commit()
+    return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.get("/admin/dashboard", response_class=HTMLResponse)
 async def dashboard_page(request: Request, db: Session = Depends(get_db)):

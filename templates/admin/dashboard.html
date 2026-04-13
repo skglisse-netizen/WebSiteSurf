@@ -16,6 +16,15 @@
             </div>
         </div>
 
+        {% if request.query_params.get('mfa_success') %}
+        <div class="mb-8 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 flex items-center shadow-sm rounded-r-lg animate-fade-in">
+            <svg class="w-6 h-6 mr-3" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
+            </svg>
+            <span class="font-bold">MFA Activé !</span> &nbsp;Votre compte est désormais protégé par la double authentification.
+        </div>
+        {% endif %}
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <!-- Site Config Form -->
             <div class="bg-white rounded-lg shadow p-6">
@@ -127,6 +136,43 @@
 
                     <button type="submit" class="w-full bg-primary-600 text-white px-4 py-2 mt-6 rounded shadow hover:bg-primary-700 font-bold transition">Enregistrer les Modifications</button>
                 </form>
+            </div>
+
+            <!-- Security / MFA Section -->
+            <div class="bg-white rounded-lg shadow p-6 border-l-4 {{ 'border-green-500' if user.mfa_enabled else 'border-yellow-500' }}">
+                <div class="flex items-center justify-between mb-4 border-b pb-2">
+                    <h2 class="text-xl font-bold">Sécurité du Compte</h2>
+                    <span class="px-2 py-1 {{ 'bg-green-100 text-green-800' if user.mfa_enabled else 'bg-yellow-100 text-yellow-800' }} text-xs font-bold rounded uppercase">
+                        {{ 'MFA Actif' if user.mfa_enabled else 'MFA Désactivé' }}
+                    </span>
+                </div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-start space-x-3 text-sm">
+                        <div class="mt-1">
+                            {% if user.mfa_enabled %}
+                            <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+                            {% else %}
+                            <svg class="w-5 h-5 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                            {% endif %}
+                        </div>
+                        <p class="text-gray-600">
+                            La double authentification (2FA) protège votre compte en demandant un code supplémentaire lors de la connexion.
+                        </p>
+                    </div>
+
+                    {% if not user.mfa_enabled %}
+                    <a href="/admin/mfa/setup" class="block w-full text-center bg-blue-600 text-white font-bold py-3 px-4 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-500/20 active:scale-[0.98]">
+                        Configurer le MFA
+                    </a>
+                    {% else %}
+                    <form action="/admin/mfa/disable" method="POST" onsubmit="return confirm('Attention : cela réduira la sécurité de votre compte. Désactiver le MFA ?')">
+                        <button type="submit" class="w-full text-center border-2 border-red-100 text-red-600 font-bold py-3 px-4 rounded-xl hover:bg-red-50 transition active:scale-[0.98]">
+                            Désactiver le MFA
+                        </button>
+                    </form>
+                    {% endif %}
+                </div>
             </div>
 
             <!-- Logo Upload -->
