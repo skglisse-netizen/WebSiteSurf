@@ -196,8 +196,15 @@ async def footer_contact(
         }
     )
 
-# --- ADMIN ROUTES ---
+@app.get("/admin/login", response_class=HTMLResponse)
+async def login_page(request: Request, db: Session = Depends(get_db)):
+    config = db.query(models.SiteConfig).first()
+    return templates.TemplateResponse(request=request, name="admin/login.html", context={"request": request, "config": config})
 
+@app.post("/admin/login")
+async def login_post(request: Request, username: str = Form(...), password: str = Form(...), db: Session = Depends(get_db)):
+    user = db.query(models.User).filter(models.User.username == username).first()
+    config = db.query(models.SiteConfig).first()
     if not user or not verify_password(password, user.hashed_password):
         return templates.TemplateResponse(request=request, name="admin/login.html", context={"request": request, "error": "Identifiants invalides", "config": config})
     
