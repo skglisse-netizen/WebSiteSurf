@@ -18,9 +18,19 @@
     <!-- Tailwind CSS (CDN for simple setup) -->
     <script src="https://cdn.tailwindcss.com"></script>
     
+    <!-- Dark Mode detection script to avoid flash -->
+    <script>
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark')
+        } else {
+            document.documentElement.classList.remove('dark')
+        }
+    </script>
+    
     <!-- Tailwind Configuration -->
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     fontFamily: {

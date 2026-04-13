@@ -9,22 +9,35 @@
 {% set msg_count = inquiries | rejectattr('booking_date') | list | length %}
 
 {% block content %}
-<div class="min-h-screen bg-gray-50 flex overflow-hidden">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-950 flex overflow-hidden transition-colors duration-300">
     <!-- Sidebar -->
-    <aside id="sidebar" class="fixed inset-y-0 left-0 bg-white border-r border-gray-200 w-64 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-30 flex flex-col">
-        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+    <aside id="sidebar" class="fixed inset-y-0 left-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 w-64 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out z-30 flex flex-col">
+        <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
             <div class="flex items-center space-x-3">
                 <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-blue-500/20">
                     {{ config.school_name[0] }}
                 </div>
-                <span class="font-bold text-gray-900 tracking-tight">{{ config.school_name }}</span>
+                <span class="font-bold text-gray-900 dark:text-white tracking-tight">{{ config.school_name }}</span>
             </div>
-            <button onclick="toggleSidebar()" class="lg:hidden text-gray-500 hover:text-gray-900">
+            <button onclick="toggleSidebar()" class="lg:hidden text-gray-500 hover:text-gray-900 dark:hover:text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
 
         <nav class="flex-1 overflow-y-auto p-4 space-y-2">
+            <!-- Theme Toggle -->
+            <button onclick="toggleTheme()" class="w-full flex items-center justify-between px-4 py-3 mb-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-700 transition-all hover:border-blue-400 group">
+                <div class="flex items-center space-x-3">
+                    <span class="text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400" id="theme-icon">
+                        <svg class="w-5 h-5 block dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h1m-16 0H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707M17.657 17.657l.707.707M6.343 6.343l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z"></path></svg>
+                        <svg class="w-5 h-5 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path></svg>
+                    </span>
+                    <span class="text-sm font-semibold text-gray-600 dark:text-gray-300 group-hover:text-gray-900 dark:group-hover:text-white" id="theme-text">Mode Sombre</span>
+                </div>
+                <div class="w-10 h-6 bg-gray-200 dark:bg-gray-700 rounded-full p-1 transition-colors relative">
+                    <div class="w-4 h-4 bg-white rounded-full shadow-sm transform transition-transform duration-200" id="theme-toggle-dot"></div>
+                </div>
+            </button>
             <button onclick="showSection('general')" data-section="general" class="nav-item active w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
                 <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
                 <span class="font-medium">Général</span>
@@ -57,12 +70,12 @@
             </button>
         </nav>
 
-        <div class="p-4 border-t border-gray-100 mt-auto">
-            <a href="/" class="flex items-center space-x-3 px-4 py-2 text-sm text-gray-600 hover:text-blue-600 transition mb-2">
+        <div class="p-4 border-t border-gray-100 dark:border-gray-800 mt-auto">
+            <a href="/" class="flex items-center space-x-3 px-4 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition mb-2">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 00-2 2h10a2 2 0 002-2V8a2 2 0 00-2-2h-4z"></path></svg>
                 <span>Voir le site</span>
             </a>
-            <a href="/admin/logout" class="flex items-center space-x-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-lg transition">
+            <a href="/admin/logout" class="flex items-center space-x-3 px-4 py-2 text-sm text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
                 <span>Déconnexion</span>
             </a>
@@ -72,11 +85,11 @@
     <!-- Main Content -->
     <main class="flex-1 lg:ml-64 w-full h-screen overflow-y-auto pt-16 lg:pt-0">
         <!-- Top Mobile Header -->
-        <header class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white border-b border-gray-200 px-4 flex items-center justify-between z-20">
-            <button onclick="toggleSidebar()" class="p-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+        <header class="lg:hidden fixed top-0 left-0 right-0 h-16 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 px-4 flex items-center justify-between z-20">
+            <button onclick="toggleSidebar()" class="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
             </button>
-            <span class="font-bold text-gray-900">{{ config.school_name }}</span>
+            <span class="font-bold text-gray-900 dark:text-white">{{ config.school_name }}</span>
             <div class="w-10"></div>
         </header>
 
@@ -91,103 +104,94 @@
             <!-- SECTION: GENERAL -->
             <section id="section-general" class="content-section space-y-8 animate-in active">
                 <header class="mb-4">
-                    <h1 class="text-2xl font-bold text-gray-900">Configuration Générale</h1>
-                    <p class="text-gray-500">Gérez l'identité et les informations de contact de votre école.</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Configuration Générale</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Gérez l'identité et les informations de contact de votre école.</p>
                 </header>
 
                 <div class="grid grid-cols-1 gap-8">
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
                         <form action="/admin/dashboard" method="POST" class="space-y-8">
                             <!-- Hero Section Config -->
                             <div>
-                                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                    <span class="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mr-3 text-sm">01</span>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">01</span>
                                     Page d'Accueil (Héros)
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-11">
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Titre Principal</label>
-                                        <input type="text" name="hero_title" value="{{ config.hero_title }}" class="w-full rounded-xl border-gray-200 focus:ring-4 focus:ring-blue-500/10 p-3 border">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Titre Principal</label>
+                                        <input type="text" name="hero_title" value="{{ config.hero_title }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
                                     </div>
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Sous-Titre</label>
-                                        <textarea name="hero_subtitle" rows="3" class="w-full rounded-xl border-gray-200 focus:ring-4 focus:ring-blue-500/10 p-3 border">{{ config.hero_subtitle }}</textarea>
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Sous-Titre</label>
+                                        <textarea name="hero_subtitle" rows="3" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">{{ config.hero_subtitle }}</textarea>
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Bouton Services</label>
-                                        <input type="text" name="hero_button_text" value="{{ config.hero_button_text }}" class="w-full rounded-xl border-gray-200 focus:ring-4 focus:ring-blue-500/10 p-3 border">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Bouton Services</label>
+                                        <input type="text" name="hero_button_text" value="{{ config.hero_button_text }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Bouton Contact</label>
-                                        <input type="text" name="contact_button_text" value="{{ config.contact_button_text }}" class="w-full rounded-xl border-gray-200 focus:ring-4 focus:ring-blue-500/10 p-3 border">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Bouton Contact</label>
+                                        <input type="text" name="contact_button_text" value="{{ config.contact_button_text }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
                                     </div>
                                 </div>
                             </div>
 
-                            <hr class="border-gray-100 pl-11">
+                            <hr class="border-gray-100 dark:border-gray-800 pl-11">
 
                             <!-- Contact Info -->
                             <div>
-                                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                    <span class="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mr-3 text-sm">02</span>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">02</span>
                                     Informations de l'École
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-11">
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Nom commercial</label>
-                                        <input type="text" name="school_name" value="{{ config.school_name }}" class="w-full rounded-xl border-gray-200 focus:ring-4 focus:ring-blue-500/10 p-3 border">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Nom commercial</label>
+                                        <input type="text" name="school_name" value="{{ config.school_name }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Email de contact</label>
-                                        <input type="email" name="contact_email" value="{{ config.contact_email }}" class="w-full rounded-xl border-gray-200 focus:ring-4 focus:ring-blue-500/10 p-3 border">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email de contact</label>
+                                        <input type="email" name="contact_email" value="{{ config.contact_email }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Adresse</label>
-                                        <input type="text" name="contact_address" value="{{ config.contact_address }}" class="w-full rounded-xl border-gray-200 focus:ring-4 focus:ring-blue-500/10 p-3 border">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Adresse</label>
+                                        <input type="text" name="contact_address" value="{{ config.contact_address }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
                                     </div>
                                     <div>
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Téléphone</label>
-                                        <input type="text" name="contact_phone" value="{{ config.contact_phone }}" class="w-full rounded-xl border-gray-200 focus:ring-4 focus:ring-blue-500/10 p-3 border">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Téléphone</label>
+                                        <input type="text" name="contact_phone" value="{{ config.contact_phone }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
                                     </div>
                                 </div>
                             </div>
                             
-                            <hr class="border-gray-100 pl-11">
+                            <hr class="border-gray-100 dark:border-gray-800 pl-11">
 
                             <!-- Section "Pourquoi nous ?" Content -->
                             <div>
-                                <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center">
-                                    <span class="w-8 h-8 bg-blue-50 text-blue-600 rounded-lg flex items-center justify-center mr-3 text-sm">03</span>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">03</span>
                                     Arguments de Vente (Pourquoi nous ?)
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-11">
                                     <div class="md:col-span-2">
-                                        <label class="block text-sm font-semibold text-gray-700 mb-2">Titre de la section</label>
-                                        <input type="text" name="why_title" value="{{ config.why_title }}" class="w-full rounded-xl border-gray-200 p-3 border">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Titre de la section</label>
+                                        <input type="text" name="why_title" value="{{ config.why_title }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
                                     </div>
                                     {% for i in [1,2,3] %}
-                                    <div class="p-4 bg-gray-50 rounded-2xl border border-gray-100 flex flex-col space-y-3">
-                                        <span class="text-xs font-bold text-gray-400 uppercase tracking-wider">Avantage {{ i }}</span>
+                                    <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 flex flex-col space-y-3">
+                                        <span class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Avantage {{ i }}</span>
                                         <div class="flex items-center space-x-2">
-                                            <input type="text" name="why_feature{{ i }}_icon" value="{{ config['why_feature'~i~'_icon'] }}" class="w-12 text-center rounded-lg border-gray-200 p-2 border" placeholder="🔍">
-                                            <input type="text" name="why_feature{{ i }}_title" value="{{ config['why_feature'~i~'_title'] }}" class="flex-1 rounded-lg border-gray-200 p-2 border font-bold" placeholder="Titre">
+                                            <input type="text" name="why_feature{{ i }}_icon" value="{{ config['why_feature'~i~'_icon'] }}" class="w-12 text-center rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border" placeholder="🔍">
+                                            <input type="text" name="why_feature{{ i }}_title" value="{{ config['why_feature'~i~'_title'] }}" class="flex-1 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border font-bold" placeholder="Titre">
                                         </div>
-                                        <input type="text" name="why_feature{{ i }}_desc" value="{{ config['why_feature'~i~'_desc'] }}" class="w-full rounded-lg border-gray-200 p-2 border text-sm" placeholder="Description courte">
+                                        <input type="text" name="why_feature{{ i }}_desc" value="{{ config['why_feature'~i~'_desc'] }}" class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border text-sm" placeholder="Description courte">
                                     </div>
                                     {% endfor %}
                                 </div>
                             </div>
 
-                            <!-- Hidden items needed for the form to not break -->
-                            <div class="hidden">
-                                <input type="color" name="navbar_bg_color" value="{{ config.navbar_bg_color }}">
-                                <input type="color" name="navbar_text_color" value="{{ config.navbar_text_color }}">
-                                <input type="color" name="footer_bg_color" value="{{ config.footer_bg_color }}">
-                                <input type="color" name="footer_text_color" value="{{ config.footer_text_color }}">
-                                <textarea name="why_description">{{ config.why_description }}</textarea>
-                            </div>
-
-                            <div class="flex justify-end pt-4 border-t border-gray-100">
+                            <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-800">
                                 <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg shadow-blue-500/20 active:scale-[0.98]">
                                     Enregistrer tout le bloc "Général"
                                 </button>
@@ -200,27 +204,27 @@
             <!-- SECTION: BRANDING & IMAGES -->
             <section id="section-branding" class="content-section space-y-8 animate-in">
                 <header class="mb-4">
-                    <h1 class="text-2xl font-bold text-gray-900">Identité Visuelle</h1>
-                    <p class="text-gray-500">Gérez votre logo, vos couleurs et les photos du slider principal.</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Identité Visuelle</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Gérez votre logo, vos couleurs et les photos du slider principal.</p>
                 </header>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Logo & Colors -->
                     <div class="space-y-8">
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-6">Logo Officiel</h3>
+                        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Logo Officiel</h3>
                             {% if config.logo_filename %}
-                            <div class="mb-6 p-4 bg-gray-50 rounded-2xl flex items-center justify-between">
+                            <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl flex items-center justify-between">
                                 <img src="/static/uploads/logo/{{ config.logo_filename }}" alt="Logo" class="h-16 object-contain">
                                 <form action="/admin/logo/delete" method="POST" onsubmit="return confirm('Supprimer le logo ?')">
-                                    <button type="submit" class="text-red-500 hover:bg-red-50 p-2 rounded-lg transition">🗑 Supprimer</button>
+                                    <button type="submit" class="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-2 rounded-lg transition">🗑 Supprimer</button>
                                 </form>
                             </div>
                             {% endif %}
                             <form action="/admin/logo/upload" method="POST" enctype="multipart/form-data" class="space-y-4">
-                                <div class="border-2 border-dashed border-gray-200 rounded-2xl p-6 text-center hover:border-blue-400 transition cursor-pointer relative">
+                                <div class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-2xl p-6 text-center hover:border-blue-400 transition cursor-pointer relative">
                                     <input type="file" name="file" accept="image/*" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                    <div class="text-gray-400">
+                                    <div class="text-gray-400 dark:text-gray-500">
                                         <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
                                         <p class="text-sm">Cliquez pour ajouter un logo</p>
                                     </div>
@@ -229,63 +233,44 @@
                             </form>
                         </div>
                         
-                        <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-                            <h3 class="text-lg font-bold text-gray-900 mb-6">Couleurs du Thème</h3>
+                        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Couleurs du Thème</h3>
                             <form action="/admin/dashboard" method="POST" class="space-y-6">
-                                <!-- Duplicated fields for the form to work with existing endpoint logic -->
-                                <div class="hidden">
-                                    <input type="text" name="hero_title" value="{{ config.hero_title }}">
-                                    <input type="text" name="hero_subtitle" value="{{ config.hero_subtitle }}">
-                                    <input type="text" name="hero_button_text" value="{{ config.hero_button_text }}">
-                                    <input type="text" name="contact_button_text" value="{{ config.contact_button_text }}">
-                                    <input type="text" name="school_name" value="{{ config.school_name }}">
-                                    <input type="text" name="contact_address" value="{{ config.contact_address }}">
-                                    <input type="text" name="contact_phone" value="{{ config.contact_phone }}">
-                                    <input type="text" name="contact_email" value="{{ config.contact_email }}">
-                                    <input type="text" name="why_title" value="{{ config.why_title }}">
-                                    <textarea name="why_description">{{ config.why_description }}</textarea>
-                                    {% for i in [1,2,3] %}
-                                    <input type="text" name="why_feature{{ i }}_icon" value="{{ config['why_feature'~i~'_icon'] }}">
-                                    <input type="text" name="why_feature{{ i }}_title" value="{{ config['why_feature'~i~'_title'] }}">
-                                    <input type="text" name="why_feature{{ i }}_desc" value="{{ config['why_feature'~i~'_desc'] }}">
-                                    {% endfor %}
-                                </div>
-
                                 <div class="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Navbar Fond</label>
-                                        <input type="color" name="navbar_bg_color" value="{{ config.navbar_bg_color }}" class="w-full h-12 rounded-lg border border-gray-200 cursor-pointer">
+                                        <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Navbar Fond</label>
+                                        <input type="color" name="navbar_bg_color" value="{{ config.navbar_bg_color }}" class="w-full h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Navbar Texte</label>
-                                        <input type="color" name="navbar_text_color" value="{{ config.navbar_text_color }}" class="w-full h-12 rounded-lg border border-gray-200 cursor-pointer">
+                                        <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Navbar Texte</label>
+                                        <input type="color" name="navbar_text_color" value="{{ config.navbar_text_color }}" class="w-full h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Footer Fond</label>
-                                        <input type="color" name="footer_bg_color" value="{{ config.footer_bg_color }}" class="w-full h-12 rounded-lg border border-gray-200 cursor-pointer">
+                                        <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Footer Fond</label>
+                                        <input type="color" name="footer_bg_color" value="{{ config.footer_bg_color }}" class="w-full h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 uppercase mb-2">Footer Texte</label>
-                                        <input type="color" name="footer_text_color" value="{{ config.footer_text_color }}" class="w-full h-12 rounded-lg border border-gray-200 cursor-pointer">
+                                        <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Footer Texte</label>
+                                        <input type="color" name="footer_text_color" value="{{ config.footer_text_color }}" class="w-full h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
                                     </div>
                                 </div>
-                                <button type="submit" class="w-full border-2 border-blue-100 text-blue-600 font-bold py-3 rounded-xl hover:bg-blue-50 transition">Enregistrer les couleurs</button>
+                                <button type="submit" class="w-full border-2 border-blue-100 dark:border-blue-900/30 text-blue-600 dark:text-blue-400 font-bold py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition">Enregistrer les couleurs</button>
                             </form>
                         </div>
                     </div>
 
                     <!-- Slider Images -->
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col h-full">
-                        <h3 class="text-lg font-bold text-gray-900 mb-6">Photos du Slider (Héros)</h3>
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 flex flex-col h-full">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Photos du Slider (Héros)</h3>
                         <form action="/admin/hero-images/upload" method="POST" enctype="multipart/form-data" class="mb-6">
                             <div class="flex items-center space-x-3">
-                                <input type="file" name="files" multiple accept="image/*" class="flex-1 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer">
+                                <input type="file" name="files" multiple accept="image/*" class="flex-1 text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50 cursor-pointer">
                                 <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-xl transition">Uploader</button>
                             </div>
                         </form>
                         <div class="grid grid-cols-2 gap-4 overflow-y-auto max-h-[500px] pr-2 custom-scrollbar">
                             {% for img in hero_images %}
-                            <div class="relative group aspect-square rounded-xl overflow-hidden border border-gray-100 shadow-sm">
+                            <div class="relative group aspect-square rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm">
                                 <img src="/static/uploads/hero/{{ img.filename }}" class="w-full h-full object-cover">
                                 <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
                                     <form action="/admin/hero-images/{{ img.id }}/delete" method="POST" onsubmit="return confirm('Définitif ?')">
@@ -305,8 +290,8 @@
             <section id="section-services" class="content-section space-y-8 animate-in">
                 <header class="mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900">Gestion des Formules</h1>
-                        <p class="text-gray-500">Ajoutez et modifiez vos cours de surf et packs.</p>
+                        <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Gestion des Formules</h1>
+                        <p class="text-gray-500 dark:text-gray-400">Ajoutez et modifiez vos cours de surf et packs.</p>
                     </div>
                     <button onclick="document.getElementById('add-service-modal').classList.remove('hidden')" class="bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/20 flex items-center transition active:scale-95">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
@@ -316,25 +301,25 @@
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {% for svc in services %}
-                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden group flex flex-col h-full">
-                        <div class="relative h-48 bg-gray-100">
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden group flex flex-col h-full">
+                        <div class="relative h-48 bg-gray-100 dark:bg-gray-800">
                             {% if svc.image_url %}
                             <img src="{{ svc.image_url }}" class="w-full h-full object-cover">
                             {% else %}
                             <div class="w-full h-full flex items-center justify-center text-4xl">🏄</div>
                             {% endif %}
-                            <div class="absolute top-4 right-4 bg-white/95 backdrop-blur shadow-sm rounded-lg px-2 py-1 font-bold text-blue-600 text-sm">
+                            <div class="absolute top-4 right-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-sm rounded-lg px-2 py-1 font-bold text-blue-600 dark:text-blue-400 text-sm">
                                 {{ svc.price }} MAD
                             </div>
                         </div>
                         <div class="p-6 flex-1 flex flex-col">
-                            <h3 class="font-bold text-lg mb-2 text-gray-900">{{ svc.title }}</h3>
-                            <p class="text-sm text-gray-500 mb-6 line-clamp-3">{{ svc.description }}</p>
+                            <h3 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">{{ svc.title }}</h3>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 line-clamp-2">{{ svc.description }}</p>
                             
-                            <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
-                                <button onclick="openEditModal('{{ svc.id }}', '{{ svc.title|escape }}', '{{ svc.description|escape }}', '{{ svc.price }}', '{{ svc.discount_percent }}')" class="text-blue-600 font-bold text-sm hover:underline">Modifier</button>
+                            <div class="mt-auto pt-4 border-t border-gray-50 dark:border-gray-800 flex items-center justify-between">
+                                <button onclick="openEditModal('{{ svc.id }}', '{{ svc.title|escape }}', '{{ svc.description|escape }}', '{{ svc.price }}', '{{ svc.discount_percent }}')" class="text-blue-600 dark:text-blue-400 font-bold text-sm hover:underline">Modifier</button>
                                 <form action="/admin/services/{{ svc.id }}/delete" method="POST" onsubmit="return confirm('Archiver cette formule ?')">
-                                    <button type="submit" class="text-gray-300 hover:text-red-500 transition">
+                                    <button type="submit" class="text-gray-300 dark:text-gray-600 hover:text-red-500 transition">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z"></path></svg>
                                     </button>
                                 </form>
@@ -344,51 +329,53 @@
                     {% endfor %}
                 </div>
             </section>
+   </div>
+            </section>
 
             <!-- SECTION: RESERVATIONS -->
             <section id="section-reservations" class="content-section space-y-8 animate-in">
                 <header class="mb-4">
-                    <h1 class="text-2xl font-bold text-gray-900">Réservations de Cours</h1>
-                    <p class="text-gray-500">Gérez les inscriptions à vos cours de surf.</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Réservations de Cours</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Gérez les inscriptions à vos cours de surf.</p>
                 </header>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left">
-                            <thead class="bg-gray-50 border-b border-gray-100">
+                            <thead class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">
                                 <tr>
-                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Client</th>
-                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Prestation</th>
-                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Détails de réservation</th>
-                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Message</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Client</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Prestation</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Détails de réservation</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Message</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-50">
+                            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                                 {% for inquiry in inquiries if inquiry.booking_date %}
-                                <tr class="hover:bg-blue-50/30 transition-colors">
+                                <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
                                     <td class="px-6 py-5">
-                                        <div class="font-bold text-gray-900">{{ inquiry.name }}</div>
-                                        <div class="text-xs text-blue-600 font-medium">{{ inquiry.phone }}</div>
-                                        <div class="text-[10px] text-gray-400 font-mono">{{ inquiry.email }}</div>
+                                        <div class="font-bold text-gray-900 dark:text-white">{{ inquiry.name }}</div>
+                                        <div class="text-xs text-blue-600 dark:text-blue-400 font-medium">{{ inquiry.phone }}</div>
+                                        <div class="text-[10px] text-gray-400 dark:text-gray-500 font-mono">{{ inquiry.email }}</div>
                                     </td>
                                     <td class="px-6 py-5">
-                                        <div class="text-sm font-bold text-gray-800">{{ inquiry.service.title if inquiry.service else 'Non spécifié' }}</div>
-                                        <div class="text-xs text-gray-500 font-medium">{{ inquiry.level }}</div>
+                                        <div class="text-sm font-bold text-gray-800 dark:text-gray-200">{{ inquiry.service.title if inquiry.service else 'Non spécifié' }}</div>
+                                        <div class="text-xs text-gray-500 dark:text-gray-400 font-medium">{{ inquiry.level }}</div>
                                     </td>
                                     <td class="px-6 py-5">
-                                        <div class="flex items-center space-x-2 text-xs font-bold text-primary-600 bg-primary-50 px-2 py-1 rounded w-fit mb-1">
+                                        <div class="flex items-center space-x-2 text-xs font-bold text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 px-2 py-1 rounded w-fit mb-1">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                             <span>{{ inquiry.booking_date }}</span>
                                         </div>
-                                        <div class="text-xs text-gray-600 font-semibold">{{ inquiry.people_count }} Personnes</div>
+                                        <div class="text-xs text-gray-600 dark:text-gray-400 font-semibold">{{ inquiry.people_count }} Personnes</div>
                                     </td>
-                                    <td class="px-6 py-5 text-sm text-gray-500 font-medium italic">
+                                    <td class="px-6 py-5 text-sm text-gray-500 dark:text-gray-400 font-medium italic">
                                         {{ inquiry.message|truncate(50) }}
                                     </td>
                                 </tr>
                                 {% else %}
                                 <tr>
-                                    <td colspan="4" class="px-6 py-12 text-center text-gray-400 italic font-medium">Aucune réservation pour le moment.</td>
+                                    <td colspan="4" class="px-6 py-12 text-center text-gray-400 dark:text-gray-600 italic font-medium">Aucune réservation pour le moment.</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -400,39 +387,39 @@
             <!-- SECTION: MESSAGES -->
             <section id="section-messages" class="content-section space-y-8 animate-in">
                 <header class="mb-4">
-                    <h1 class="text-2xl font-bold text-gray-900">Messages de Contact</h1>
-                    <p class="text-gray-500">Demandes de renseignements généraux.</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Messages de Contact</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Demandes de renseignements généraux.</p>
                 </header>
 
-                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
                     <div class="overflow-x-auto">
                         <table class="w-full text-left">
-                            <thead class="bg-gray-50 border-b border-gray-100">
+                            <thead class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">
                                 <tr>
-                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Client</th>
-                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Message</th>
-                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Coordonnées</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Client</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Message</th>
+                                    <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Coordonnées</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-50">
+                            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                                 {% for inquiry in inquiries if not inquiry.booking_date %}
-                                <tr class="hover:bg-blue-50/30 transition-colors">
+                                <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
                                     <td class="px-6 py-5">
-                                        <div class="font-bold text-gray-900">{{ inquiry.name }}</div>
-                                        <div class="text-[10px] text-gray-400">{{ inquiry.email }}</div>
+                                        <div class="font-bold text-gray-900 dark:text-white">{{ inquiry.name }}</div>
+                                        <div class="text-[10px] text-gray-400 dark:text-gray-500">{{ inquiry.email }}</div>
                                     </td>
                                     <td class="px-6 py-5">
-                                        <div class="text-sm text-gray-700 bg-gray-50 p-3 rounded-lg border border-gray-100 max-w-lg">
+                                        <div class="text-sm text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-lg border border-gray-100 dark:border-gray-800 max-w-lg">
                                             {{ inquiry.message }}
                                         </div>
                                     </td>
                                     <td class="px-6 py-5">
-                                        <div class="text-xs text-blue-600 font-bold">{{ inquiry.phone }}</div>
+                                        <div class="text-xs text-blue-600 dark:text-blue-400 font-bold">{{ inquiry.phone }}</div>
                                     </td>
                                 </tr>
                                 {% else %}
                                 <tr>
-                                    <td colspan="3" class="px-6 py-12 text-center text-gray-400 italic font-medium">Aucun message de contact.</td>
+                                    <td colspan="3" class="px-6 py-12 text-center text-gray-400 dark:text-gray-600 italic font-medium">Aucun message de contact.</td>
                                 </tr>
                                 {% endfor %}
                             </tbody>
@@ -444,30 +431,30 @@
             <!-- SECTION: SECURITY -->
             <section id="section-security" class="content-section space-y-8 animate-in">
                 <header class="mb-4">
-                    <h1 class="text-2xl font-bold text-gray-900">Sécurité & Compte</h1>
-                    <p class="text-gray-500">Gérez votre mot de passe et votre double authentification.</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Sécurité & Compte</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Gérez votre mot de passe et votre double authentification.</p>
                 </header>
 
                 <div class="max-w-2xl">
-                    <div class="bg-white rounded-2xl shadow-sm border {{ 'border-green-100 bg-green-50/30' if user.mfa_enabled else 'border-yellow-100 bg-yellow-50/20' }} p-8">
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border {{ 'border-green-100 dark:border-green-900/30 bg-green-50/30 dark:bg-green-900/10' if user.mfa_enabled else 'border-yellow-100 dark:border-yellow-900/30 bg-yellow-50/20 dark:bg-yellow-900/10' }} p-8">
                         <div class="flex items-start justify-between mb-8">
                             <div>
-                                <h3 class="text-lg font-bold text-gray-900">Double Authentification (MFA)</h3>
-                                <p class="text-gray-500 text-sm mt-1">Protège votre accès avec une application sur votre mobile.</p>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Double Authentification (MFA)</h3>
+                                <p class="text-gray-500 dark:text-gray-400 text-sm mt-1">Protège votre accès avec une application sur votre mobile.</p>
                             </div>
-                            <span class="px-4 py-1.5 {{ 'bg-green-600 text-white shadow-lg shadow-green-200' if user.mfa_enabled else 'bg-yellow-500 text-white shadow-lg shadow-yellow-200' }} text-xs font-bold rounded-full uppercase tracking-widest">
+                            <span class="px-4 py-1.5 {{ 'bg-green-600 text-white shadow-lg shadow-green-200 dark:shadow-none' if user.mfa_enabled else 'bg-yellow-500 text-white shadow-lg shadow-yellow-200 dark:shadow-none' }} text-xs font-bold rounded-full uppercase tracking-widest">
                                 {{ 'Actif' if user.mfa_enabled else 'Inactif' }}
                             </span>
                         </div>
 
-                        <div class="bg-white rounded-xl p-6 border border-inherit shadow-sm mb-6">
+                        <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-inherit shadow-sm mb-6">
                             <div class="flex items-center space-x-4">
-                                <div class="w-12 h-12 {{ 'bg-green-100 text-green-600' if user.mfa_enabled else 'bg-yellow-100 text-yellow-600' }} rounded-xl flex items-center justify-center animate-pulse">
+                                <div class="w-12 h-12 {{ 'bg-green-100 dark:bg-green-900/30 text-green-600 dark:text-green-400' if user.mfa_enabled else 'bg-yellow-100 dark:bg-yellow-900/30 text-yellow-600 dark:text-yellow-400' }} rounded-xl flex items-center justify-center animate-pulse">
                                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
                                 </div>
                                 <div class="flex-1">
-                                    <p class="text-gray-700 font-medium">Statut de sécurité</p>
-                                    <p class="text-sm text-gray-500">{{ 'Votre compte est protégé. Code demandé à chaque connexion.' if user.mfa_enabled else 'Votre compte est vulnérable. Activez le MFA dès maintenant.' }}</p>
+                                    <p class="text-gray-700 dark:text-gray-200 font-medium">Statut de sécurité</p>
+                                    <p class="text-sm text-gray-500 dark:text-gray-400">{{ 'Votre compte est protégé. Code demandé à chaque connexion.' if user.mfa_enabled else 'Votre compte est vulnérable. Activez le MFA dès maintenant.' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -478,7 +465,7 @@
                         </a>
                         {% else %}
                         <form action="/admin/mfa/disable" method="POST" onsubmit="return confirm('Désactiver la sécurité ?')">
-                            <button type="submit" class="w-full text-center bg-white border-2 border-red-50 text-red-500 font-bold py-4 rounded-xl hover:bg-red-50 transition active:scale-[0.98]">
+                            <button type="submit" class="w-full text-center bg-white dark:bg-gray-800 border-2 border-red-50 dark:border-red-900/30 text-red-500 font-bold py-4 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 transition active:scale-[0.98]">
                                 Désactiver le MFA
                             </button>
                         </form>
@@ -492,35 +479,35 @@
 
 <!-- Add Service Modal -->
 <div id="add-service-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl animate-modal-in">
-        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-            <h2 class="text-xl font-bold">Nouvelle Formule</h2>
-            <button onclick="document.getElementById('add-service-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+    <div class="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-lg shadow-2xl animate-modal-in border border-gray-100 dark:border-gray-800">
+        <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+            <h2 class="text-xl font-bold dark:text-white">Nouvelle Formule</h2>
+            <button onclick="document.getElementById('add-service-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
         <form action="/admin/services/add" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
             <div class="grid grid-cols-2 gap-4">
                 <div class="col-span-2">
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Titre</label>
-                    <input type="text" name="title" required class="w-full rounded-xl border-gray-200 p-3 border">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Titre</label>
+                    <input type="text" name="title" required class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Prix (MAD)</label>
-                    <input type="number" step="0.01" name="price" required class="w-full rounded-xl border-gray-200 p-3 border">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Prix (MAD)</label>
+                    <input type="number" step="0.01" name="price" required class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Remise (%)</label>
-                    <input type="number" name="discount_percent" value="0" class="w-full rounded-xl border-gray-200 p-3 border">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Remise (%)</label>
+                    <input type="number" name="discount_percent" value="0" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
                 </div>
             </div>
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Description</label>
-                <textarea name="description" rows="3" required class="w-full rounded-xl border-gray-200 p-3 border"></textarea>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                <textarea name="description" rows="3" required class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10"></textarea>
             </div>
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Image</label>
-                <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Image</label>
+                <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50">
             </div>
             <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4">Créer la formule</button>
         </form>
@@ -529,35 +516,35 @@
 
 <!-- Edit Service Modal -->
 <div id="edit-service-modal" class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl w-full max-w-lg shadow-2xl animate-modal-in">
-        <div class="p-6 border-b border-gray-100 flex items-center justify-between">
-            <h2 class="text-xl font-bold">Modifier la Formule</h2>
-            <button onclick="document.getElementById('edit-service-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600">
+    <div class="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-lg shadow-2xl animate-modal-in border border-gray-100 dark:border-gray-800">
+        <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+            <h2 class="text-xl font-bold dark:text-white">Modifier la Formule</h2>
+            <button onclick="document.getElementById('edit-service-modal').classList.add('hidden')" class="text-gray-400 hover:text-gray-600 dark:hover:text-white">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
         </div>
         <form id="edit-service-form" action="" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
             <div class="grid grid-cols-2 gap-4">
                 <div class="col-span-2">
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Titre</label>
-                    <input type="text" name="title" id="edit-title" required class="w-full rounded-xl border-gray-200 p-3 border">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Titre</label>
+                    <input type="text" name="title" id="edit-title" required class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Prix (MAD)</label>
-                    <input type="number" step="0.01" name="price" id="edit-price" required class="w-full rounded-xl border-gray-200 p-3 border">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Prix (MAD)</label>
+                    <input type="number" step="0.01" name="price" id="edit-price" required class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Remise (%)</label>
-                    <input type="number" name="discount_percent" id="edit-discount" class="w-full rounded-xl border-gray-200 p-3 border">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Remise (%)</label>
+                    <input type="number" name="discount_percent" id="edit-discount" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
                 </div>
             </div>
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Description</label>
-                <textarea name="description" id="edit-description" rows="3" required class="w-full rounded-xl border-gray-200 p-3 border"></textarea>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                <textarea name="description" id="edit-description" rows="3" required class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10"></textarea>
             </div>
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-1">Nouvelle Image</label>
-                <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Nouvelle Image</label>
+                <input type="file" name="image" accept="image/*" class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50">
             </div>
             <button type="submit" class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4">Enregistrer les modifications</button>
         </form>
@@ -596,6 +583,35 @@
 </style>
 
 <script>
+    // Theme Toggle Logic
+    function updateThemeUI() {
+        const isDark = document.documentElement.classList.contains('dark');
+        const dot = document.getElementById('theme-toggle-dot');
+        const text = document.getElementById('theme-text');
+        
+        if (isDark) {
+            dot.style.transform = 'translateX(1rem)';
+            text.innerText = 'Mode Sombre';
+        } else {
+            dot.style.transform = 'translateX(0)';
+            text.innerText = 'Mode Clair';
+        }
+    }
+
+    function toggleTheme() {
+        if (document.documentElement.classList.contains('dark')) {
+            document.documentElement.classList.remove('dark');
+            localStorage.setItem('theme', 'light');
+        } else {
+            document.documentElement.classList.add('dark');
+            localStorage.setItem('theme', 'dark');
+        }
+        updateThemeUI();
+    }
+
+    // Initialize UI on load
+    window.addEventListener('load', updateThemeUI);
+
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('-translate-x-full');
