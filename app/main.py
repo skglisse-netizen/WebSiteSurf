@@ -19,6 +19,15 @@ LOGO_DIR = "static/uploads/logo"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(LOGO_DIR, exist_ok=True)
 
+def secure_filename_lite(filename: str) -> str:
+    import re
+    # Remove path info and avoid path traversal
+    base = os.path.basename(filename)
+    name, ext = os.path.splitext(base)
+    # Replace anything that isn't alphanumeric, dash or underscore with an underscore
+    name = re.sub(r'[^a-zA-Z0-9_-]', '_', name)
+    return f"{name.lower()}{ext.lower()}"
+
 def init_db():
     db = SessionLocal()
     try:
@@ -59,9 +68,9 @@ def init_db():
         db.commit()
 
         # Seed Admin user
-        admin_user = db.query(models.User).filter_by(username="admin").first()
+        admin_user = db.query(models.User).filter_by(username="Administrateur").first()
         if not admin_user:
-            db.add(models.User(username="admin", hashed_password=get_password_hash("admin")))
+            db.add(models.User(username="Administrateur", hashed_password=get_password_hash("WebSite@dmin2026")))
             db.commit()
 
         # Seed initial config
@@ -243,17 +252,23 @@ async def upload_hero_images(
         if not file.filename:
             continue
             
-        # Generate unique filename
-        ext = os.path.splitext(file.filename)[1]
-        new_filename = f"{uuid.uuid4()}{ext}"
+        # Use sanitized original filename
+        new_filename = secure_filename_lite(file.filename)
         file_path = os.path.join(UPLOAD_DIR, new_filename)
         
+        # Overwrite file on disk
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
             
-        # Add to DB
-        hero_img = models.HeroImage(filename=new_filename, config_id=config.id)
-        db.add(hero_img)
+        # Add to DB only if it doesn't exist (to avoid duplicates in gallery)
+        existing = db.query(models.HeroImage).filter(
+            models.HeroImage.filename == new_filename,
+            models.HeroImage.config_id == config.id
+        ).first()
+        
+        if not existing:
+            hero_img = models.HeroImage(filename=new_filename, config_id=config.id)
+            db.add(hero_img)
     
     db.commit()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
@@ -300,15 +315,20 @@ async def upload_logo(
     if not user:
         return RedirectResponse(url="/admin/login", status_code=302)
     config = db.query(models.SiteConfig).first()
-    if config.logo_filename:
+    
+    # Secure name
+    new_filename = secure_filename_lite(file.filename)
+    
+    # Delete old logo if it has a BROADLY different name or just overwrite if it matches
+    if config.logo_filename and config.logo_filename != new_filename:
         old_path = os.path.join(LOGO_DIR, config.logo_filename)
         if os.path.exists(old_path):
             os.remove(old_path)
-    ext = os.path.splitext(file.filename)[1]
-    new_filename = f"logo{ext}"
+            
     file_path = os.path.join(LOGO_DIR, new_filename)
     with open(file_path, "wb") as buffer:
         shutil.copyfileobj(file.file, buffer)
+        
     config.logo_filename = new_filename
     db.commit()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
@@ -401,15 +421,19 @@ async def upload_why_image(
     if not user:
         return RedirectResponse(url="/admin/login", status_code=302)
     config = db.query(models.SiteConfig).first()
-    if config.why_image_filename:
+    
+    new_filename = secure_filename_lite(file.filename)
+    
+    if config.why_image_filename and config.why_image_filename != new_filename:
         old = os.path.join(WHY_IMG_DIR, config.why_image_filename)
         if os.path.exists(old):
             os.remove(old)
-    ext = os.path.splitext(file.filename)[1]
-    fname = f"why{ext}"
-    with open(os.path.join(WHY_IMG_DIR, fname), "wb") as f:
+            
+    file_path = os.path.join(WHY_IMG_DIR, new_filename)
+    with open(file_path, "wb") as f:
         shutil.copyfileobj(file.file, f)
-    config.why_image_filename = fname
+        
+    config.why_image_filename = new_filename
     db.commit()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
@@ -447,8 +471,7 @@ async def service_add(
 
     image_url = None
     if image and image.filename:
-        ext = os.path.splitext(image.filename)[1]
-        fname = f"{uuid.uuid4()}{ext}"
+        fname = secure_filename_lite(image.filename)
         with open(os.path.join(SERVICE_IMG_DIR, fname), "wb") as f:
             shutil.copyfileobj(image.file, f)
         image_url = f"/static/uploads/services/{fname}"
@@ -479,8 +502,17 @@ async def service_edit(
         svc.price = price
         svc.discount_percent = discount_percent
         if image and image.filename:
-            ext = os.path.splitext(image.filename)[1]
-            fname = f"{uuid.uuid4()}{ext}"
+            # Delete old image if it exists and is different
+            if svc.image_url:
+                old_fname = svc.image_url.split("/")[-1]
+                new_fname = secure_filename_lite(image.filename)
+                
+                if old_fname != new_fname:
+                    old_path = os.path.join(SERVICE_IMG_DIR, old_fname)
+                    if os.path.exists(old_path):
+                        os.remove(old_path)
+            
+            fname = secure_filename_lite(image.filename)
             with open(os.path.join(SERVICE_IMG_DIR, fname), "wb") as f:
                 shutil.copyfileobj(image.file, f)
             svc.image_url = f"/static/uploads/services/{fname}"
@@ -495,6 +527,15 @@ async def service_delete(request: Request, service_id: int, db: Session = Depend
 
     svc = db.query(models.Service).filter(models.Service.id == service_id).first()
     if svc:
+        # Delete image file
+        if svc.image_url:
+            fname = svc.image_url.split("/")[-1]
+            file_path = os.path.join(SERVICE_IMG_DIR, fname)
+            if os.path.exists(file_path):
+                try:
+                    os.remove(file_path)
+                except:
+                    pass
         db.delete(svc)
         db.commit()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
