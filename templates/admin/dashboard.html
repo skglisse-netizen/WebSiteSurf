@@ -176,6 +176,33 @@
                                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Titre de la section</label>
                                         <input type="text" name="why_title" value="{{ config.why_title }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
                                     </div>
+                                    
+                                    <!-- Why Image Management -->
+                                    <div class="md:col-span-2 mt-4 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">Photo d'illustration (Section Pourquoi Nous)</label>
+                                        <div class="flex flex-col md:flex-row gap-6 items-start">
+                                            {% if config.why_image_filename %}
+                                            <div class="relative w-full md:w-48 aspect-video rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                                                <img src="/static/uploads/why/{{ config.why_image_filename }}" class="w-full h-full object-cover">
+                                                <button type="button" onclick="confirmDeleteWhyImage()" class="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-lg shadow-lg hover:bg-red-600 transition">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z"></path></svg>
+                                                </button>
+                                            </div>
+                                            {% else %}
+                                            <div class="w-full md:w-48 aspect-video rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-400">
+                                                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                            </div>
+                                            {% endif %}
+                                            
+                                            <div class="flex-1 space-y-3">
+                                                <p class="text-xs text-gray-500 dark:text-gray-400">Cette image s'affiche à côté de vos arguments de vente. Recommandé : Format paysage (16:9).</p>
+                                                <div class="flex items-center space-x-2">
+                                                    <input type="file" id="why_image_input" accept="image/*" class="text-xs text-gray-500 dark:text-gray-400 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-600 dark:file:text-blue-400">
+                                                    <button type="button" onclick="uploadWhyImage()" class="bg-gray-900 dark:bg-white dark:text-gray-900 text-white text-xs font-bold py-2 px-4 rounded-lg hover:opacity-90 transition">Uploader</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                     {% for i in [1,2,3] %}
                                     <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 flex flex-col space-y-3">
                                         <span class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Avantage {{ i }}</span>
@@ -609,6 +636,32 @@
 
     // Initialize UI on load
     window.addEventListener('load', updateThemeUI);
+
+    // Why Image Logic
+    async function uploadWhyImage() {
+        const input = document.getElementById('why_image_input');
+        if (!input.files || input.files.length === 0) return alert('Sélectionnez une image');
+        
+        const formData = new FormData();
+        formData.append('file', input.files[0]);
+        
+        try {
+            const resp = await fetch('/admin/why-image/upload', {
+                method: 'POST',
+                body: formData
+            });
+            if (resp.ok) window.location.reload();
+        } catch (e) { alert('Erreur upload'); }
+    }
+
+    async function confirmDeleteWhyImage() {
+        if (confirm('Supprimer cette image ?')) {
+            try {
+                const resp = await fetch('/admin/why-image/delete', { method: 'POST' });
+                if (resp.ok) window.location.reload();
+            } catch (e) { alert('Erreur suppression'); }
+        }
+    }
 
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
