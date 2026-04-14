@@ -245,16 +245,30 @@
                                             </div>
                                         </div>
                                     </div>
-                                    {% for i in [1,2,3] %}
                                     <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 flex flex-col space-y-3">
-                                        <span class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Avantage {{ i }}</span>
+                                        <span class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Avantage 1</span>
                                         <div class="flex items-center space-x-2">
-                                            <input type="text" name="why_feature{{ i }}_icon" value="{{ config['why_feature'~i~'_icon'] }}" class="w-12 text-center rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border" placeholder="🔍">
-                                            <input type="text" name="why_feature{{ i }}_title" value="{{ config['why_feature'~i~'_title'] }}" class="flex-1 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border font-bold" placeholder="Titre">
+                                            <input type="text" name="why_feature1_icon" value="{{ config.why_feature1_icon }}" class="w-12 text-center rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border" placeholder="🔍">
+                                            <input type="text" name="why_feature1_title" value="{{ config.why_feature1_title }}" class="flex-1 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border font-bold" placeholder="Titre">
                                         </div>
-                                        <input type="text" name="why_feature{{ i }}_desc" value="{{ config['why_feature'~i~'_desc'] }}" class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border text-sm" placeholder="Description courte">
+                                        <input type="text" name="why_feature1_desc" value="{{ config.why_feature1_desc }}" class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border text-sm" placeholder="Description courte">
                                     </div>
-                                    {% endfor %}
+                                    <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 flex flex-col space-y-3">
+                                        <span class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Avantage 2</span>
+                                        <div class="flex items-center space-x-2">
+                                            <input type="text" name="why_feature2_icon" value="{{ config.why_feature2_icon }}" class="w-12 text-center rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border" placeholder="🔍">
+                                            <input type="text" name="why_feature2_title" value="{{ config.why_feature2_title }}" class="flex-1 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border font-bold" placeholder="Titre">
+                                        </div>
+                                        <input type="text" name="why_feature2_desc" value="{{ config.why_feature2_desc }}" class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border text-sm" placeholder="Description courte">
+                                    </div>
+                                    <div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl border border-gray-100 dark:border-gray-800 flex flex-col space-y-3">
+                                        <span class="text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider">Avantage 3</span>
+                                        <div class="flex items-center space-x-2">
+                                            <input type="text" name="why_feature3_icon" value="{{ config.why_feature3_icon }}" class="w-12 text-center rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border" placeholder="🔍">
+                                            <input type="text" name="why_feature3_title" value="{{ config.why_feature3_title }}" class="flex-1 rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border font-bold" placeholder="Titre">
+                                        </div>
+                                        <input type="text" name="why_feature3_desc" value="{{ config.why_feature3_desc }}" class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border text-sm" placeholder="Description courte">
+                                    </div>
                                 </div>
 
                                     <!-- Hidden required fields -->
