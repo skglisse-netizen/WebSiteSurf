@@ -135,7 +135,7 @@ async def contact_form(
     booking_date: Optional[str] = Form(None),
     people_count: Optional[int] = Form(None),
     level: Optional[str] = Form(None),
-    background_tasks: BackgroundTasks,
+    background_tasks: BackgroundTasks = BackgroundTasks(),
     db: Session = Depends(get_db)
 ):
     # Save the reservation/inquiry to the database
@@ -180,7 +180,7 @@ async def footer_contact(
     name: str = Form(...),
     email: str = Form(...),
     message: str = Form(...),
-    background_tasks: BackgroundTasks,
+    background_tasks: BackgroundTasks = BackgroundTasks(),
     db: Session = Depends(get_db)
 ):
     inquiry = models.Inquiry(
