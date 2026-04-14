@@ -100,7 +100,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
-async def read_root(request: Request, db: Session = Depends(get_db)):
+async def read_root(request: Request, success: Optional[str] = None, db: Session = Depends(get_db)):
     # Fetch active services from the DB
     services = db.query(models.Service).filter(models.Service.is_active == True).all()
     config = db.query(models.SiteConfig).first()
@@ -118,10 +118,16 @@ async def read_root(request: Request, db: Session = Depends(get_db)):
         db.refresh(dummy_service)
         services = [dummy_service]
 
+    success_message = None
+    if success == "reservation":
+        success_message = "Merci ! Votre demande a été envoyée avec succès. Nous vous contacterons très vite."
+    elif success == "contact":
+        success_message = "Merci ! Votre message a été envoyé depuis le pied de page."
+
     return templates.TemplateResponse(
         request=request, 
         name="index.html", 
-        context={"request": request, "services": services, "config": config}
+        context={"request": request, "services": services, "config": config, "success_message": success_message}
     )
 
 @app.post("/reservation")
@@ -163,16 +169,7 @@ async def contact_form(
     payload = notifications.format_inquiry_payload(inquiry, service_title)
     background_tasks.add_task(notifications.send_n8n_notification, payload)
 
-    return templates.TemplateResponse(
-        request=request, 
-        name="index.html", 
-        context={
-            "request": request, 
-            "services": services,
-            "config": config,
-            "success_message": "Merci ! Votre demande a été envoyée avec succès. Nous vous contacterons très vite."
-        }
-    )
+    return RedirectResponse(url="/?success=reservation#accueil", status_code=303)
 
 @app.post("/footer-contact")
 async def footer_contact(
@@ -200,16 +197,7 @@ async def footer_contact(
     payload = notifications.format_inquiry_payload(inquiry, "Contact Footer")
     background_tasks.add_task(notifications.send_n8n_notification, payload)
 
-    return templates.TemplateResponse(
-        request=request, 
-        name="index.html", 
-        context={
-            "request": request, 
-            "services": services,
-            "config": config,
-            "success_message": "Merci ! Votre message a été envoyé depuis le pied de page."
-        }
-    )
+    return RedirectResponse(url="/?success=contact#accueil", status_code=303)
 
 @app.get("/admin/login", response_class=HTMLResponse)
 async def login_page(request: Request, db: Session = Depends(get_db)):
