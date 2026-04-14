@@ -166,8 +166,10 @@ async def contact_form(
     # Send notification via n8n (Async)
     service = db.query(models.Service).filter(models.Service.id == service_id).first() if service_id else None
     service_title = service.title if service else "Formule Inconnue"
+    webhook_target = "reservation" if service_id else "contact"
+    
     payload = notifications.format_inquiry_payload(inquiry, service_title)
-    background_tasks.add_task(notifications.send_n8n_notification, payload)
+    background_tasks.add_task(notifications.send_n8n_notification, payload, webhook_target)
 
     return RedirectResponse(url="/?success=reservation#accueil", status_code=303)
 
