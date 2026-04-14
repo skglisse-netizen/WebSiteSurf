@@ -135,7 +135,7 @@ async def contact_form(
     booking_date: Optional[str] = Form(None),
     people_count: Optional[int] = Form(None),
     level: Optional[str] = Form(None),
-    background_tasks: BackgroundTasks = BackgroundTasks(),
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db)
 ):
     # Save the reservation/inquiry to the database
@@ -151,6 +151,7 @@ async def contact_form(
     )
     db.add(inquiry)
     db.commit()
+    db.refresh(inquiry)
     
     # Reload the page with a success message
     services = db.query(models.Service).filter(models.Service.is_active == True).all()
@@ -179,7 +180,7 @@ async def footer_contact(
     name: str = Form(...),
     email: str = Form(...),
     message: str = Form(...),
-    background_tasks: BackgroundTasks = BackgroundTasks(),
+    background_tasks: BackgroundTasks,
     db: Session = Depends(get_db)
 ):
     inquiry = models.Inquiry(
@@ -189,6 +190,7 @@ async def footer_contact(
     )
     db.add(inquiry)
     db.commit()
+    db.refresh(inquiry)
     
     # Fetch data to re-render home page
     services = db.query(models.Service).filter(models.Service.is_active == True).all()
