@@ -8,3 +8,5 @@ python-multipart
 passlib[bcrypt]
 python-jose[cryptography]
 gunicorn
+httpx
+pyotp

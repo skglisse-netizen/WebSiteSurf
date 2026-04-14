@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, Request, Form, File, UploadFile
+from fastapi import FastAPI, Depends, Request, Form, File, UploadFile, BackgroundTasks
 from datetime import timedelta
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -10,7 +10,7 @@ import uuid
 import shutil
 import pyotp
 
-from . import models, schemas
+from . import models, schemas, notifications
 from sqlalchemy import text
 from .database import engine, get_db, SessionLocal
 from .auth import get_current_user, verify_password, create_access_token, get_password_hash
@@ -135,6 +135,7 @@ async def contact_form(
     booking_date: Optional[str] = Form(None),
     people_count: Optional[int] = Form(None),
     level: Optional[str] = Form(None),
+    background_tasks: BackgroundTasks = BackgroundTasks(),
     db: Session = Depends(get_db)
 ):
     # Save the reservation/inquiry to the database
@@ -155,6 +156,12 @@ async def contact_form(
     services = db.query(models.Service).filter(models.Service.is_active == True).all()
     config = db.query(models.SiteConfig).first()
     
+    # Send notification via n8n (Async)
+    service = db.query(models.Service).filter(models.Service.id == service_id).first() if service_id else None
+    service_title = service.title if service else "Formule Inconnue"
+    payload = notifications.format_inquiry_payload(inquiry, service_title)
+    background_tasks.add_task(notifications.send_n8n_notification, payload)
+
     return templates.TemplateResponse(
         request=request, 
         name="index.html", 
@@ -172,6 +179,7 @@ async def footer_contact(
     name: str = Form(...),
     email: str = Form(...),
     message: str = Form(...),
+    background_tasks: BackgroundTasks = BackgroundTasks(),
     db: Session = Depends(get_db)
 ):
     inquiry = models.Inquiry(
@@ -186,6 +194,10 @@ async def footer_contact(
     services = db.query(models.Service).filter(models.Service.is_active == True).all()
     config = db.query(models.SiteConfig).first()
     
+    # Send notification via n8n (Async)
+    payload = notifications.format_inquiry_payload(inquiry, "Contact Footer")
+    background_tasks.add_task(notifications.send_n8n_notification, payload)
+
     return templates.TemplateResponse(
         request=request, 
         name="index.html", 

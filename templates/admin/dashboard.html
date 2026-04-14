@@ -36,30 +36,37 @@
         </div>
 
         <nav class="flex-1 overflow-y-auto p-4 space-y-2">
-            <button onclick="showSection('general')" data-section="general" class="nav-item active w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
-                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
-                <span class="font-medium">Général</span>
+            <button onclick="showSection('accueil')" data-section="accueil" class="nav-item active w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
+                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="font-medium">Accueil</span>
             </button>
-            <button onclick="showSection('branding')" data-section="branding" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
-                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
-                <span class="font-medium">Design & Images</span>
+            <button onclick="showSection('why')" data-section="why" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
+                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                <span class="font-medium">Pourquoi Nous</span>
             </button>
             <button onclick="showSection('services')" data-section="services" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
                 <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z"></path></svg>
-                <span class="font-medium">Services</span>
+                <span class="font-medium">Cours & Formules</span>
             </button>
+            <button onclick="showSection('school')" data-section="school" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
+                <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                <span class="font-medium">École & Design</span>
+            </button>
+            <div class="pt-4 pb-2">
+                <div class="px-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Gestion Adm.</div>
+            </div>
             <button onclick="showSection('reservations')" data-section="reservations" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
                 <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                 <span class="font-medium">Réservations</span>
                 {% if res_count > 0 %}
-                <span class="ml-auto bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full">{{ res_count }}</span>
+                <span class="ml-auto bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold px-2 py-0.5 rounded-full">{{ res_count }}</span>
                 {% endif %}
             </button>
             <button onclick="showSection('messages')" data-section="messages" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
                 <svg class="w-5 h-5 text-gray-400 group-hover:text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path></svg>
                 <span class="font-medium">Messages</span>
                 {% if msg_count > 0 %}
-                <span class="ml-auto bg-gray-100 text-gray-600 text-xs font-bold px-2 py-0.5 rounded-full">{{ msg_count }}</span>
+                <span class="ml-auto bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 text-xs font-bold px-2 py-0.5 rounded-full">{{ msg_count }}</span>
                 {% endif %}
             </button>
             <button onclick="showSection('security')" data-section="security" class="nav-item w-full flex items-center space-x-3 px-4 py-3 rounded-xl transition-all group">
@@ -99,11 +106,11 @@
             </div>
             {% endif %}
 
-            <!-- SECTION: GENERAL -->
-            <section id="section-general" class="content-section space-y-8 animate-in active">
+            <!-- SECTION: ACCUEIL -->
+            <section id="section-accueil" class="content-section space-y-8 animate-in active">
                 <header class="mb-4">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Configuration Générale</h1>
-                    <p class="text-gray-500 dark:text-gray-400">Gérez l'identité et les informations de contact de votre école.</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Section Accueil</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Gérez le contenu du bandeau principal et les images d'arrière-plan.</p>
                 </header>
 
                 <div class="grid grid-cols-1 gap-8">
@@ -112,8 +119,8 @@
                             <!-- Hero Section Config -->
                             <div>
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">01</span>
-                                    Page d'Accueil (Héros)
+                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">✨</span>
+                                    Textes du Héros (Bandeau)
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-11">
                                     <div class="md:col-span-2">
@@ -133,48 +140,83 @@
                                         <input type="text" name="contact_button_text" value="{{ config.contact_button_text }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
                                     </div>
                                 </div>
-                            </div>
 
-                            <hr class="border-gray-100 dark:border-gray-800 pl-11">
+                                <!-- Hidden Fields to satisfy the backend route -->
+                                <input type="hidden" name="school_name" value="{{ config.school_name }}">
+                                <input type="hidden" name="contact_address" value="{{ config.contact_address }}">
+                                <input type="hidden" name="contact_phone" value="{{ config.contact_phone }}">
+                                <input type="hidden" name="contact_email" value="{{ config.contact_email }}">
+                                <input type="hidden" name="navbar_bg_color" value="{{ config.navbar_bg_color }}">
+                                <input type="hidden" name="navbar_text_color" value="{{ config.navbar_text_color }}">
+                                <input type="hidden" name="footer_bg_color" value="{{ config.footer_bg_color }}">
+                                <input type="hidden" name="footer_text_color" value="{{ config.footer_text_color }}">
+                                <input type="hidden" name="why_title" value="{{ config.why_title }}">
+                                <input type="hidden" name="why_description" value="{{ config.why_description }}">
+                                {% for i in [1,2,3] %}
+                                <input type="hidden" name="why_feature{{ i }}_icon" value="{{ config['why_feature'~i~'_icon'] }}">
+                                <input type="hidden" name="why_feature{{ i }}_title" value="{{ config['why_feature'~i~'_title'] }}">
+                                <input type="hidden" name="why_feature{{ i }}_desc" value="{{ config['why_feature'~i~'_desc'] }}">
+                                {% endfor %}
 
-                            <!-- Contact Info -->
-                            <div>
-                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">02</span>
-                                    Informations de l'École
-                                </h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-11">
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Nom commercial</label>
-                                        <input type="text" name="school_name" value="{{ config.school_name }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email de contact</label>
-                                        <input type="email" name="contact_email" value="{{ config.contact_email }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Adresse</label>
-                                        <input type="text" name="contact_address" value="{{ config.contact_address }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
-                                    </div>
-                                    <div>
-                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Téléphone</label>
-                                        <input type="text" name="contact_phone" value="{{ config.contact_phone }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-4 focus:ring-blue-500/10 p-3 border">
-                                    </div>
+                                <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-800">
+                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
+                                        Enregistrer les textes
+                                    </button>
                                 </div>
                             </div>
-                            
-                            <hr class="border-gray-100 dark:border-gray-800 pl-11">
+                        </form>
+                    </div>
 
-                            <!-- Section "Pourquoi nous ?" Content -->
+                    <!-- Slider Images (Moved into Accueil Section) -->
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 flex flex-col">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Photos du Slider (Ambiance)</h3>
+                        <form action="/admin/hero-images/upload" method="POST" enctype="multipart/form-data" class="mb-6">
+                            <div class="flex items-center space-x-3">
+                                <input type="file" name="files" multiple accept="image/*" class="flex-1 text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50 cursor-pointer">
+                                <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-xl transition">Uploader</button>
+                            </div>
+                        </form>
+                        <div class="grid grid-cols-2 gap-4 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar">
+                            {% for img in hero_images %}
+                            <div class="relative group aspect-square rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm">
+                                <img src="/static/uploads/hero/{{ img.filename }}" class="w-full h-full object-cover">
+                                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
+                                    <form action="/admin/hero-images/{{ img.id }}/delete" method="POST" onsubmit="return confirm('Définitif ?')">
+                                        <button type="submit" class="bg-white/20 hover:bg-red-500 text-white p-3 rounded-full transition-all scale-75 group-hover:scale-100">
+                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z"></path></svg>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION: WHY (Pourquoi Nous ?) -->
+            <section id="section-why" class="content-section space-y-8 animate-in">
+                <header class="mb-4">
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Section "Pourquoi Nous ?"</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Gérez vos arguments de vente et la photo d'illustration associée.</p>
+                </header>
+
+                <div class="grid grid-cols-1 gap-8">
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                        <form action="/admin/dashboard" method="POST" class="space-y-8">
                             <div>
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">03</span>
-                                    Arguments de Vente (Pourquoi nous ?)
+                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">🤔</span>
+                                    Arguments de Vente
                                 </h3>
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-11">
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Titre de la section</label>
                                         <input type="text" name="why_title" value="{{ config.why_title }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Description courte (sous le titre)</label>
+                                        <textarea name="why_description" rows="2" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">{{ config.why_description }}</textarea>
                                     </div>
                                     
                                     <!-- Why Image Management -->
@@ -214,102 +256,137 @@
                                     </div>
                                     {% endfor %}
                                 </div>
-                            </div>
 
-                            <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-800">
-                                <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg shadow-blue-500/20 active:scale-[0.98]">
-                                    Enregistrer tout le bloc "Général"
-                                </button>
+                                    <!-- Hidden required fields -->
+                                    <input type="hidden" name="hero_title" value="{{ config.hero_title }}">
+                                    <input type="hidden" name="hero_subtitle" value="{{ config.hero_subtitle }}">
+                                    <input type="hidden" name="hero_button_text" value="{{ config.hero_button_text }}">
+                                    <input type="hidden" name="contact_button_text" value="{{ config.contact_button_text }}">
+                                    <input type="hidden" name="school_name" value="{{ config.school_name }}">
+                                    <input type="hidden" name="contact_address" value="{{ config.contact_address }}">
+                                    <input type="hidden" name="contact_phone" value="{{ config.contact_phone }}">
+                                    <input type="hidden" name="contact_email" value="{{ config.contact_email }}">
+                                    <input type="hidden" name="navbar_bg_color" value="{{ config.navbar_bg_color }}">
+                                    <input type="hidden" name="navbar_text_color" value="{{ config.navbar_text_color }}">
+                                    <input type="hidden" name="footer_bg_color" value="{{ config.footer_bg_color }}">
+                                    <input type="hidden" name="footer_text_color" value="{{ config.footer_text_color }}">
+
+                                    <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-800">
+                                        <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
+                                            Enregistrer les arguments
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </section>
 
-            <!-- SECTION: BRANDING & IMAGES -->
-            <section id="section-branding" class="content-section space-y-8 animate-in">
+            <!-- SECTION: SCHOOL (École & Design) -->
+            <section id="section-school" class="content-section space-y-8 animate-in">
                 <header class="mb-4">
-                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Identité Visuelle</h1>
-                    <p class="text-gray-500 dark:text-gray-400">Gérez votre logo, vos couleurs et les photos du slider principal.</p>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">École & Design</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Gérez les informations de contact, le logo et les couleurs du site.</p>
                 </header>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <!-- Logo & Colors -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <!-- Contact Config -->
                     <div class="space-y-8">
                         <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Logo Officiel</h3>
-                            {% if config.logo_filename %}
-                            <div class="mb-6 p-4 bg-gray-50 dark:bg-gray-800/50 rounded-2xl flex items-center justify-between">
-                                <img src="/static/uploads/logo/{{ config.logo_filename }}" alt="Logo" class="h-16 object-contain">
-                                <form action="/admin/logo/delete" method="POST" onsubmit="return confirm('Supprimer le logo ?')">
-                                    <button type="submit" class="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 p-2 rounded-lg transition">🗑 Supprimer</button>
-                                </form>
-                            </div>
-                            {% endif %}
-                            <form action="/admin/logo/upload" method="POST" enctype="multipart/form-data" class="space-y-4">
-                                <div class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-2xl p-6 text-center hover:border-blue-400 transition cursor-pointer relative">
-                                    <input type="file" name="file" accept="image/*" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                                    <div class="text-gray-400 dark:text-gray-500">
-                                        <svg class="w-8 h-8 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg>
-                                        <p class="text-sm">Cliquez pour ajouter un logo</p>
-                                    </div>
-                                </div>
-                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl transition">Mettre à jour le logo</button>
-                            </form>
-                        </div>
-                        
-                        <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Couleurs du Thème</h3>
                             <form action="/admin/dashboard" method="POST" class="space-y-6">
-                                <div class="grid grid-cols-2 gap-4">
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
+                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">📍</span>
+                                    Informations de Contact
+                                </h3>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-11">
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Navbar Fond</label>
-                                        <input type="color" name="navbar_bg_color" value="{{ config.navbar_bg_color }}" class="w-full h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Nom commercial</label>
+                                        <input type="text" name="school_name" value="{{ config.school_name }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Navbar Texte</label>
-                                        <input type="color" name="navbar_text_color" value="{{ config.navbar_text_color }}" class="w-full h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email</label>
+                                        <input type="email" name="contact_email" value="{{ config.contact_email }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                                    </div>
+                                    <div class="md:col-span-2">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Adresse</label>
+                                        <input type="text" name="contact_address" value="{{ config.contact_address }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
                                     </div>
                                     <div>
-                                        <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Footer Fond</label>
-                                        <input type="color" name="footer_bg_color" value="{{ config.footer_bg_color }}" class="w-full h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
-                                    </div>
-                                    <div>
-                                        <label class="block text-xs font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Footer Texte</label>
-                                        <input type="color" name="footer_text_color" value="{{ config.footer_text_color }}" class="w-full h-12 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 cursor-pointer">
+                                        <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Téléphone</label>
+                                        <input type="text" name="contact_phone" value="{{ config.contact_phone }}" class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
                                     </div>
                                 </div>
-                                <button type="submit" class="w-full border-2 border-blue-100 dark:border-blue-900/30 text-blue-600 dark:text-blue-400 font-bold py-3 rounded-xl hover:bg-blue-50 dark:hover:bg-blue-900/20 transition">Enregistrer les couleurs</button>
+
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white mt-10 mb-6 flex items-center">
+                                    <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">🎨</span>
+                                    Couleurs du Thème
+                                </h3>
+                                <div class="grid grid-cols-2 gap-4 pl-11">
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Navbar Fond</label>
+                                        <input type="color" name="navbar_bg_color" value="{{ config.navbar_bg_color }}" class="w-full h-10 rounded cursor-pointer">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Navbar Texte</label>
+                                        <input type="color" name="navbar_text_color" value="{{ config.navbar_text_color }}" class="w-full h-10 rounded cursor-pointer">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Footer Fond</label>
+                                        <input type="color" name="footer_bg_color" value="{{ config.footer_bg_color }}" class="w-full h-10 rounded cursor-pointer">
+                                    </div>
+                                    <div>
+                                        <label class="block text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Footer Texte</label>
+                                        <input type="color" name="footer_text_color" value="{{ config.footer_text_color }}" class="w-full h-10 rounded cursor-pointer">
+                                    </div>
+                                </div>
+
+                                <!-- Hidden Fields -->
+                                <input type="hidden" name="hero_title" value="{{ config.hero_title }}">
+                                <input type="hidden" name="hero_subtitle" value="{{ config.hero_subtitle }}">
+                                <input type="hidden" name="hero_button_text" value="{{ config.hero_button_text }}">
+                                <input type="hidden" name="contact_button_text" value="{{ config.contact_button_text }}">
+                                <input type="hidden" name="why_title" value="{{ config.why_title }}">
+                                <input type="hidden" name="why_description" value="{{ config.why_description }}">
+                                {% for i in [1,2,3] %}
+                                <input type="hidden" name="why_feature{{ i }}_icon" value="{{ config['why_feature'~i~'_icon'] }}">
+                                <input type="hidden" name="why_feature{{ i }}_title" value="{{ config['why_feature'~i~'_title'] }}">
+                                <input type="hidden" name="why_feature{{ i }}_desc" value="{{ config['why_feature'~i~'_desc'] }}">
+                                {% endfor %}
+
+                                <div class="flex justify-end pt-6 border-t border-gray-100 dark:border-gray-800 mt-6">
+                                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
+                                        Enregistrer École & Design
+                                    </button>
+                                </div>
                             </form>
                         </div>
                     </div>
 
-                    <!-- Slider Images -->
-                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 flex flex-col h-full">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Photos du Slider (Héros)</h3>
-                        <form action="/admin/hero-images/upload" method="POST" enctype="multipart/form-data" class="mb-6">
-                            <div class="flex items-center space-x-3">
-                                <input type="file" name="files" multiple accept="image/*" class="flex-1 text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50 cursor-pointer">
-                                <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-xl transition">Uploader</button>
-                            </div>
-                        </form>
-                        <div class="grid grid-cols-2 gap-4 overflow-y-auto max-h-[500px] pr-2 custom-scrollbar">
-                            {% for img in hero_images %}
-                            <div class="relative group aspect-square rounded-xl overflow-hidden border border-gray-100 dark:border-gray-800 shadow-sm">
-                                <img src="/static/uploads/hero/{{ img.filename }}" class="w-full h-full object-cover">
-                                <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center p-4">
-                                    <form action="/admin/hero-images/{{ img.id }}/delete" method="POST" onsubmit="return confirm('Définitif ?')">
-                                        <button type="submit" class="bg-white/20 hover:bg-red-500 text-white p-3 rounded-full transition-all scale-75 group-hover:scale-100">
-                                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z"></path></svg>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                            {% endfor %}
+                    <!-- Logo Config -->
+                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 flex flex-col items-center justify-center text-center">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Logo de l'École</h3>
+                        {% if config.logo_filename %}
+                        <div class="mb-8 p-6 bg-gray-50 dark:bg-gray-800/50 rounded-2xl relative group">
+                            <img src="/static/uploads/logo/{{ config.logo_filename }}" alt="Logo" class="h-20 md:h-28 object-contain">
+                            <form action="/admin/logo/delete" method="POST" onsubmit="return confirm('Supprimer ce logo ?')" class="absolute top-2 right-2">
+                                <button type="submit" class="bg-red-50 text-red-500 p-1.5 rounded-full hover:bg-red-500 hover:text-white transition shadow-sm">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z"></path></svg>
+                                </button>
+                            </form>
                         </div>
+                        {% endif %}
+                        <form action="/admin/logo/upload" method="POST" enctype="multipart/form-data" class="w-full space-y-4">
+                            <div class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition cursor-pointer relative">
+                                <input type="file" name="file" accept="image/*" required class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
+                                <div class="text-blue-500 text-xs font-bold uppercase">Uploader Nouveau Logo</div>
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md">Appliquer Logo</button>
+                        </form>
                     </div>
                 </div>
             </section>
+
 
             <!-- SECTION: SERVICES -->
             <section id="section-services" class="content-section space-y-8 animate-in">
@@ -354,8 +431,7 @@
                     {% endfor %}
                 </div>
             </section>
-   </div>
-            </section>
+
 
             <!-- SECTION: RESERVATIONS -->
             <section id="section-reservations" class="content-section space-y-8 animate-in">
