@@ -11,15 +11,19 @@ logger = logging.getLogger(__name__)
 # Load environment variables
 load_dotenv()
 
-async def send_n8n_notification(payload: Dict[str, Any]):
+async def send_n8n_notification(payload: Dict[str, Any], webhook_type: str = "reservation"):
     """
     Sends a notification to the n8n webhook with the provided payload.
     This call is asynchronous and should be used with FastAPI's BackgroundTasks.
+    webhook_type can be 'reservation' or 'contact'.
     """
-    webhook_url = os.getenv("N8N_WEBHOOK_URL")
+    if webhook_type == "contact":
+        webhook_url = os.getenv("N8N_CONTACT_WEBHOOK_URL") or os.getenv("N8N_WEBHOOK_URL")
+    else:
+        webhook_url = os.getenv("N8N_WEBHOOK_URL")
     
     if not webhook_url:
-        logger.error("N8N_WEBHOOK_URL not found in environment variables.")
+        logger.error(f"Webhook URL not found for type {webhook_type} in environment variables.")
         return False
 
     try:

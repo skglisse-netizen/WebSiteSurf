@@ -195,7 +195,7 @@ async def footer_contact(
     
     # Send notification via n8n (Async)
     payload = notifications.format_inquiry_payload(inquiry, "Contact Footer")
-    background_tasks.add_task(notifications.send_n8n_notification, payload)
+    background_tasks.add_task(notifications.send_n8n_notification, payload, "contact")
 
     return RedirectResponse(url="/?success=contact#accueil", status_code=303)
 
