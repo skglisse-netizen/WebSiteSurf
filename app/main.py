@@ -124,11 +124,26 @@ async def read_root(request: Request, success: Optional[str] = None, db: Session
     elif success == "contact":
         success_message = "Merci ! Votre message a été envoyé depuis le pied de page."
 
-    return templates.TemplateResponse(
+    response = templates.TemplateResponse(
         request=request, 
         name="index.html", 
         context={"request": request, "services": services, "config": config, "success_message": success_message}
     )
+
+    # Tracker la visite unique (Cookie 24h)
+    if not request.cookies.get("visited_today"):
+        import datetime
+        today_str = datetime.date.today().isoformat()
+        visit = db.query(models.DailyVisit).filter(models.DailyVisit.date == today_str).first()
+        if visit:
+            visit.count += 1
+        else:
+            visit = models.DailyVisit(date=today_str, count=1)
+            db.add(visit)
+        db.commit()
+        response.set_cookie(key="visited_today", value="1", max_age=86400)
+        
+    return response
 
 @app.post("/reservation")
 async def contact_form(
@@ -327,6 +342,24 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
     hero_images = db.query(models.HeroImage).filter(models.HeroImage.config_id == config.id).all()
     services = db.query(models.Service).order_by(models.Service.id).all()
     
+    import datetime
+    import json
+    today = datetime.date.today()
+    labels = []
+    data_counts = []
+    
+    # 14 derniers jours
+    visits = db.query(models.DailyVisit).order_by(models.DailyVisit.date.desc()).limit(14).all()
+    visits_dict = {v.date: v.count for v in visits}
+    
+    # Format the past 14 days correctly
+    for i in range(13, -1, -1):
+        day_date = today - datetime.timedelta(days=i)
+        day_str = day_date.isoformat()
+        day_label = day_date.strftime("%d/%m") # Format court pour le graphique
+        labels.append(day_label)
+        data_counts.append(visits_dict.get(day_str, 0))
+
     return templates.TemplateResponse(
         request=request, 
         name="admin/dashboard.html", 
@@ -336,7 +369,9 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
             "config": config, 
             "inquiries": inquiries,
             "hero_images": hero_images,
-            "services": services
+            "services": services,
+            "chart_labels": json.dumps(labels),
+            "chart_data": json.dumps(data_counts)
         }
     )
 
@@ -649,3 +684,88 @@ async def logout():
     response = RedirectResponse(url="/admin/login", status_code=302)
     response.delete_cookie("access_token")
     return response
+
+# --- MESSAGES CRUD ---
+@app.post("/admin/messages/{inquiry_id}/read")
+async def message_mark_read(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        inquiry.is_processed = True
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#messages", status_code=302)
+
+@app.post("/admin/messages/{inquiry_id}/unread")
+async def message_mark_unread(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        inquiry.is_processed = False
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#messages", status_code=302)
+
+@app.post("/admin/messages/{inquiry_id}/delete")
+async def message_delete(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        db.delete(inquiry)
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#messages", status_code=302)
+
+# --- RESERVATIONS CRUD ---
+@app.post("/admin/reservations/{inquiry_id}/validate")
+async def reservation_validate(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        inquiry.is_processed = True
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#reservations", status_code=302)
+
+@app.post("/admin/reservations/{inquiry_id}/delete")
+async def reservation_delete(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        db.delete(inquiry)
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#reservations", status_code=302)
+
+@app.post("/admin/reservations/{inquiry_id}/edit")
+async def reservation_edit(
+    request: Request, 
+    inquiry_id: int,
+    name: str = Form(...),
+    email: str = Form(...),
+    phone: str = Form(...),
+    service_id: int = Form(...),
+    booking_date: str = Form(None),
+    people_count: int = Form(1),
+    level: str = Form(None),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        inquiry.name = name
+        inquiry.email = email
+        inquiry.phone = phone
+        inquiry.service_id = service_id
+        inquiry.booking_date = booking_date
+        inquiry.people_count = people_count
+        inquiry.level = level
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#reservations", status_code=302)

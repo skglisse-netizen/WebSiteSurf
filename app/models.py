@@ -86,3 +86,10 @@ class HeroImage(Base):
     config_id = Column(Integer, ForeignKey("site_config.id"))
 
     config = relationship("SiteConfig", back_populates="hero_images")
+
+class DailyVisit(Base):
+    __tablename__ = "daily_visits"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    date = Column(String, unique=True, index=True)
+    count = Column(Integer, default=1)
