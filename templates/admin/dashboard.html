@@ -5,8 +5,8 @@
 {% block navbar %}{% endblock %}
 {% block footer %}{% endblock %}
 
-{% set res_count = inquiries | selectattr('booking_date') | list | length %}
-{% set msg_count = inquiries | rejectattr('booking_date') | list | length %}
+{% set res_count = inquiries | selectattr('booking_date') | rejectattr('is_processed') | list | length %}
+{% set msg_count = inquiries | rejectattr('booking_date') | rejectattr('is_processed') | list | length %}
 
 {% block content %}
 <div class="min-h-screen bg-gray-50 dark:bg-gray-950 flex overflow-hidden transition-colors duration-300">
