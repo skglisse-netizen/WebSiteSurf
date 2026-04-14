@@ -464,9 +464,9 @@
                 </header>
 
                 <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">
+                    <div class="overflow-x-auto overflow-y-auto max-h-[600px] custom-scrollbar">
+                        <table class="w-full text-left relative">
+                            <thead class="sticky top-0 z-10 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
                                 <tr>
                                     <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Client</th>
                                     <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Prestation</th>
@@ -476,7 +476,8 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-                                {% for inquiry in inquiries if inquiry.booking_date %}
+                                {% set res_list = inquiries | selectattr('booking_date') | list %}
+                                {% for inquiry in res_list[:50] %}
                                 <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
                                     <td class="px-6 py-5">
                                         <div class="font-bold text-gray-900 dark:text-white">{{ inquiry.name }}</div>
@@ -547,9 +548,9 @@
                 </header>
 
                 <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left">
-                            <thead class="bg-gray-50 dark:bg-gray-800/50 border-b border-gray-100 dark:border-gray-800">
+                    <div class="overflow-x-auto overflow-y-auto max-h-[600px] custom-scrollbar">
+                        <table class="w-full text-left relative">
+                            <thead class="sticky top-0 z-10 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
                                 <tr>
                                     <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Client</th>
                                     <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Message</th>
@@ -558,7 +559,8 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-                                {% for inquiry in inquiries if not inquiry.booking_date %}
+                                {% set msg_list = inquiries | rejectattr('booking_date') | list %}
+                                {% for inquiry in msg_list[:50] %}
                                 <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
                                     <td class="px-6 py-5">
                                         <div class="font-bold text-gray-900 dark:text-white">{{ inquiry.name }}</div>
