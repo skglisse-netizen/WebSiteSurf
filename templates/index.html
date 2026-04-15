@@ -60,13 +60,19 @@
         {% if schedules %}
         <div class="mt-10 flex flex-wrap justify-center gap-4 animate-in fade-in slide-in-from-bottom" style="--tw-enter-opacity: 0; --tw-enter-translate-y: 1rem; animation-delay: 300ms; animation-fill-mode: both;">
             {% for sch in schedules %}
-            <div class="glass border border-white/10 px-4 py-2.5 rounded-2xl flex items-center space-x-3 text-left hover:bg-white/10 transition-colors cursor-default transform hover:-translate-y-1 duration-300">
-                <div class="w-10 h-10 rounded-full bg-accent-500 text-white flex items-center justify-center font-bold text-xs ring-2 ring-accent-400/30 shadow-[0_0_15px_rgba(var(--tw-colors-accent-500),0.3)]">
+            <div class="glass border border-white/10 px-4 py-3 rounded-2xl flex items-start space-x-4 text-left hover:bg-white/10 transition-colors cursor-default transform hover:-translate-y-1 duration-300 max-w-sm">
+                <div class="w-12 h-12 rounded-full bg-accent-500 text-white flex items-center justify-center font-bold text-sm ring-2 ring-accent-400/30 shadow-[0_0_15px_rgba(var(--tw-colors-accent-500),0.3)] flex-shrink-0 mt-1">
                     {{ sch.time_text }}
                 </div>
-                <div>
-                    <div class="text-sm font-bold text-white tracking-wide">{{ sch.course_title }}</div>
-                    <div class="text-xs text-accent-300 font-medium">{{ sch.date_text }}</div>
+                <div class="flex-1">
+                    <div class="text-sm font-bold text-white tracking-wide mb-0.5">{{ sch.course_title }}</div>
+                    <div class="text-[11px] text-accent-300 font-medium mb-1.5 opacity-90">{{ sch.date_text }}</div>
+                    {% if sch.description %}
+                        <p class="text-[11px] text-gray-200 line-clamp-2 leading-relaxed mb-2 opacity-80">{{ sch.description }}</p>
+                    {% endif %}
+                    <div class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold {{ 'bg-blue-500/20 text-blue-300' if sch.spots_available > 0 else 'bg-red-500/20 text-red-300' }}">
+                        {{ sch.spots_available }} places dispo.
+                    </div>
                 </div>
             </div>
             {% endfor %}

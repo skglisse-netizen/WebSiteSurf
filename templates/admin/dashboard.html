@@ -740,19 +740,31 @@
                                 <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">➕</span>
                                 Ajouter au Planning
                             </h3>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Jour / Date</label>
-                                <input type="text" name="date_text" placeholder="Ex: Aujourd'hui, Demain..." required
-                                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Heure</label>
-                                <input type="text" name="time_text" placeholder="Ex: 14h30" required
-                                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Jour / Date</label>
+                                    <input type="date" name="date_text" required
+                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Heure</label>
+                                    <input type="time" name="time_text" required
+                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                                </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Nom du Cours</label>
                                 <input type="text" name="course_title" placeholder="Ex: Initiation Surf" required
+                                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Description</label>
+                                <textarea name="description" rows="2" placeholder="Brève description du cours..."
+                                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Places Disponibles</label>
+                                <input type="number" name="spots_available" value="10" min="1" required
                                     class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
                             </div>
                             <button type="submit"
@@ -769,24 +781,29 @@
                     {% if schedules %}
                         <div class="space-y-4">
                         {% for sch in schedules %}
-                            <div class="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm border {{ 'border-green-200 dark:border-green-900/50' if sch.is_active else 'border-gray-200 dark:border-gray-800 opacity-60' }} flex items-center justify-between">
-                                <div class="flex items-center space-x-4">
-                                    <div class="w-12 h-12 {{ 'bg-green-100 text-green-600' if sch.is_active else 'bg-gray-100 text-gray-400' }} rounded-full flex flex-col items-center justify-center font-bold">
+                            <div class="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm border {{ 'border-green-200 dark:border-green-900/50' if sch.is_active else 'border-gray-200 dark:border-gray-800 opacity-60' }} flex items-start justify-between">
+                                <div class="flex items-start space-x-4">
+                                    <div class="w-12 h-12 {{ 'bg-green-100 text-green-600' if sch.is_active else 'bg-gray-100 text-gray-400' }} rounded-full flex flex-col items-center justify-center font-bold flex-shrink-0 mt-1">
                                         <span class="text-xs">{{ sch.time_text }}</span>
                                     </div>
-                                    <div>
+                                    <div class="flex flex-col">
                                         <h4 class="font-bold text-gray-900 dark:text-white">{{ sch.course_title }}</h4>
-                                        <p class="text-sm text-gray-500">{{ sch.date_text }}</p>
+                                        <div class="text-xs text-gray-500 font-medium font-mono mb-1">{{ sch.date_text }}</div>
+                                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 md:max-w-md">{{ sch.description or 'Aucune description fournie.' }}</p>
+                                        <div class="mt-2 inline-flex items-center text-xs font-bold {{ 'text-blue-600 dark:text-blue-400' if sch.spots_available > 0 else 'text-red-500' }}">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5V4a2 2 0 00-2-2H4a2 2 0 00-2 2v16h5m8 0v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2"></path></svg>
+                                            {{ sch.spots_available }} places restantes
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="flex items-center space-x-2">
+                                <div class="flex flex-col space-y-2 items-end ml-4">
                                     <form action="/admin/schedules/{{ sch.id }}/toggle" method="POST">
-                                        <button type="submit" class="px-3 py-1.5 text-xs font-bold rounded-lg transition {{ 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' if sch.is_active else 'bg-green-100 text-green-700 hover:bg-green-200' }}">
+                                        <button type="submit" class="w-full text-center px-3 py-1.5 text-xs font-bold rounded-lg transition {{ 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' if sch.is_active else 'bg-green-100 text-green-700 hover:bg-green-200' }}">
                                             {{ 'Désactiver' if sch.is_active else 'Activer' }}
                                         </button>
                                     </form>
                                     <form action="/admin/schedules/{{ sch.id }}/delete" method="POST" onsubmit="return confirm('Supprimer ce cours du planning ?')">
-                                        <button type="submit" class="px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold rounded-lg transition">
+                                        <button type="submit" class="w-full text-center px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold rounded-lg transition">
                                             Supprimer
                                         </button>
                                     </form>

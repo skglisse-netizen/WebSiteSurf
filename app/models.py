@@ -101,5 +101,7 @@ class CourseSchedule(Base):
     date_text = Column(String)
     time_text = Column(String)
     course_title = Column(String)
+    description = Column(Text, nullable=True)
+    spots_available = Column(Integer, default=10)
     is_active = Column(Boolean, default=True)
 
