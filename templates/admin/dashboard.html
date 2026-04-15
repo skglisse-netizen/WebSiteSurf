@@ -301,7 +301,7 @@
                                     <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ act.name }}</p>
                                     <p class="text-[10px] text-gray-500 dark:text-gray-400 capitalize">
                                         {% if act.booking_date %}Réservation{% else %}Message{% endif %} • 
-                                        {{ act.status.replace('_', ' ') if act.status else 'nouveau' }}
+                                        {{ (act.status|default('en_attente')).replace('_', ' ') }}
                                     </p>
                                 </div>
                             </div>
