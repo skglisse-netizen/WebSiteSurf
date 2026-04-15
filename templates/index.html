@@ -85,7 +85,7 @@
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
             {% for service in services %}
             <div class="group bg-gray-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 fade-in flex flex-col h-full transform hover:-translate-y-2">
-                <div class="relative h-52 overflow-hidden bg-gray-100/50 flex items-center justify-center p-4">
+                <div class="relative h-48 overflow-hidden bg-gray-100/50 flex items-center justify-center p-3 pb-0">
                     {% if service.image_url %}
                     <img src="{{ service.image_url }}" alt="{{ service.title }}" class="max-h-full max-w-full object-contain group-hover:scale-110 transition-transform duration-700">
                     {% else %}
@@ -105,7 +105,7 @@
                         {% endif %}
                     </div>
                 </div>
-                <div class="p-4 flex flex-col flex-grow">
+                <div class="px-4 pb-4 pt-2 flex flex-col flex-grow">
                     <h3 class="text-base font-bold font-heading text-gray-900 mb-1">{{ service.title }}</h3>
                     <p class="text-gray-600 text-sm mb-3 flex-grow leading-relaxed">{{ service.description }}</p>
                     <a href="#reservation" class="inline-block w-full text-center px-3 py-2 border-2 border-primary-500 text-primary-600 font-bold rounded-lg hover:bg-primary-500 hover:text-white transition-colors duration-300 text-sm">
