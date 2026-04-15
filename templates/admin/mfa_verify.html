@@ -1,56 +1,87 @@
 {% extends "base.html" %}
 
-{% block title %}Authentification à deux facteurs | Admin{% endblock %}
+{% block title %}Vérification Sécurisée | {{ config.school_name }}{% endblock %}
+
+{% block navbar %}{% endblock %}
+{% block footer %}{% endblock %}
 
 {% block content %}
-<main class="pt-24 pb-12 flex items-center justify-center min-h-[80vh]">
-    <div class="max-w-md w-full mx-4">
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 p-8 sm:p-10">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
-                    </svg>
-                </div>
-                <h1 class="text-2xl font-bold text-gray-900 mb-2">Double authentification</h1>
-                <p class="text-gray-500">Saisissez le code généré par votre application d'authentification.</p>
-            </div>
+<div class="min-h-screen relative flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 overflow-hidden">
+    <!-- Background Image with Overlay -->
+    <div class="absolute inset-0 z-0">
+        <img src="/static/images/admin-login-bg.png" alt="Surf Background" class="w-full h-full object-cover">
+        <div class="absolute inset-0 bg-blue-900/40 backdrop-brightness-50"></div>
+    </div>
 
-            {% if error %}
-            <div class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700 text-sm flex items-start animate-shake">
-                <svg class="w-5 h-5 mr-3 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"></path>
+    <!-- MFA Card -->
+    <div class="max-w-sm w-full space-y-6 bg-white/10 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/20 relative z-10 animate-fade-in-up">
+        <div class="text-center">
+            <div class="mx-auto h-16 w-16 bg-blue-600/30 backdrop-blur-md rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg mb-4 border border-white/20">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+                </svg>
+            </div>
+            
+            <h2 class="text-2xl font-black text-white tracking-tight">
+                Vérification MFA
+            </h2>
+            <p class="mt-1 text-blue-100/80 text-xs font-medium px-4">Saisissez le code de sécurité de votre application mobile.</p>
+        </div>
+
+        {% if error %}
+        <div class="bg-red-500/20 backdrop-blur-sm border border-red-500/50 text-red-100 p-4 rounded-xl text-xs animate-shake" role="alert">
+            <p class="flex items-center">
+                <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path>
                 </svg>
                 {{ error }}
-            </div>
-            {% endif %}
-
-            <form action="/admin/login/mfa" method="POST" class="space-y-6">
-                <div>
-                    <label for="code" class="block text-sm font-semibold text-gray-700 mb-2">Code de sécurité</label>
-                    <input type="text" name="code" id="code" required autocomplete="one-time-code" maxlength="6" pattern="[0-9]*" inputmode="numeric"
-                        class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 transition-all text-center tracking-[0.5em] text-2xl font-mono"
-                        placeholder="000 000" autofocus>
-                </div>
-
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-xl transition shadow-lg shadow-blue-500/20 active:scale-[0.98]">
-                    Vérifier le code
-                </button>
-            </form>
-
-            <div class="mt-8 text-center">
-                <a href="/admin/login" class="text-sm text-gray-500 hover:text-blue-600 transition">Retour à la connexion classique</a>
-            </div>
+            </p>
         </div>
+        {% endif %}
+
+        <form class="mt-4 space-y-6" action="/admin/login/mfa" method="POST">
+            <div>
+                <label for="code" class="block text-xs font-bold text-blue-100/60 uppercase tracking-widest mb-2 ml-1 text-center">Code à 6 chiffres</label>
+                <input id="code" name="code" type="text" required maxlength="6" pattern="[0-9]*" inputmode="numeric" autofocus
+                    class="appearance-none block w-full px-4 py-4 bg-white/10 border border-white/10 placeholder-white/30 text-white rounded-2xl focus:outline-none focus:ring-2 focus:ring-blue-400/50 focus:border-blue-400/50 transition-all text-3xl font-black tracking-[0.5em] text-center backdrop-blur-sm" 
+                    placeholder="000 000">
+            </div>
+
+            <div>
+                <button type="submit" 
+                    class="group relative w-full flex justify-center py-4 px-4 border border-transparent text-sm font-black rounded-2xl text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-xl shadow-blue-900/20 active:scale-[0.98]">
+                    Vérifier & Accéder
+                </button>
+            </div>
+            
+            <div class="text-center mt-6">
+                <a href="/admin/login" class="text-white/60 hover:text-white text-xs font-medium transition-colors flex items-center justify-center">
+                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Retourner à la connexion
+                </a>
+            </div>
+        </form>
     </div>
-</main>
+</div>
 
 <style>
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-    20%, 40%, 60%, 80% { transform: translateX(5px); }
-}
-.animate-shake { animation: shake 0.5s ease-in-out; }
+    @keyframes fade-in-up {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-in-up {
+        animation: fade-in-up 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+    .animate-shake {
+        animation: shake 0.3s ease-in-out;
+    }
 </style>
 {% endblock %}
+
