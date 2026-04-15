@@ -103,6 +103,7 @@ templates = Jinja2Templates(directory="templates")
 async def read_root(request: Request, success: Optional[str] = None, db: Session = Depends(get_db)):
     # Fetch active services from the DB
     services = db.query(models.Service).filter(models.Service.is_active == True).all()
+    schedules = db.query(models.CourseSchedule).filter(models.CourseSchedule.is_active == True).order_by(models.CourseSchedule.id.asc()).all()
     config = db.query(models.SiteConfig).first()
     
     # If the database is empty, let's inject a dummy service for the first run
@@ -127,7 +128,7 @@ async def read_root(request: Request, success: Optional[str] = None, db: Session
     response = templates.TemplateResponse(
         request=request, 
         name="index.html", 
-        context={"request": request, "services": services, "config": config, "success_message": success_message}
+        context={"request": request, "services": services, "config": config, "schedules": schedules, "success_message": success_message}
     )
 
     # Tracker la visite unique (Cookie 24h)
@@ -341,6 +342,7 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
     inquiries = db.query(models.Inquiry).order_by(models.Inquiry.id.desc()).all()
     hero_images = db.query(models.HeroImage).filter(models.HeroImage.config_id == config.id).all()
     services = db.query(models.Service).order_by(models.Service.id).all()
+    schedules = db.query(models.CourseSchedule).order_by(models.CourseSchedule.id.desc()).all()
     
     import datetime
     import json
@@ -370,6 +372,7 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
             "inquiries": inquiries,
             "hero_images": hero_images,
             "services": services,
+            "schedules": schedules,
             "chart_labels": json.dumps(labels),
             "chart_data": json.dumps(data_counts)
         }
@@ -769,3 +772,45 @@ async def reservation_edit(
         inquiry.level = level
         db.commit()
     return RedirectResponse(url="/admin/dashboard#reservations", status_code=302)
+
+# --- SCHEDULES CRUD ---
+@app.post("/admin/schedules/add")
+async def schedule_add(
+    request: Request,
+    date_text: str = Form(...),
+    time_text: str = Form(...),
+    course_title: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+
+    db.add(models.CourseSchedule(date_text=date_text, time_text=time_text, course_title=course_title))
+    db.commit()
+    return RedirectResponse(url="/admin/dashboard#planning-config", status_code=302)
+
+@app.post("/admin/schedules/{schedule_id}/toggle")
+async def schedule_toggle(request: Request, schedule_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+
+    sch = db.query(models.CourseSchedule).filter(models.CourseSchedule.id == schedule_id).first()
+    if sch:
+        sch.is_active = not sch.is_active
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#planning-config", status_code=302)
+
+@app.post("/admin/schedules/{schedule_id}/delete")
+async def schedule_delete(request: Request, schedule_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+
+    sch = db.query(models.CourseSchedule).filter(models.CourseSchedule.id == schedule_id).first()
+    if sch:
+        db.delete(sch)
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#planning-config", status_code=302)
+

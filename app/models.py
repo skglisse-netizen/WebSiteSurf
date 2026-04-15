@@ -93,3 +93,13 @@ class DailyVisit(Base):
     id = Column(Integer, primary_key=True, index=True)
     date = Column(String, unique=True, index=True)
     count = Column(Integer, default=1)
+
+class CourseSchedule(Base):
+    __tablename__ = "course_schedules"
+
+    id = Column(Integer, primary_key=True, index=True)
+    date_text = Column(String)
+    time_text = Column(String)
+    course_title = Column(String)
+    is_active = Column(Boolean, default=True)
+
