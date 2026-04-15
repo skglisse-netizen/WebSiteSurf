@@ -386,7 +386,7 @@
 
                                 <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-800">
                                     <button type="submit"
-                                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
+                                        class="bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
                                         Enregistrer les textes
                                     </button>
                                 </div>
@@ -405,7 +405,7 @@
                                 <input type="file" name="files" multiple accept="image/*"
                                     class="flex-1 text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50 cursor-pointer">
                                 <button type="submit"
-                                    class="bg-blue-600 text-white font-bold py-2 px-6 rounded-xl transition">Uploader</button>
+                                    class="bg-blue-600 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-2 px-6 rounded-xl transition">Uploader</button>
                             </div>
                         </form>
                         <div class="grid grid-cols-2 gap-4 overflow-y-auto max-h-[400px] pr-2 custom-scrollbar">
@@ -818,7 +818,7 @@
                                     class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
                             </div>
                             <button type="submit"
-                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
+                                class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
                                 Publier
                             </button>
                         </form>
@@ -889,7 +889,7 @@
                     <p class="text-gray-500 dark:text-gray-400">Ajoutez et modifiez vos cours de surf et packs.</p>
                 </div>
                 <button onclick="document.getElementById('add-service-modal').classList.remove('hidden')"
-                    class="bg-blue-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/20 flex items-center transition active:scale-95">
+                    class="bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/20 flex items-center transition active:scale-95">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
@@ -1502,7 +1502,7 @@
                     class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50">
             </div>
             <button type="submit"
-                class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4">Enregistrer les
+                class="w-full bg-blue-600 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg mt-4">Enregistrer les
                 modifications</button>
         </form>
     </div>
@@ -1566,8 +1566,18 @@
         color: #2563eb;
     }
 
+    .dark .nav-item.active {
+        background-color: rgba(59, 130, 246, 0.2);
+        color: #60a5fa;
+        border: 1px solid rgba(96, 165, 250, 0.3);
+    }
+
     .nav-item.active svg {
         color: #2563eb;
+    }
+
+    .dark .nav-item.active svg {
+        color: #60a5fa;
     }
 
     .animate-in {
