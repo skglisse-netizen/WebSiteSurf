@@ -107,7 +107,34 @@ templates = Jinja2Templates(directory="templates")
 async def read_root(request: Request, success: Optional[str] = None, db: Session = Depends(get_db)):
     # Fetch active services from the DB
     services = db.query(models.Service).filter(models.Service.is_active == True).all()
-    schedules = db.query(models.CourseSchedule).filter(models.CourseSchedule.is_active == True).order_by(models.CourseSchedule.id.asc()).all()
+    
+    # Process schedules to filter out expired ones
+    raw_schedules = db.query(models.CourseSchedule).filter(models.CourseSchedule.is_active == True).all()
+    from datetime import datetime, timedelta
+    current_time = datetime.now()
+    cutoff_time = current_time - timedelta(minutes=1)
+    
+    schedules = []
+    has_deletions = False
+    for sch in raw_schedules:
+        try:
+            sch_datetime = datetime.strptime(f"{sch.date_text} {sch.time_text}", "%Y-%m-%d %H:%M")
+            if sch_datetime >= cutoff_time:
+                schedules.append((sch, sch_datetime))
+            else:
+                sch.is_active = False
+                has_deletions = True
+        except ValueError:
+            # Fallback if date/time format is non-parseable
+            schedules.append((sch, None))
+            
+    if has_deletions:
+        db.commit()
+        
+    # Sort active schedules chronologically
+    schedules.sort(key=lambda x: x[1] if x[1] else datetime.max)
+    sorted_schedules = [x[0] for x in schedules]
+
     config = db.query(models.SiteConfig).first()
     
     # If the database is empty, let's inject a dummy service for the first run
@@ -132,7 +159,7 @@ async def read_root(request: Request, success: Optional[str] = None, db: Session
     response = templates.TemplateResponse(
         request=request, 
         name="index.html", 
-        context={"request": request, "services": services, "config": config, "schedules": schedules, "success_message": success_message}
+        context={"request": request, "services": services, "config": config, "schedules": sorted_schedules, "success_message": success_message}
     )
 
     # Tracker la visite unique (Cookie 24h)
