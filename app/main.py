@@ -199,7 +199,7 @@ async def contact_form(
     request: Request,
     name: str = Form(...),
     email: str = Form(...),
-    phone: str = Form(None),
+    phone: str = Form(...),
     message: str = Form(None),
     service_id: Optional[int] = Form(None),
     booking_date: Optional[str] = Form(None),
