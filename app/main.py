@@ -373,6 +373,13 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
         return RedirectResponse(url="/admin/login", status_code=302)
     
     config = db.query(models.SiteConfig).first()
+    if not config:
+        # Emergency fallback to avoid crash
+        config = models.SiteConfig(school_name="Moroccan Wave Vibes")
+        db.add(config)
+        db.commit()
+        db.refresh(config)
+
     inquiries = db.query(models.Inquiry).order_by(models.Inquiry.id.desc()).all()
     hero_images = db.query(models.HeroImage).filter(models.HeroImage.config_id == config.id).all()
     services = db.query(models.Service).all()
