@@ -161,7 +161,7 @@
     {% block footer %}
     <footer id="footer" class="pt-5 pb-2" style="background-color: {{ config.footer_bg_color }}; color: {{ config.footer_text_color }};">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row items-center md:items-start gap-10">
+            <div class="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16">
 
 
                 <!-- 2. Localisation Map -->
@@ -186,19 +186,18 @@
                 {% endif %}
 
                 <!-- 3. Informations de contact -->
-                <div class="text-center md:text-left">
-
+                <div class="text-center">
                     <h4 class="text-sm font-bold mb-3 font-heading uppercase tracking-wider">Contact</h4>
                     <ul class="space-y-2 text-xs opacity-80">
-                        <li class="flex items-center gap-2 justify-center md:justify-start"><span>📍</span> {{ config.contact_address }}</li>
-                        <li class="flex items-center gap-2 justify-center md:justify-start"><span>📞</span> {{ config.contact_phone }}</li>
-                        <li class="flex items-center gap-2 justify-center md:justify-start"><span>✉️</span> {{ config.contact_email }}</li>
+                        <li class="flex items-center gap-2 justify-center"><span>📍</span> {{ config.contact_address }}</li>
+                        <li class="flex items-center gap-2 justify-center"><span>📞</span> {{ config.contact_phone }}</li>
+                        <li class="flex items-center gap-2 justify-center"><span>✉️</span> {{ config.contact_email }}</li>
                     </ul>
                 </div>
 
                 <!-- 4. Formulaire rapide -->
-                <div class="flex-grow max-w-sm w-full mb-6 md:mb-0">
-                    <h4 class="text-sm font-bold mb-3 font-heading uppercase tracking-wider text-center md:text-left">Contact Rapide</h4>
+                <div class="max-w-sm w-full">
+                    <h4 class="text-sm font-bold mb-3 font-heading uppercase tracking-wider text-center">Contact Rapide</h4>
                     <form action="/footer-contact" method="POST" class="space-y-2">
                         <input type="text" name="name" required placeholder="Nom" class="w-full bg-white/10 border border-white/20 rounded px-3 py-1.5 text-xs focus:ring-1 focus:ring-accent-400 outline-none transition-all placeholder:text-white/40">
                         <input type="email" name="email" required placeholder="Email" class="w-full bg-white/10 border border-white/20 rounded px-3 py-1.5 text-xs focus:ring-1 focus:ring-accent-400 outline-none transition-all placeholder:text-white/40">
