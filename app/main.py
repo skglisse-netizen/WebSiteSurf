@@ -51,6 +51,7 @@ def init_db():
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS logo_filename VARCHAR DEFAULT NULL"))
         db.execute(text("ALTER TABLE services ADD COLUMN IF NOT EXISTS discount_percent NUMERIC(5,2) DEFAULT 0"))
         db.execute(text("ALTER TABLE services ADD COLUMN IF NOT EXISTS level VARCHAR"))
+        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS status VARCHAR DEFAULT 'en_attente'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_title VARCHAR DEFAULT 'Pourquoi rider avec nous ?'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_description TEXT DEFAULT ''"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_image_filename VARCHAR DEFAULT NULL"))
@@ -374,8 +375,9 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
     config = db.query(models.SiteConfig).first()
     inquiries = db.query(models.Inquiry).order_by(models.Inquiry.id.desc()).all()
     hero_images = db.query(models.HeroImage).filter(models.HeroImage.config_id == config.id).all()
-    services = db.query(models.Service).order_by(models.Service.id).all()
-    schedules = db.query(models.CourseSchedule).order_by(models.CourseSchedule.id.desc()).all()
+    services = db.query(models.Service).all()
+    schedules = db.query(models.CourseSchedule).all()
+    recent_activities = db.query(models.Inquiry).order_by(models.Inquiry.id.desc()).limit(5).all()
     
     import datetime
     import json
@@ -406,6 +408,7 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
             "hero_images": hero_images,
             "services": services,
             "schedules": schedules,
+            "recent_activities": recent_activities,
             "chart_labels": json.dumps(labels),
             "chart_data": json.dumps(data_counts)
         }
@@ -766,6 +769,30 @@ async def message_delete(request: Request, inquiry_id: int, db: Session = Depend
         db.delete(inquiry)
         db.commit()
     return RedirectResponse(url="/admin/dashboard#messages", status_code=302)
+
+@app.post("/admin/inquiries/{inquiry_id}/status")
+async def inquiry_update_status(
+    request: Request, 
+    inquiry_id: int, 
+    status: str = Form(...),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        inquiry.status = status
+        # Update is_processed based on status for backward compatibility
+        if status in ["confirme", "annule"]:
+            inquiry.is_processed = True
+        else:
+            inquiry.is_processed = False
+        db.commit()
+    
+    target = "#reservations" if inquiry and inquiry.booking_date else "#messages"
+    return RedirectResponse(url=f"/admin/dashboard{target}?success=status_updated", status_code=302)
 
 # --- RESERVATIONS CRUD ---
 @app.post("/admin/reservations/{inquiry_id}/validate")

@@ -273,13 +273,42 @@
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 gap-8 mb-8">
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                    <!-- Graphique (Prend 2 colonnes sur 3) -->
                     <div
-                        class="bg-white dark:bg-gray-900 p-6 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800">
-                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Visiteurs Uniques (14 derniers
-                            jours)</h3>
+                        class="lg:col-span-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Visiteurs Uniques</h3>
+                            <span class="text-xs font-bold text-gray-400 uppercase tracking-widest">14 derniers jours</span>
+                        </div>
                         <div class="w-full h-72">
                             <canvas id="visitorsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Flux d'Activité Récente -->
+                    <div
+                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 flex flex-col">
+                        <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Activités Récentes</h3>
+                        <div class="space-y-4 flex-1 overflow-y-auto pr-2 custom-scrollbar">
+                            {% for act in recent_activities %}
+                            <div class="flex items-start space-x-3 p-3 rounded-2xl bg-gray-50/50 dark:bg-gray-800/30 border border-gray-100/50 dark:border-gray-700/30 transition hover:scale-[1.02]">
+                                <div class="w-10 h-10 rounded-xl flex items-center justify-center text-lg shadow-sm
+                                    {% if act.booking_date %}bg-blue-100 text-blue-600{% else %}bg-emerald-100 text-emerald-600{% endif %}">
+                                    {% if act.booking_date %}📅{% else %}💬{% endif %}
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-sm font-bold text-gray-900 dark:text-white truncate">{{ act.name }}</p>
+                                    <p class="text-[10px] text-gray-500 dark:text-gray-400 capitalize">
+                                        {% if act.booking_date %}Réservation{% else %}Message{% endif %} • 
+                                        {{ act.status.replace('_', ' ') if act.status else 'nouveau' }}
+                                    </p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% if not recent_activities %}
+                            <div class="text-center py-10 text-gray-400 text-sm">Aucune activité récente.</div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -926,9 +955,20 @@
 
         <!-- SECTION: RESERVATIONS -->
         <section id="section-reservations" class="content-section space-y-8 animate-in">
-            <header class="mb-4">
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Réservations de Cours</h1>
-                <p class="text-gray-500 dark:text-gray-400">Gérez les inscriptions à vos cours de surf.</p>
+            <header class="mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Réservations de Cours</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Gérez les inscriptions à vos cours de surf.</p>
+                </div>
+                <div class="relative max-w-xs w-full">
+                    <input type="text" onkeyup="filterTable('res-table', this.value)" 
+                        placeholder="Rechercher un nom, email..." 
+                        class="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                    <svg class="w-4 h-4 absolute left-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
+            </header>
             </header>
 
             <div
@@ -990,20 +1030,18 @@
                                     {{ (inquiry.message or '')|truncate(100) }}
                                 </td>
                                 <td class="px-6 py-5 text-right whitespace-nowrap">
-                                    <div class="flex flex-col items-end space-y-2">
-                                        {% if inquiry.is_processed %}
-                                        <span
-                                            class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400">
-                                            Validée
-                                        </span>
-                                        {% else %}
-                                        <span
-                                            class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400">
-                                            En attente
-                                        </span>
-                                        {% endif %}
+                                    <form action="/admin/inquiries/{{ inquiry.id }}/status" method="POST" class="inline-block mb-2">
+                                        <select name="status" onchange="this.form.submit()" 
+                                            class="text-[10px] font-bold uppercase tracking-wider rounded-lg px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500/20 cursor-pointer
+                                            {% if inquiry.status == 'confirme' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
+                                            {% elif inquiry.status == 'annule' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400
+                                            {% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400{% endif %}">
+                                            <option value="en_attente" {% if inquiry.status == 'en_attente' %}selected{% endif %}>En attente</option>
+                                            <option value="confirme" {% if inquiry.status == 'confirme' %}selected{% endif %}>Confirmé</option>
+                                            <option value="annule" {% if inquiry.status == 'annule' %}selected{% endif %}>Annulé</option>
+                                        </select>
+                                    </form>
                                         <div class="flex items-center space-x-2 pt-1">
-                                            {% if not inquiry.is_processed %}
                                             <form action="/admin/reservations/{{ inquiry.id }}/validate" method="POST"
                                                 class="inline">
                                                 <button type="submit"
@@ -1069,15 +1107,25 @@
 
         <!-- SECTION: MESSAGES -->
         <section id="section-messages" class="content-section space-y-8 animate-in">
-            <header class="mb-4">
-                <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Messages de Contact</h1>
-                <p class="text-gray-500 dark:text-gray-400">Demandes de renseignements généraux.</p>
+            <header class="mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">Messages de Contact</h1>
+                    <p class="text-gray-500 dark:text-gray-400">Demandes de renseignements généraux.</p>
+                </div>
+                <div class="relative max-w-xs w-full">
+                    <input type="text" onkeyup="filterTable('msg-table', this.value)" 
+                        placeholder="Rechercher un message..." 
+                        class="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                    <svg class="w-4 h-4 absolute left-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                </div>
             </header>
 
             <div
                 class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
                 <div class="overflow-x-auto overflow-y-auto max-h-[600px] custom-scrollbar">
-                    <table class="w-full text-left relative">
+                    <table id="msg-table" class="w-full text-left relative">
                         <thead
                             class="sticky top-0 z-10 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
                             <tr>
@@ -1114,18 +1162,17 @@
                                     </div>
                                 </td>
                                 <td class="px-6 py-5 text-right whitespace-nowrap">
-                                    <div class="flex flex-col items-end space-y-2">
-                                        {% if inquiry.is_processed %}
-                                        <span
-                                            class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-600 dark:bg-gray-800 dark:text-gray-400">
-                                            Lu
-                                        </span>
-                                        {% else %}
-                                        <span
-                                            class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400 shadow-sm font-bold">
-                                            Nouveau
-                                        </span>
-                                        {% endif %}
+                                    <form action="/admin/inquiries/{{ inquiry.id }}/status" method="POST" class="inline-block mb-2">
+                                        <select name="status" onchange="this.form.submit()" 
+                                            class="text-[10px] font-bold uppercase tracking-wider rounded-lg px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500/20 cursor-pointer
+                                            {% if inquiry.status == 'confirme' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
+                                            {% elif inquiry.status == 'annule' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400
+                                            {% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400{% endif %}">
+                                            <option value="en_attente" {% if inquiry.status == 'en_attente' %}selected{% endif %}>En attente</option>
+                                            <option value="confirme" {% if inquiry.status == 'confirme' %}selected{% endif %}>Confirmé</option>
+                                            <option value="annule" {% if inquiry.status == 'annule' %}selected{% endif %}>Annulé</option>
+                                        </select>
+                                    </form>
                                         <div class="flex items-center space-x-2 pt-1 border-t border-transparent">
                                             {% if not inquiry.is_processed %}
                                             <form action="/admin/messages/{{ inquiry.id }}/read" method="POST"
@@ -1463,6 +1510,50 @@
 </div>
 
 <style>
+    /* Glassmorphism Styles */
+    .glass-card {
+        background: rgba(255, 255, 255, 0.8);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .dark .glass-card {
+        background: rgba(17, 24, 39, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Toast Styles */
+    #toast-container {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 100;
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    .toast {
+        min-width: 300px;
+        padding: 1rem 1.25rem;
+        border-radius: 1rem;
+        background: white;
+        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        border-left: 4px solid #3b82f6;
+        animation: toast-in 0.3s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        transition: opacity 0.3s ease;
+    }
+    .dark .toast { background: #1f2937; border-left: 4px solid #3b82f6; color: white; }
+    .toast-success { border-left-color: #10b981; }
+    .toast-error { border-left-color: #ef4444; }
+
+    @keyframes toast-in {
+        from { opacity: 0; transform: translateX(100%); }
+        to { opacity: 1; transform: translateX(0); }
+    }
+
     .content-section {
         display: none;
     }
@@ -1526,6 +1617,8 @@
     }
 </style>
 
+<div id="toast-container"></div>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Theme Toggle Logic
@@ -1555,7 +1648,53 @@
     }
 
     // Initialize UI on load
-    window.addEventListener('load', updateThemeUI);
+    window.addEventListener('load', () => {
+        updateThemeUI();
+        
+        // Show toasts based on URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success')) {
+            showToast('Action effectuée avec succès !', 'success');
+        } else if (urlParams.has('error')) {
+            showToast('Une erreur est survenue.', 'error');
+        }
+    });
+
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        
+        const icon = type === 'success' ? '✅' : '❌';
+        toast.innerHTML = `<span>${icon}</span><span class="text-sm font-medium">${message}</span>`;
+        
+        container.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 4000);
+    }
+
+    function filterTable(tableId, query) {
+        const table = document.getElementById(tableId);
+        const rows = table.querySelectorAll('tbody tr');
+        const q = query.toLowerCase();
+        
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(q) ? '' : 'none';
+        });
+    }
+
+    // Close Modals on click outside
+    window.addEventListener('click', (e) => {
+        const modals = ['add-course-modal', 'edit-course-modal', 'add-service-modal', 'edit-service-modal', 'edit-reservation-modal'];
+        modals.forEach(id => {
+            const modal = document.getElementById(id);
+            if (e.target === modal) modal.classList.add('hidden');
+        });
+    });
 
     // Why Image Logic
     async function uploadWhyImage() {

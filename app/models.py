@@ -28,6 +28,7 @@ class Inquiry(Base):
     booking_date = Column(String, nullable=True)
     people_count = Column(Integer, nullable=True)
     level = Column(String, nullable=True)
+    status = Column(String, default="en_attente") # en_attente, confirme, annule
     
     is_processed = Column(Boolean, default=False)
 
