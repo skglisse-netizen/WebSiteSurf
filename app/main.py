@@ -37,11 +37,11 @@ def init_db():
         models.Base.metadata.create_all(bind=engine)
         
         # Migrations and sync
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS school_name VARCHAR DEFAULT 'WaveRider'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_address VARCHAR DEFAULT '123 Plage des Vagues, 64200 Biarritz'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_phone VARCHAR DEFAULT '+33 6 12 34 56 78'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_email VARCHAR DEFAULT 'allo@waverider.fr'"))
-        db.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS contact_email VARCHAR DEFAULT 'allo@waverider.fr'"))
+        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS school_name VARCHAR DEFAULT 'Moroccan Wave Vibes'"))
+        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_address VARCHAR DEFAULT 'Plage de Mehdia, Kenitra, Maroc'"))
+        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_phone VARCHAR DEFAULT '+212 6 00 00 00 00'"))
+        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_email VARCHAR DEFAULT 'contact@mwv.sytes.net'"))
+        db.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS contact_email VARCHAR DEFAULT 'contact@mwv.sytes.net'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS navbar_bg_color VARCHAR DEFAULT '#ffffff'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS navbar_text_color VARCHAR DEFAULT '#1f2937'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS footer_bg_color VARCHAR DEFAULT '#111827'"))
@@ -108,8 +108,22 @@ templates = Jinja2Templates(directory="templates")
 
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request, success: Optional[str] = None, db: Session = Depends(get_db)):
-    # Fetch active services from the DB
     services = db.query(models.Service).filter(models.Service.is_active == True).all()
+    
+    # Track Daily Visit
+    try:
+        from datetime import date
+        today_date = date.today().isoformat()
+        daily_visit = db.query(models.DailyVisit).filter(models.DailyVisit.date == today_date).first()
+        if daily_visit:
+            daily_visit.count += 1
+        else:
+            daily_visit = models.DailyVisit(date=today_date, count=1)
+            db.add(daily_visit)
+        db.commit()
+    except Exception as e:
+        print(f"Tracking Error: {e}")
+        db.rollback()
     
     # Process schedules to filter out expired ones
     raw_schedules = db.query(models.CourseSchedule).filter(models.CourseSchedule.is_active == True).all()
