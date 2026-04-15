@@ -14,18 +14,18 @@
     </div>
 
     <!-- Login Card -->
-    <div class="max-w-sm w-full space-y-8 bg-white/10 backdrop-blur-xl p-10 rounded-3xl shadow-2xl border border-white/20 relative z-10 animate-fade-in-up">
+    <div class="max-w-sm w-full space-y-6 bg-white/10 backdrop-blur-xl p-8 rounded-3xl shadow-2xl border border-white/20 relative z-10 animate-fade-in-up">
         <div class="text-center">
             {% if config.logo_filename %}
-            <img src="/static/uploads/logo/{{ config.logo_filename }}" alt="{{ config.school_name }}" class="mx-auto h-16 w-auto mb-6 drop-shadow-lg">
+            <img src="/static/uploads/logo/{{ config.logo_filename }}" alt="{{ config.school_name }}" class="mx-auto h-16 w-auto mb-4 drop-shadow-lg">
             {% else %}
-            <div class="mx-auto h-16 w-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg mb-6">🏄</div>
+            <div class="mx-auto h-16 w-16 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-3xl shadow-lg mb-4">🏄</div>
             {% endif %}
             
             <h2 class="text-3xl font-black text-white tracking-tight">
                 Administration
             </h2>
-            <p class="mt-2 text-blue-100/80 text-sm font-medium">Gérez votre école en toute simplicité</p>
+            <p class="mt-1 text-blue-100/80 text-sm font-medium">Gérez votre école en toute simplicité</p>
         </div>
 
         {% if error %}
@@ -39,7 +39,7 @@
         </div>
         {% endif %}
 
-        <form class="mt-8 space-y-6" action="/admin/login" method="POST">
+        <form class="mt-4 space-y-4" action="/admin/login" method="POST">
             <div class="space-y-4">
                 <div>
                     <label for="username" class="block text-xs font-bold text-blue-100/60 uppercase tracking-widest mb-1.5 ml-1">Identifiant</label>
