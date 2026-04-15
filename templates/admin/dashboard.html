@@ -886,13 +886,24 @@
                     </div>
                     <div class="px-6 pb-6 pt-3 flex-1 flex flex-col">
                         <h3 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">{{ svc.title }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 line-clamp-2">{{ svc.description }}</p>
+                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">{{ svc.description }}</p>
+
+                        {% if svc.level %}
+                        <div class="flex flex-wrap gap-1 mb-4">
+                            {% for lvl in svc.level.split(',') %}
+                            <span class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded-full border border-blue-100 dark:border-blue-800/50">
+                                {{ lvl }}
+                            </span>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
 
                         <div
                             class="mt-auto pt-4 border-t border-gray-50 dark:border-gray-800 flex items-center justify-between">
                             <button type="button" onclick="openEditModal(this)" data-id="{{ svc.id }}"
                                 data-title="{{ svc.title|escape }}" data-desc="{{ svc.description|escape }}"
                                 data-price="{{ svc.price }}" data-discount="{{ svc.discount_percent }}"
+                                data-level="{{ svc.level or '' }}"
                                 class="text-blue-600 dark:text-blue-400 font-bold text-sm hover:underline">Modifier</button>
                             <form action="/admin/services/{{ svc.id }}/delete" method="POST"
                                 onsubmit="return confirm('Archiver cette formule ?')">
@@ -1279,6 +1290,27 @@
                     class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10"></textarea>
             </div>
             <div>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Niveaux visés</label>
+                <div class="grid grid-cols-1 gap-2 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700">
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Ma première fois (Jamais surfé)" class="rounded text-blue-600">
+                        <span>Ma première fois (Jamais surfé)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Initié (Déjà pris des cours)" class="rounded text-blue-600">
+                        <span>Initié (Déjà pris des cours)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Débutant (Prend ses propres vagues)" class="rounded text-blue-600">
+                        <span>Débutant (Prend ses propres vagues)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Intermédiaire (Perfectionnement)" class="rounded text-blue-600">
+                        <span>Intermédiaire (Perfectionnement)</span>
+                    </label>
+                </div>
+            </div>
+            <div>
                 <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Image</label>
                 <input type="file" name="image" accept="image/*"
                     class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50">
@@ -1345,10 +1377,10 @@
                     <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Niveau</label>
                     <select name="level" id="res-edit-level"
                         class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
-                        <option value="Débutant">Débutant (Jamais surfé)</option>
-                        <option value="Intermédiaire">Intermédiaire (Je prends des mousses/petites vagues)</option>
-                        <option value="Avancé">Avancé (Je vais au pic et tourne sur la vague)</option>
-                        <option value="Expert">Expert</option>
+                        <option value="Ma première fois (Jamais surfé)">Ma première fois (Jamais surfé)</option>
+                        <option value="Initié (Déjà pris des cours)">Initié (Déjà pris des cours)</option>
+                        <option value="Débutant (Prend ses propres vagues)">Débutant (Prend ses propres vagues)</option>
+                        <option value="Intermédiaire (Perfectionnement)">Intermédiaire (Perfectionnement)</option>
                     </select>
                 </div>
             </div>
@@ -1396,6 +1428,27 @@
                 <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Description</label>
                 <textarea name="description" id="edit-description" rows="3" required
                     class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10"></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Niveaux visés</label>
+                <div id="edit-level-container" class="grid grid-cols-1 gap-2 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700">
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Ma première fois (Jamais surfé)" class="rounded text-blue-600">
+                        <span>Ma première fois (Jamais surfé)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Initié (Déjà pris des cours)" class="rounded text-blue-600">
+                        <span>Initié (Déjà pris des cours)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Débutant (Prend ses propres vagues)" class="rounded text-blue-600">
+                        <span>Débutant (Prend ses propres vagues)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Intermédiaire (Perfectionnement)" class="rounded text-blue-600">
+                        <span>Intermédiaire (Perfectionnement)</span>
+                    </label>
+                </div>
             </div>
             <div>
                 <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Nouvelle Image</label>
@@ -1574,6 +1627,15 @@
         document.getElementById('edit-description').value = btn.getAttribute('data-desc');
         document.getElementById('edit-price').value = btn.getAttribute('data-price');
         document.getElementById('edit-discount').value = btn.getAttribute('data-discount');
+        
+        // Handle multi-level checkboxes
+        const levels = (btn.getAttribute('data-level') || "").split(',');
+        const container = document.getElementById('edit-level-container');
+        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.checked = levels.includes(cb.value);
+        });
+
         document.getElementById('edit-service-modal').classList.remove('hidden');
     }
 

@@ -50,6 +50,7 @@ def init_db():
         db.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS mfa_enabled BOOLEAN DEFAULT FALSE"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS logo_filename VARCHAR DEFAULT NULL"))
         db.execute(text("ALTER TABLE services ADD COLUMN IF NOT EXISTS discount_percent NUMERIC(5,2) DEFAULT 0"))
+        db.execute(text("ALTER TABLE services ADD COLUMN IF NOT EXISTS level VARCHAR"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_title VARCHAR DEFAULT 'Pourquoi rider avec nous ?'"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_description TEXT DEFAULT ''"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_image_filename VARCHAR DEFAULT NULL"))
@@ -637,6 +638,7 @@ async def service_add(
     price: float = Form(...),
     discount_percent: float = Form(0),
     image: UploadFile = File(None),
+    level: List[str] = Form(None),
     db: Session = Depends(get_db)
 ):
     user = get_current_user(request, db)
@@ -650,7 +652,16 @@ async def service_add(
             shutil.copyfileobj(image.file, f)
         image_url = f"/static/uploads/services/{fname}"
 
-    db.add(models.Service(title=title, description=description, price=price, discount_percent=discount_percent, image_url=image_url))
+    level_str = ",".join(level) if level else None
+
+    db.add(models.Service(
+        title=title, 
+        description=description, 
+        price=price, 
+        discount_percent=discount_percent, 
+        image_url=image_url,
+        level=level_str
+    ))
     db.commit()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
@@ -663,6 +674,7 @@ async def service_edit(
     price: float = Form(...),
     discount_percent: float = Form(0),
     image: UploadFile = File(None),
+    level: List[str] = Form(None),
     db: Session = Depends(get_db)
 ):
     user = get_current_user(request, db)
@@ -675,6 +687,7 @@ async def service_edit(
         svc.description = description
         svc.price = price
         svc.discount_percent = discount_percent
+        svc.level = ",".join(level) if level else None
         if image and image.filename:
             # Delete old image if it exists and is different
             if svc.image_url:

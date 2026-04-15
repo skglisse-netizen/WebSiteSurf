@@ -11,6 +11,7 @@ class Service(Base):
     price = Column(Numeric(10, 2))
     discount_percent = Column(Numeric(5, 2), default=0)  # 0-100
     image_url = Column(String)
+    level = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
 
 class Inquiry(Base):

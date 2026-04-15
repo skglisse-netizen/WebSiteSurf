@@ -139,7 +139,17 @@
                 </div>
                 <div class="px-4 pb-4 pt-2 flex flex-col flex-grow">
                     <h3 class="text-base font-bold font-heading text-gray-900 mb-1">{{ service.title }}</h3>
-                    <p class="text-gray-600 text-sm mb-3 flex-grow leading-relaxed">{{ service.description }}</p>
+                    <p class="text-gray-600 text-sm mb-2 line-clamp-2 leading-relaxed">{{ service.description }}</p>
+                    
+                    {% if service.level %}
+                    <div class="flex flex-wrap gap-1 mb-3">
+                        {% for lvl in service.level.split(',') %}
+                        <span class="px-2 py-0.5 bg-primary-50 text-primary-600 text-[10px] font-bold rounded-full border border-primary-100">
+                            {{ lvl }}
+                        </span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                     <a href="#reservation" class="inline-block w-full text-center px-3 py-2 border-2 border-primary-500 text-primary-600 font-bold rounded-lg hover:bg-primary-500 hover:text-white transition-colors duration-300 text-sm">
                         Réserver le cours
                     </a>
@@ -326,10 +336,10 @@
                         <div>
                             <label for="level" class="block text-sm font-medium text-gray-700 mb-1">Niveau *</label>
                             <select id="level" name="level" required class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm">
-                                <option value="Débutant (Jamais surfé)">Débutant (Jamais surfé)</option>
+                                <option value="Ma première fois (Jamais surfé)">Ma première fois (Jamais surfé)</option>
                                 <option value="Initié (Déjà pris des cours)">Initié (Déjà pris des cours)</option>
-                                <option value="Intermédiaire (Prend ses propres vagues)">Intermédiaire (Prend ses propres vagues)</option>
-                                <option value="Confirmé / Expert">Confirmé / Expert</option>
+                                <option value="Débutant (Prend ses propres vagues)">Débutant (Prend ses propres vagues)</option>
+                                <option value="Intermédiaire (Perfectionnement)">Intermédiaire (Perfectionnement)</option>
                             </select>
                         </div>
                     </div>
