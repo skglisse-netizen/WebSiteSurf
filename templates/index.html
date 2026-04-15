@@ -263,6 +263,22 @@
             
 
         </div>
+
+        <!-- Google Reviews CTA -->
+        <div class="mt-12 text-center fade-in">
+            <div class="inline-flex flex-col items-center">
+                <div class="flex items-center gap-1 text-accent-500 mb-2">
+                    {% for i in range(5) %}
+                    <svg class="h-5 w-5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    {% endfor %}
+                </div>
+                <p class="text-gray-900 font-bold text-lg mb-4">Note de 5/5 sur Google Business</p>
+                <a href="https://share.google/dwjs81LMLsd3eEXZB" target="_blank" class="px-6 py-3 bg-white border-2 border-gray-100 rounded-full shadow-sm hover:shadow-md hover:border-blue-100 transition-all flex items-center gap-3">
+                    <img src="https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png" alt="Google" class="h-5 w-5">
+                    <span class="text-gray-700 font-bold text-sm">Voir tous les avis sur Google</span>
+                </a>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -347,6 +363,63 @@
                     </div>
                 </div>
             </form>
+        </div>
+    </div>
+</section>
+
+<!-- Google Maps Section -->
+<section id="localisation" class="py-16 bg-white overflow-hidden">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col lg:flex-row items-center gap-12">
+            <!-- Left: Info -->
+            <div class="w-full lg:w-1/3 space-y-6 fade-in text-center lg:text-left">
+                <span class="text-primary-600 font-bold tracking-widest uppercase text-xs">Nous trouver</span>
+                <h2 class="text-3xl md:text-4xl font-heading font-extrabold text-gray-900 leading-tight">
+                    Au cœur de la Plage de Mehdia
+                </h2>
+                <p class="text-gray-600 leading-relaxed">
+                    Retrouvez-nous directement sur le spot ! Notre école est idéalement située pour profiter des meilleures vagues de Kenitra, avec un accès facile et un parking à proximité.
+                </p>
+                
+                <div class="space-y-4 pt-4">
+                    <div class="flex items-center gap-4 justify-center lg:justify-start">
+                        <div class="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center text-primary-600">📍</div>
+                        <div class="text-left">
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">Adresse</p>
+                            <p class="text-gray-900 font-bold">{{ config.contact_address }}</p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4 justify-center lg:justify-start">
+                        <div class="w-10 h-10 rounded-full bg-primary-50 flex items-center justify-center text-primary-600">📞</div>
+                        <div class="text-left">
+                            <p class="text-xs text-gray-400 font-bold uppercase tracking-widest">Contact Direct</p>
+                            <p class="text-gray-900 font-bold">{{ config.contact_phone }}</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="pt-6">
+                    <a href="https://share.google/dwjs81LMLsd3eEXZB" target="_blank" class="inline-flex items-center gap-3 px-8 py-4 bg-primary-600 text-white rounded-2xl font-bold hover:bg-primary-700 transition-all shadow-xl shadow-primary-200">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path></svg>
+                        Ouvrir dans Google Maps
+                    </a>
+                </div>
+            </div>
+
+            <!-- Right: Map -->
+            <div class="w-full lg:w-2/3 h-[500px] rounded-3xl overflow-hidden shadow-2xl border-8 border-gray-50 relative group fade-in">
+                <iframe 
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13169.59302636239!2d-6.6631!3d34.2589!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDE1JzMyLjAiTiA2wrAzOSc0Ny4yIlc!5e0!3m2!1sfr!2sma!4v1713200000000!5m2!1sfr!2sma" 
+                    width="100%" 
+                    height="100%" 
+                    style="border:0;" 
+                    allowfullscreen="" 
+                    loading="lazy" 
+                    referrerpolicy="no-referrer-when-downgrade"
+                    class="grayscale-[0.2] transition-all duration-700 group-hover:grayscale-0">
+                </iframe>
+                <div class="absolute inset-0 pointer-events-none border border-black/5 rounded-3xl"></div>
+            </div>
         </div>
     </div>
 </section>

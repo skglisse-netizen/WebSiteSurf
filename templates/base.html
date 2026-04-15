@@ -85,6 +85,45 @@
             color: {{ config.navbar_text_color }} !important;
         }
     </style>
+
+    <!-- Local SEO (Google Business Integration) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "{{ config.school_name }}",
+      "image": "{{ request.base_url }}static/uploads/logo/{{ config.logo_filename }}",
+      "@id": "{{ request.base_url }}",
+      "url": "{{ request.base_url }}",
+      "telephone": "{{ config.contact_phone }}",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Plage de Mehdia",
+        "addressLocality": "Kenitra",
+        "postalCode": "14000",
+        "addressCountry": "MA"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 34.2589,
+        "longitude": -6.6631
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "08:00",
+        "closes": "19:00"
+      }
+    }
+    </script>
 </head>
 <body class="font-sans antialiased text-gray-800 bg-gray-50 flex flex-col min-h-screen">
     <!-- Navbar -->
