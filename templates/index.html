@@ -68,7 +68,16 @@
                     <div class="text-sm font-bold text-white tracking-wide mb-0.5">{{ sch.course_title }}</div>
                     <div class="text-[11px] text-accent-300 font-medium mb-1.5 opacity-90">{{ sch.date_text }}</div>
                     {% if sch.description %}
-                        <p class="text-[11px] text-gray-200 line-clamp-2 leading-relaxed mb-2 opacity-80">{{ sch.description }}</p>
+                        <p class="text-[11px] text-gray-200 line-clamp-2 leading-relaxed mb-1.5 opacity-80">{{ sch.description }}</p>
+                    {% endif %}
+                    {% if sch.level %}
+                        <div class="flex flex-wrap gap-1 mb-2">
+                            {% for lvl in sch.level.split(',') %}
+                                <span class="px-1.5 py-0.5 bg-accent-500/20 border border-accent-500/30 text-accent-100 text-[9px] font-bold rounded-full">
+                                    {{ lvl }}
+                                </span>
+                            {% endfor %}
+                        </div>
                     {% endif %}
                     <div class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold {{ 'bg-blue-500/20 text-blue-300' if sch.spots_available > 0 else 'bg-red-500/20 text-red-300' }}">
                         {{ sch.spots_available }} places dispo.

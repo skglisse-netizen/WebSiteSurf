@@ -72,6 +72,7 @@ def init_db():
         # Course Schedules fields
         db.execute(text("ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS description TEXT"))
         db.execute(text("ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS spots_available INTEGER DEFAULT 10"))
+        db.execute(text("ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS level TEXT"))
         
         db.commit()
 
@@ -813,18 +814,22 @@ async def schedule_add(
     course_title: str = Form(...),
     description: str = Form(None),
     spots_available: int = Form(10),
+    level: List[str] = Form(None),
     db: Session = Depends(get_db)
 ):
     user = get_current_user(request, db)
     if not user:
         return RedirectResponse(url="/admin/login", status_code=302)
 
+    level_str = ",".join(level) if level else None
+
     db.add(models.CourseSchedule(
         date_text=date_text, 
         time_text=time_text, 
         course_title=course_title,
         description=description,
-        spots_available=spots_available
+        spots_available=spots_available,
+        level=level_str
     ))
     db.commit()
     return RedirectResponse(url="/admin/dashboard#planning-config", status_code=302)
