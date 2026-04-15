@@ -107,8 +107,8 @@
                 </div>
                 <div class="p-4 flex flex-col flex-grow">
                     <h3 class="text-base font-bold font-heading text-gray-900 mb-1">{{ service.title }}</h3>
-                    <p class="text-gray-600 text-xs mb-3 flex-grow leading-relaxed">{{ service.description }}</p>
-                    <a href="#contact" class="inline-block w-full text-center px-3 py-1.5 border-2 border-primary-500 text-primary-600 font-bold rounded-lg hover:bg-primary-500 hover:text-white transition-colors duration-300 text-xs">
+                    <p class="text-gray-600 text-sm mb-3 flex-grow leading-relaxed">{{ service.description }}</p>
+                    <a href="#reservation" class="inline-block w-full text-center px-3 py-2 border-2 border-primary-500 text-primary-600 font-bold rounded-lg hover:bg-primary-500 hover:text-white transition-colors duration-300 text-sm">
                         Réserver le cours
                     </a>
                 </div>
@@ -166,6 +166,76 @@
                 <img src="https://images.unsplash.com/photo-1516307365426-bea591f05011?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Surfer catching wave" class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-[260px]">
                 {% endif %}
                 <div class="absolute -bottom-6 -right-6 w-full h-full border-4 border-accent-400 rounded-2xl z-0"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="py-12 bg-white border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-10 fade-in">
+            <h2 class="text-xl md:text-2xl font-heading font-bold text-gray-900 mb-2">L'avis de nos surfeurs</h2>
+            <div class="w-12 h-1 bg-accent-500 mx-auto rounded-full mb-3"></div>
+            <p class="text-gray-600 text-sm">Découvrez les retours de ceux qui ont partagé des sessions inoubliables avec nous.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Review 1 -->
+            <div class="bg-gray-50 rounded-xl p-6 shadow-sm fade-in border border-gray-100 transition duration-300 hover:shadow-md">
+                <div class="text-accent-400 mb-3 flex gap-1">
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                </div>
+                <p class="text-gray-600 text-sm mb-4 italic">"Super expérience pour une première fois ! Les moniteurs sont très patients et vraiment drôles."</p>
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold">L</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-900">Lucas M.</h4>
+                        <span class="text-xs text-gray-500">Débutant</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Review 2 -->
+            <div class="bg-gray-50 rounded-xl p-6 shadow-sm fade-in border border-gray-100 transition duration-300 hover:shadow-md" style="transition-delay: 100ms;">
+                <div class="text-accent-400 mb-3 flex gap-1">
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                </div>
+                <p class="text-gray-600 text-sm mb-4 italic">"Matériel au top ! J'ai pu vraiment progresser sur les vagues de Mehdia avec de bons conseils."</p>
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold">S</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-900">Sarah K.</h4>
+                        <span class="text-xs text-gray-500">Intermédiaire</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Review 3 -->
+            <div class="bg-gray-50 rounded-xl p-6 shadow-sm fade-in border border-gray-100 transition duration-300 hover:shadow-md" style="transition-delay: 200ms;">
+                <div class="text-accent-400 mb-3 flex gap-1">
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                    <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>
+                </div>
+                <p class="text-gray-600 text-sm mb-4 italic">"Merveilleuse semaine ! L'équipe est à l'écoute des éléments. Très recommandé !"</p>
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold">A</div>
+                    <div>
+                        <h4 class="text-sm font-bold text-gray-900">Amine B.</h4>
+                        <span class="text-xs text-gray-500">Confirmé</span>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -238,10 +308,18 @@
                     <textarea id="message" name="message" rows="2" class="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-colors text-sm" placeholder="Précisez votre niveau de surf ou toute demande particulière..."></textarea>
                 </div>
                 
-                <div class="flex justify-center pt-2">
-                    <button type="submit" class="w-full md:w-auto px-10 bg-primary-600 text-white font-bold py-3 rounded-lg hover:bg-primary-700 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5 text-sm uppercase tracking-wide">
+                <div class="flex flex-col items-center pt-2">
+                    <button type="submit" class="w-full md:w-auto px-10 bg-primary-600 text-white font-bold py-3 rounded-lg border-b-4 border-primary-700 hover:bg-primary-700 transition-all text-sm uppercase tracking-wide active:border-b-0 active:mt-1">
                         Réserver ma place
                     </button>
+                    
+                    <!-- Preuve de réassurance de paiement -->
+                    <div class="mt-4 flex items-center justify-center gap-2 bg-green-50 text-green-700 px-4 py-2 rounded-full border border-green-100">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p class="text-xs font-semibold">Réservation sans acompte. Le paiement s'effectue sur place avant le cours.</p>
+                    </div>
                 </div>
             </form>
         </div>
