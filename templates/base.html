@@ -169,10 +169,18 @@
                 </div>
                 {% endif %}
 
-                <!-- 2. Nom & Description -->
-                <div class="max-w-xs text-center md:text-left">
-                    <h3 class="text-base font-heading font-bold mb-2 uppercase tracking-wide" style="color: {{ config.footer_bg_color | default('#ffffff') == '#ffffff' and '#111827' or '#ffffff' }}; border-bottom: 2px solid {{ config.footer_bg_color | default('#ffffff') == '#ffffff' and '#111827' or '#ffffff' }}20; display: inline-block; padding-bottom: 2px;">{{ config.school_name }}</h3>
-                    <p class="text-xs opacity-70 leading-relaxed">Votre école de surf de référence. Apprenez, progressez et profitez de l'océan avec des professionnels passionnés.</p>
+                <!-- 2. Localisation Map -->
+                <div class="w-full md:w-64 h-40 rounded-xl overflow-hidden shadow-inner border border-white/10 group">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d13169.59302636239!2d-6.6631!3d34.2589!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzTCsDE1JzMyLjAiTiA2wrAzOSc0Ny4yIlc!5e0!3m2!1sfr!2sma!4v1713200000000!5m2!1sfr!2sma" 
+                        width="100%" 
+                        height="100%" 
+                        style="border:0;" 
+                        allowfullscreen="" 
+                        loading="lazy" 
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="grayscale-[0.5] transition-all duration-700 group-hover:grayscale-0 scale-105 group-hover:scale-100">
+                    </iframe>
                 </div>
 
                 <!-- 3. Informations de contact -->
