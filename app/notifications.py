@@ -53,7 +53,7 @@ def format_inquiry_payload(inquiry: Any, service_title: str = None) -> Dict[str,
         # Extract data explicitly to be sure it's serialized
         data = {
             "id": getattr(inquiry, 'id', 0),
-            "type": "Reservation" if getattr(inquiry, 'service_id', None) else "Message",
+            "type": "Reservation" if (getattr(inquiry, 'service_id', None) or getattr(inquiry, 'booking_date', None)) else "Message",
             "name": str(getattr(inquiry, 'name', "Anonyme")),
             "email": str(getattr(inquiry, 'email', "N/A")),
             "phone": str(getattr(inquiry, 'phone', "N/A") or "N/A"),
