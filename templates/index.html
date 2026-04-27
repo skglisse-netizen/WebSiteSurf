@@ -56,39 +56,69 @@
         </div>
         <span class="text-accent-400 font-bold tracking-widest uppercase text-xs block">Votre aventure commence ici</span>
 
-        <!-- Planning Rapide / Prochains Cours -->
+        <!-- Planning Rapide / Prochains Cours (Premium Layout) -->
         {% if schedules %}
-        <div class="mt-10 flex flex-wrap justify-center gap-4 animate-in fade-in slide-in-from-bottom" style="--tw-enter-opacity: 0; --tw-enter-translate-y: 1rem; animation-delay: 300ms; animation-fill-mode: both;">
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto animate-in fade-in slide-in-from-bottom duration-1000" style="animation-delay: 400ms; animation-fill-mode: both;">
             {% for sch in schedules %}
-            <button onclick="bookDailyCourse('{{ sch.course_title|escape }}', '{{ sch.date_text }}', '{{ sch.time_text }}')" class="glass border border-white/10 px-4 py-3 rounded-2xl flex items-start space-x-4 text-left hover:bg-white/20 hover:shadow-lg hover:shadow-accent-500/20 transition-all cursor-pointer transform hover:-translate-y-1 duration-300 max-w-sm w-full group">
-                <div class="w-12 h-12 rounded-full bg-accent-500 text-white flex items-center justify-center font-bold text-sm ring-2 ring-accent-400/30 group-hover:ring-accent-400 transition-all shadow-[0_0_15px_rgba(var(--tw-colors-accent-500),0.3)] flex-shrink-0 mt-1 relative">
-                    {{ sch.time_text }}
-                    {% if sch.discount_percent and sch.discount_percent > 0 %}
-                    <div class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black shadow-lg animate-pulse ring-1 ring-white">
-                        -{{ sch.discount_percent }}%
-                    </div>
-                    {% endif %}
-                </div>
-                <div class="flex-1">
-                    <div class="text-sm font-bold text-white tracking-wide mb-0.5">{{ sch.course_title }}</div>
-                    <div class="text-[11px] text-accent-300 font-medium mb-1.5 opacity-90">{{ sch.date_text }}</div>
-                    {% if sch.description %}
-                        <p class="text-[11px] text-gray-200 line-clamp-2 leading-relaxed mb-1.5 opacity-80">{{ sch.description }}</p>
-                    {% endif %}
-                    {% if sch.level %}
-                        <div class="flex flex-wrap gap-1 mb-2">
-                            {% for lvl in sch.level.split(',') %}
-                                <span class="px-1.5 py-0.5 bg-accent-500/20 border border-accent-500/30 text-accent-100 text-[9px] font-bold rounded-full">
-                                    {{ lvl }}
-                                </span>
-                            {% endfor %}
+            <div onclick="bookDailyCourse('{{ sch.course_title|escape }}', '{{ sch.date_text }}', '{{ sch.time_text }}')" 
+                 class="relative group cursor-pointer overflow-hidden rounded-3xl transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent-500/30">
+                <!-- Glass Background -->
+                <div class="absolute inset-0 bg-white/5 backdrop-blur-md border border-white/10 group-hover:bg-white/10 transition-colors duration-500"></div>
+                
+                <!-- Main Content -->
+                <div class="relative p-5 flex items-start gap-5">
+                    <!-- Time Bubble -->
+                    <div class="relative flex-shrink-0">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent-400 to-accent-600 flex flex-col items-center justify-center shadow-lg transform group-hover:rotate-6 transition-transform duration-500">
+                            <span class="text-xs font-black text-white/70 uppercase leading-none mb-1">Dép.</span>
+                            <span class="text-sm font-black text-white leading-none">{{ sch.time_text }}</span>
                         </div>
-                    {% endif %}
-                    <div class="inline-flex items-center px-1.5 py-0.5 rounded text-[10px] font-bold {{ 'bg-blue-500/20 text-blue-300' if sch.spots_available > 0 else 'bg-red-500/20 text-red-300' }}">
-                        {{ sch.spots_available }} places dispo.
+                        {% if sch.discount_percent and sch.discount_percent > 0 %}
+                        <div class="absolute -top-3 -right-3 bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-lg shadow-xl ring-2 ring-white/10 animate-bounce">
+                            -{{ sch.discount_percent }}%
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Details -->
+                    <div class="flex-1 text-left min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-[10px] font-black uppercase tracking-widest text-accent-400">{{ sch.date_text }}</span>
+                            <div class="h-px flex-1 bg-white/10"></div>
+                        </div>
+                        <h4 class="text-base font-black text-white truncate mb-2 group-hover:text-accent-300 transition-colors">{{ sch.course_title }}</h4>
+                        
+                        {% if sch.description %}
+                        <p class="text-xs text-gray-300/80 line-clamp-1 mb-3 font-medium">{{ sch.description }}</p>
+                        {% endif %}
+
+                        <div class="flex items-center justify-between mt-auto">
+                            <!-- Spots Status -->
+                            <div class="flex items-center gap-1.5 px-2 py-1 rounded-full bg-white/5 border border-white/5">
+                                <div class="w-1.5 h-1.5 rounded-full {{ 'bg-green-400 animate-pulse' if sch.spots_available > 2 else 'bg-red-400' }}"></div>
+                                <span class="text-[10px] font-bold text-gray-200 uppercase tracking-tight">{{ sch.spots_available }} places</span>
+                            </div>
+
+                            <!-- CTA Mock -->
+                            <div class="flex items-center text-accent-400 font-bold text-[10px] uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                                Réserver
+                                <svg class="w-3 h-3 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M9 5l7 7-7 7"/></svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </button>
+
+                <!-- Level Badges (Bottom line) -->
+                {% if sch.level %}
+                <div class="relative px-5 pb-4 flex flex-wrap gap-1.5">
+                    {% for lvl in sch.level.split(',') %}
+                    <span class="px-2 py-0.5 bg-white/5 border border-white/10 text-white/60 text-[8px] font-black rounded-md uppercase tracking-wider group-hover:border-accent-500/30 group-hover:text-accent-100 transition-all">
+                        {{ lvl }}
+                    </span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
             {% endfor %}
         </div>
         {% endif %}
