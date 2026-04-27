@@ -118,3 +118,8 @@ class CourseSchedule(Base):
     level = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
 
+class PopupEvent(Base):
+    __tablename__ = "popup_events"
+    id = Column(Integer, primary_key=True, index=True)
+    event_type = Column(String) # 'view', 'close', 'fill'
+    created_at = Column(String) # ISO date string

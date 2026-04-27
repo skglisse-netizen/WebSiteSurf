@@ -1429,6 +1429,49 @@
                 </div>
             </header>
 
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                <div class="lg:col-span-2 bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-3xl p-6 shadow-sm">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Conversion de la Popup</h3>
+                            <p class="text-xs text-gray-500">Performance du formulaire communautaire.</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-2xl font-black text-emerald-500">{{ (popup_stats.fills / popup_stats.views * 100) | round(1) if popup_stats.views > 0 else 0 }}%</span>
+                            <p class="text-[10px] text-gray-400 font-bold uppercase tracking-widest">Taux de conversion</p>
+                        </div>
+                    </div>
+                    <div class="h-64">
+                        <canvas id="popupConversionChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl p-6 text-white shadow-xl flex flex-col justify-between">
+                    <div>
+                        <h4 class="text-indigo-100 text-xs font-bold uppercase tracking-widest mb-6">Résumé Statistique</h4>
+                        <div class="space-y-4">
+                            <div class="flex justify-between items-end border-b border-white/10 pb-3">
+                                <span class="text-sm font-medium opacity-80">Affichages (Vues)</span>
+                                <span class="text-xl font-black">{{ popup_stats.views }}</span>
+                            </div>
+                            <div class="flex justify-between items-end border-b border-white/10 pb-3">
+                                <span class="text-sm font-medium opacity-80">Formulaires remplis</span>
+                                <span class="text-xl font-black text-emerald-300">{{ popup_stats.fills }}</span>
+                            </div>
+                            <div class="flex justify-between items-end border-b border-white/10 pb-3">
+                                <span class="text-sm font-medium opacity-80">Fermés sans remplir</span>
+                                <span class="text-xl font-black text-orange-300">{{ popup_stats.closes }}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-6 p-4 bg-white/10 rounded-2xl backdrop-blur-md">
+                        <p class="text-[11px] leading-relaxed opacity-90">
+                            <span class="font-bold">Astuce :</span> Un taux de conversion élevé indique que votre offre de réduction est attractive pour vos visiteurs.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
             <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
                 <div class="overflow-x-auto overflow-y-auto max-h-[600px] custom-scrollbar">
                     <table id="lead-table" class="w-full text-left relative">
@@ -2136,6 +2179,38 @@
                     grid: { display: false }
                 }
             }
+        }
+    {% if popup_stats %}
+    const popupCtx = document.getElementById('popupConversionChart').getContext('2d');
+    new Chart(popupCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Remplis', 'Fermés', 'Autres'],
+            datasets: [{
+                data: [
+                    {{ popup_stats.fills }}, 
+                    {{ popup_stats.closes }}, 
+                    {{ [popup_stats.views - popup_stats.fills - popup_stats.closes, 0] | max }}
+                ],
+                backgroundColor: ['#10b981', '#f97316', '#e5e7eb'],
+                borderWidth: 0,
+                hoverOffset: 15
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'right',
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20,
+                        font: { size: 11, weight: 'bold' }
+                    }
+                }
+            },
+            cutout: '75%'
         }
     });
     {% endif %}

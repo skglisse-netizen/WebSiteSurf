@@ -291,6 +291,13 @@
                     modal.style.display = 'flex';
                     setTimeout(() => modal.classList.add('active'), 10);
                     if (openBtn) openBtn.classList.add('scale-0', 'opacity-0');
+                    
+                    // Track view event
+                    fetch('/admin/stats/popup/track', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ event: 'view' })
+                    }).catch(err => console.error('Tracking error:', err));
                 }
             }
 
@@ -302,6 +309,13 @@
                         if (openBtn) openBtn.classList.remove('scale-0', 'opacity-0');
                     }, 500);
                     localStorage.setItem('community_modal_last_shown', new Date().getTime());
+                    
+                    // Track close event
+                    fetch('/admin/stats/popup/track', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ event: 'close' })
+                    }).catch(err => console.error('Tracking error:', err));
                 }
             }
 

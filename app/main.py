@@ -278,7 +278,33 @@ async def community_join(
     payload = notifications.format_inquiry_payload(inquiry, "Rejoint la Communauté")
     background_tasks.add_task(notifications.send_n8n_notification, payload, "contact")
 
+    # Track fill event
+    import datetime
+    fill_event = models.PopupEvent(
+        event_type="fill",
+        created_at=datetime.datetime.now().isoformat()
+    )
+    db.add(fill_event)
+    db.commit()
+
     return RedirectResponse(url="/?success=community#accueil", status_code=303)
+
+@app.post("/admin/stats/popup/track")
+async def track_popup(request: Request, db: Session = Depends(get_db)):
+    try:
+        data = await request.json()
+        event_type = data.get("event")
+        if event_type in ['view', 'close']:
+            import datetime
+            new_event = models.PopupEvent(
+                event_type=event_type,
+                created_at=datetime.datetime.now().isoformat()
+            )
+            db.add(new_event)
+            db.commit()
+        return {"status": "success"}
+    except:
+        return {"status": "error"}
 
 
 @app.post("/footer-contact")
@@ -492,6 +518,11 @@ async def dashboard_page(
             labels.append(month_names[m-1])
             data_counts.append(month_totals[m])
 
+    # Popup Stats
+    popup_fills = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "fill").count()
+    popup_closes = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "close").count()
+    popup_views = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "view").count()
+
     return templates.TemplateResponse(
         request=request, 
         name="admin/dashboard.html", 
@@ -509,7 +540,12 @@ async def dashboard_page(
             "current_view": view,
             "current_month": month,
             "current_year": year,
-            "years_range": range(now.year - 2, now.year + 1)
+            "years_range": range(now.year - 2, now.year + 1),
+            "popup_stats": {
+                "fills": popup_fills,
+                "closes": popup_closes,
+                "views": popup_views
+            }
         }
     )
 
