@@ -1,4 +1,5 @@
-from sqlalchemy import Column, Integer, String, Text, Numeric, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Text, Numeric, Boolean, ForeignKey, DateTime
+from sqlalchemy.sql import func
 from sqlalchemy.orm import relationship
 from .database import Base
 
@@ -34,7 +35,7 @@ class Inquiry(Base):
     source = Column(String, default="contact") # contact, lead, reservation
     
     is_processed = Column(Boolean, default=False)
-    # created_at = Column(String, nullable=True) # Désactivé temporairement pour éviter le crash DB
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     service = relationship("Service")
 
@@ -118,6 +119,7 @@ class CourseSchedule(Base):
     spots_available = Column(Integer, default=10)
     level = Column(String, nullable=True)
     is_active = Column(Boolean, default=True)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 class PopupEvent(Base):
     __tablename__ = "popup_events"
