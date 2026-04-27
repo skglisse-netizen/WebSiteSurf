@@ -524,14 +524,63 @@ async def dashboard_page(
             labels.append(month_names[m-1])
             data_counts.append(month_totals[m])
 
-    # Popup Stats (Safety wrapped for DB sync)
-    popup_stats = {"fills": 0, "closes": 0, "views": 0}
+    # Popup Stats for Time Chart
+    popup_fills_data = []
+    popup_closes_data = []
+    popup_views_data = []
+
     try:
-        popup_stats["fills"] = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "fill").count()
-        popup_stats["closes"] = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "close").count()
-        popup_stats["views"] = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "view").count()
-    except Exception as e:
-        print(f"Stats error (likely table missing): {e}")
+        if view == "month":
+            prefix = f"{year:04d}-{month:02d}"
+            all_events = db.query(models.PopupEvent).filter(models.PopupEvent.created_at.like(f"{prefix}%")).all()
+            
+            fills_dict = {}
+            closes_dict = {}
+            views_dict = {}
+            
+            for ev in all_events:
+                d = ev.created_at[:10] # YYYY-MM-DD
+                if ev.event_type == "fill": fills_dict[d] = fills_dict.get(d, 0) + 1
+                elif ev.event_type == "close": closes_dict[d] = closes_dict.get(d, 0) + 1
+                elif ev.event_type == "view": views_dict[d] = views_dict.get(d, 0) + 1
+                
+            for day in range(1, last_day + 1):
+                day_str = f"{prefix}-{day:02d}"
+                popup_fills_data.append(fills_dict.get(day_str, 0))
+                popup_closes_data.append(closes_dict.get(day_str, 0))
+                popup_views_data.append(views_dict.get(day_str, 0))
+        else:
+            prefix = f"{year:04d}"
+            all_events = db.query(models.PopupEvent).filter(models.PopupEvent.created_at.like(f"{prefix}%")).all()
+            
+            fills_m = {m: 0 for m in range(1, 13)}
+            closes_m = {m: 0 for m in range(1, 13)}
+            views_m = {m: 0 for m in range(1, 13)}
+            
+            for ev in all_events:
+                try:
+                    m = int(ev.created_at.split("-")[1])
+                    if ev.event_type == "fill": fills_m[m] += 1
+                    elif ev.event_type == "close": closes_m[m] += 1
+                    elif ev.event_type == "view": views_m[m] += 1
+                except: continue
+                
+            for m in range(1, 13):
+                popup_fills_data.append(fills_m[m])
+                popup_closes_data.append(closes_m[m])
+                popup_views_data.append(views_m[m])
+    except:
+        popup_fills_data = [0] * len(labels)
+        popup_closes_data = [0] * len(labels)
+        popup_views_data = [0] * len(labels)
+
+    # Summary Stats
+    popup_summary = {"fills": 0, "closes": 0, "views": 0}
+    try:
+        popup_summary["fills"] = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "fill").count()
+        popup_summary["closes"] = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "close").count()
+        popup_summary["views"] = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "view").count()
+    except: pass
 
     return templates.TemplateResponse(
         request=request, 
@@ -547,13 +596,16 @@ async def dashboard_page(
             "recent_activities": recent_activities,
             "chart_labels": json.dumps(labels),
             "chart_data": json.dumps(data_counts),
+            "popup_fills_data": json.dumps(popup_fills_data),
+            "popup_closes_data": json.dumps(popup_closes_data),
+            "popup_views_data": json.dumps(popup_views_data),
             "current_view": view,
             "current_month": month,
             "current_year": year,
             "years_range": range(now.year - 2, now.year + 1),
-            "popup_stats": popup_stats,
-            "conversion_rate": (popup_stats["fills"] / popup_stats["views"] * 100) if popup_stats["views"] > 0 else 0,
-            "popup_others": max(0, popup_stats["views"] - popup_stats["fills"] - popup_stats["closes"])
+            "popup_stats": popup_summary,
+            "conversion_rate": (popup_summary["fills"] / popup_summary["views"] * 100) if popup_summary["views"] > 0 else 0,
+            "popup_others": max(0, popup_summary["views"] - popup_summary["fills"] - popup_summary["closes"])
         }
     )
 
