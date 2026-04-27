@@ -76,6 +76,13 @@ def init_db():
         db.execute(text("ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS spots_available INTEGER DEFAULT 10"))
         db.execute(text("ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS level TEXT"))
         
+        # Modal fields
+        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_title VARCHAR DEFAULT 'Rejoignez la Communauté'"))
+        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_subtitle TEXT DEFAULT 'Dites-nous en un peu plus sur vous pour débloquer votre réduction.'"))
+        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_promo_text VARCHAR DEFAULT 'Rejoignez notre communauté de passionnés et profitez d''une réduction immédiate sur votre prochain cours !'"))
+        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_discount_percent INTEGER DEFAULT 15"))
+        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_image_filename VARCHAR DEFAULT NULL"))
+        
         db.commit()
 
         # Seed Admin user
@@ -236,6 +243,38 @@ async def contact_form(
     background_tasks.add_task(notifications.send_n8n_notification, payload, webhook_target)
 
     return RedirectResponse(url="/?success=reservation#accueil", status_code=303)
+
+@app.post("/community-join")
+async def community_join(
+    request: Request,
+    name: str = Form(...),
+    email: str = Form(...),
+    phone: str = Form(...),
+    level: str = Form(...),
+    objective: str = Form(...),
+    background_tasks: BackgroundTasks = BackgroundTasks(),
+    db: Session = Depends(get_db)
+):
+    # Save as an inquiry with a special message format
+    message = f"[COMMUNITY JOIN] Objectif: {objective}"
+    inquiry = models.Inquiry(
+        name=name,
+        email=email,
+        phone=phone,
+        message=message,
+        level=level,
+        status="en_attente"
+    )
+    db.add(inquiry)
+    db.commit()
+    db.refresh(inquiry)
+    
+    # Send notification
+    payload = notifications.format_inquiry_payload(inquiry, "Rejoint la Communauté")
+    background_tasks.add_task(notifications.send_n8n_notification, payload, "contact")
+
+    return RedirectResponse(url="/?success=community#accueil", status_code=303)
+
 
 @app.post("/footer-contact")
 async def footer_contact(
@@ -647,6 +686,72 @@ async def delete_why_image(request: Request, db: Session = Depends(get_db)):
         if os.path.exists(f):
             os.remove(f)
         config.why_image_filename = None
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard", status_code=302)
+
+# --- MODAL SECTION ---
+MODAL_IMG_DIR = "static/uploads/modal"
+os.makedirs(MODAL_IMG_DIR, exist_ok=True)
+
+@app.post("/admin/modal-config")
+async def modal_config_update(
+    request: Request,
+    modal_title: str = Form(...),
+    modal_subtitle: str = Form(...),
+    modal_promo_text: str = Form(...),
+    modal_discount_percent: int = Form(...),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+        
+    config = db.query(models.SiteConfig).first()
+    config.modal_title = modal_title
+    config.modal_subtitle = modal_subtitle
+    config.modal_promo_text = modal_promo_text
+    config.modal_discount_percent = modal_discount_percent
+    db.commit()
+    
+    return RedirectResponse(url="/admin/dashboard", status_code=302)
+
+@app.post("/admin/modal-image/upload")
+async def upload_modal_image(
+    request: Request,
+    file: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    config = db.query(models.SiteConfig).first()
+    
+    new_filename = secure_filename_lite(file.filename)
+    
+    if config.modal_image_filename and config.modal_image_filename != new_filename:
+        old = os.path.join(MODAL_IMG_DIR, config.modal_image_filename)
+        if os.path.exists(old):
+            os.remove(old)
+            
+    file_path = os.path.join(MODAL_IMG_DIR, new_filename)
+    with open(file_path, "wb") as f:
+        shutil.copyfileobj(file.file, f)
+        
+    config.modal_image_filename = new_filename
+    db.commit()
+    return RedirectResponse(url="/admin/dashboard", status_code=302)
+
+@app.post("/admin/modal-image/delete")
+async def delete_modal_image(request: Request, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    config = db.query(models.SiteConfig).first()
+    if config.modal_image_filename:
+        f = os.path.join(MODAL_IMG_DIR, config.modal_image_filename)
+        if os.path.exists(f):
+            os.remove(f)
+        config.modal_image_filename = None
         db.commit()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 

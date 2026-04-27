@@ -4,7 +4,7 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section id="accueil" class="relative h-screen flex items-center justify-center overflow-hidden">
+<section id="accueil" class="relative min-h-screen flex items-center justify-center overflow-hidden py-20">
     <!-- Background Slider -->
     <div class="absolute inset-0 z-0" id="hero-slider">
         {% if config.hero_images %}
@@ -95,7 +95,11 @@
 <div class="max-w-4xl mx-auto mt-8 px-4" id="alert-message">
     <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-md" role="alert">
         <p class="font-bold">Succès</p>
-        <p>{{ success_message }}</p>
+        {% if request.query_params.get('success') == 'community' %}
+            <p>Bienvenue dans la communauté ! Votre code de réduction vous a été envoyé (ou s'affiche ici : <strong>SURF15-MWV</strong>).</p>
+        {% else %}
+            <p>{{ success_message }}</p>
+        {% endif %}
     </div>
 </div>
 <script>
@@ -203,9 +207,9 @@
             
             <div class="relative fade-in">
                 {% if config.why_image_filename %}
-                <img src="/static/uploads/why/{{ config.why_image_filename }}" alt="{{ config.why_title }}" class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-[260px]">
+                <img src="/static/uploads/why/{{ config.why_image_filename }}" alt="{{ config.why_title }}" class="rounded-2xl shadow-2xl relative z-10 w-full object-cover aspect-video">
                 {% else %}
-                <img src="https://images.unsplash.com/photo-1516307365426-bea591f05011?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Surfer catching wave" class="rounded-2xl shadow-2xl relative z-10 w-full object-cover h-[260px]">
+                <img src="https://images.unsplash.com/photo-1516307365426-bea591f05011?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Surfer catching wave" class="rounded-2xl shadow-2xl relative z-10 w-full object-cover aspect-video">
                 {% endif %}
                 <div class="absolute -bottom-6 -right-6 w-full h-full border-4 border-accent-400 rounded-2xl z-0"></div>
             </div>

@@ -77,6 +77,13 @@ class SiteConfig(Base):
     why_feature3_icon = Column(String, default="🌊")
     why_feature3_title = Column(String, default="Choix des Spots")
     why_feature3_desc = Column(String, default="Nous sélectionnons chaque jour la meilleure plage selon les conditions.")
+ 
+    # Lead Capture Modal Configuration
+    modal_title = Column(String, default="Rejoignez la Communauté")
+    modal_subtitle = Column(Text, default="Dites-nous en un peu plus sur vous pour débloquer votre réduction.")
+    modal_promo_text = Column(String, default="Rejoignez notre communauté de passionnés et profitez d'une réduction immédiate sur votre prochain cours !")
+    modal_discount_percent = Column(Integer, default=15)
+    modal_image_filename = Column(String, default=None)
 
     # Relationship to multiple hero images
     hero_images = relationship("HeroImage", back_populates="config", cascade="all, delete-orphan")
