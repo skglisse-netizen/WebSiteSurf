@@ -62,6 +62,8 @@ def format_inquiry_payload(inquiry: Any, service_title: str = None) -> Dict[str,
             "booking_date": str(getattr(inquiry, 'booking_date', "N/A") or "N/A"),
             "people_count": int(getattr(inquiry, 'people_count', 0) or 0),
             "level": str(getattr(inquiry, 'level', "N/A") or "N/A"),
+            "objective": str(getattr(inquiry, 'objective', "") or ""),
+            "source": str(getattr(inquiry, 'source', "contact")),
             "admin_url": "http://mwv.sytes.net/admin/dashboard"
         }
         return data
@@ -148,10 +150,22 @@ async def send_telegram_notification(payload: Dict[str, Any]):
     message = payload.get("message", "")
     service = payload.get("service", "Non spécifié")
     
-    text = f"🔔 *Nouveau {msg_type}* 🌊\n\n"
+    source = payload.get("source", "contact")
+    
+    if source == "lead":
+        text = f"🔥 *Nouveau Membre Communauté* 🌊\n\n"
+    else:
+        text = f"🔔 *Nouveau {msg_type}* 🌊\n\n"
+        
     text += f"👤 *Nom:* {name}\n"
     text += f"📞 *Tel:* {phone}\n"
     text += f"🏄 *Service:* {service}\n"
+    
+    if payload.get("level") and payload.get("level") != "N/A":
+        text += f"📊 *Niveau:* {payload.get('level')}\n"
+        
+    if payload.get("objective"):
+        text += f"🎯 *Objectif:* {payload.get('objective')}\n"
     
     if payload.get("booking_date") and payload.get("booking_date") != "N/A":
         text += f"📅 *Date:* {payload.get('booking_date')}\n"
