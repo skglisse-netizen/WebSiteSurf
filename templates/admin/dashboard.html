@@ -1410,28 +1410,28 @@
         </section>
 
         <!-- SECTION: LEADS (COMMUNITY) -->
-        <section id="section-leads" class="content-section space-y-6 animate-in">
-            <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <section id="section-leads" class="content-section space-y-4 animate-in">
+            <header class="mb-3 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
                 <div>
-                    <h1 class="text-3xl font-black text-gray-900 dark:text-white">Membres de la Communauté</h1>
-                    <p class="text-gray-500 dark:text-gray-400 mt-2">Prospects ayant rejoint la communauté via la popup.</p>
+                    <h1 class="text-xl font-black text-gray-900 dark:text-white">Membres de la Communauté</h1>
+                    <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm">Prospects ayant rejoint la communauté via la popup.</p>
                 </div>
                 <div class="relative max-w-xs w-full mx-auto lg:mx-0">
                     <input type="text" onkeyup="filterTable('lead-table', this.value)" 
                         placeholder="Rechercher un membre..." 
-                        class="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                    <svg class="w-4 h-4 absolute left-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        class="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl py-2 pl-9 pr-4 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                    <svg class="w-4 h-4 absolute left-3 top-2.5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
                     </svg>
                 </div>
             </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
                 <div
-                    class="lg:col-span-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
-                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
+                    class="lg:col-span-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-4 rounded-2xl shadow-md border border-white/20 dark:border-gray-800/50">
+                    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-4 gap-3">
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Conversion de la Popup</h3>
+                            <h3 class="text-sm font-bold text-gray-900 dark:text-white">Conversion de la Popup</h3>
                             <p class="text-xs text-gray-500 dark:text-gray-400">Performance et taux de transformation communautaire.</p>
                         </div>
                         <div class="flex items-center gap-4">
@@ -1476,7 +1476,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-full h-72">
+                    <div class="w-full h-44">
                         <canvas id="popupConversionChart"></canvas>
                     </div>
                 </div>
@@ -1498,28 +1498,28 @@
                             {% set lead_list = inquiries | selectattr('source', 'equalto', 'lead') | list %}
                             {% for inquiry in lead_list[:100] %}
                             <tr class="hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors">
-                                <td class="px-6 py-5">
-                                    <div class="font-bold text-gray-900 dark:text-white">{{ inquiry.name }}</div>
+                                <td class="px-4 py-3">
+                                    <div class="font-semibold text-sm text-gray-900 dark:text-white">{{ inquiry.name }}</div>
                                     <div class="text-[10px] text-gray-400 dark:text-gray-500">{{ inquiry.email }}</div>
                                 </td>
-                                <td class="px-6 py-5">
-                                    <div class="mb-2">
+                                <td class="px-4 py-3">
+                                    <div class="mb-1">
                                         <span class="px-2 py-0.5 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] font-bold rounded-full uppercase tracking-widest">
-                                            Niveau: {{ inquiry.level }}
+                                            {{ inquiry.level }}
                                         </span>
                                     </div>
-                                    <div class="text-sm bg-gray-50 dark:bg-gray-800/50 p-3 rounded-xl border border-gray-100 dark:border-gray-800 max-w-md italic text-gray-600 dark:text-gray-300">
+                                    <div class="text-xs bg-gray-50 dark:bg-gray-800/50 px-2 py-1.5 rounded-lg border border-gray-100 dark:border-gray-800 max-w-sm italic text-gray-500 dark:text-gray-400">
                                         "{{ inquiry.objective }}"
                                     </div>
                                 </td>
-                                <td class="px-6 py-5 whitespace-nowrap">
+                                <td class="px-4 py-3 whitespace-nowrap">
                                     <div class="text-xs text-blue-600 dark:text-blue-400 font-bold">{{ inquiry.phone }}</div>
                                 </td>
-                                <td class="px-6 py-5 text-right whitespace-nowrap">
-                                    <div class="flex items-center justify-end space-x-2">
-                                        <form action="/admin/messages/{{ inquiry.id }}/delete" method="POST" onsubmit="return confirm('Supprimer ce membre de la liste ?')">
-                                            <button type="submit" class="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <td class="px-4 py-3 text-right whitespace-nowrap">
+                                    <div class="flex items-center justify-end">
+                                        <form action="/admin/messages/{{ inquiry.id }}/delete" method="POST" onsubmit="return confirm('Supprimer ce membre ?')">
+                                            <button type="submit" class="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z"></path>
                                                 </svg>
                                             </button>
@@ -1529,7 +1529,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="4" class="px-6 py-12 text-center text-gray-400 dark:text-gray-600 italic font-medium">Aucun membre n'a rejoint la communauté pour le moment.</td>
+                                <td colspan="4" class="px-4 py-8 text-center text-gray-400 dark:text-gray-600 italic text-sm">Aucun membre n'a rejoint la communauté pour le moment.</td>
                             </tr>
                             {% endfor %}
                         </tbody>
