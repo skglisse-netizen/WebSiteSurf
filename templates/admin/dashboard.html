@@ -249,10 +249,10 @@
                 </header>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div
-                        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm flex items-center">
+                    <div onclick="showSection('reservations')"
+                        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm flex items-center cursor-pointer hover:shadow-md hover:border-indigo-500/30 transition-all group">
                         <div
-                            class="w-14 h-14 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mr-4">
+                            class="w-14 h-14 bg-indigo-100 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
@@ -265,10 +265,10 @@
                                     class="text-sm font-medium text-gray-400 text-[10px]">EN ATTENTE</span></h3>
                         </div>
                     </div>
-                    <div
-                        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm flex items-center">
+                    <div onclick="showSection('messages')"
+                        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm flex items-center cursor-pointer hover:shadow-md hover:border-blue-500/30 transition-all group">
                         <div
-                            class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mr-4">
+                            class="w-14 h-14 bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
@@ -281,10 +281,10 @@
                                     class="text-sm font-medium text-gray-400 text-[10px]">NON LUS</span></h3>
                         </div>
                     </div>
-                    <div
-                        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm flex items-center">
+                    <div onclick="showSection('leads')"
+                        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm flex items-center cursor-pointer hover:shadow-md hover:border-emerald-500/30 transition-all group">
                         <div
-                            class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center mr-4">
+                            class="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/30 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z">
@@ -297,10 +297,10 @@
                                     class="text-sm font-medium text-gray-400 text-[10px]">LEADS</span></h3>
                         </div>
                     </div>
-                    <div
-                        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm flex items-center">
+                    <div onclick="showSection('services')"
+                        class="bg-white dark:bg-gray-900 border border-gray-100 dark:border-gray-800 rounded-2xl p-6 shadow-sm flex items-center cursor-pointer hover:shadow-md hover:border-orange-500/30 transition-all group">
                         <div
-                            class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-xl flex items-center justify-center mr-4">
+                            class="w-14 h-14 bg-orange-100 dark:bg-orange-900/30 text-orange-600 dark:text-orange-400 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                             <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-7.714 2.143L11 21l-2.286-6.857L1 12l7.714-2.143L11 3z">
@@ -320,30 +320,43 @@
                     <div
                         class="lg:col-span-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white">Statistiques de Visite</h3>
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Analyse du Trafic</h3>
+                                <p class="text-xs text-gray-500 dark:text-gray-400">Suivi des visiteurs uniques sur le site.</p>
+                            </div>
                             
-                            <div class="flex items-center gap-2">
-                                <form action="/admin/dashboard#overview" method="GET" id="chart-filters" class="flex items-center gap-2">
-                                    <select name="view" onchange="this.form.submit()" class="bg-gray-100 dark:bg-gray-800 border-0 text-[10px] font-black uppercase tracking-wider rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-blue-500/20 transition-all cursor-pointer">
-                                        <option value="month" {% if current_view == 'month' %}selected{% endif %}>Détails Jours</option>
-                                        <option value="year" {% if current_view == 'year' %}selected{% endif %}>Bilan Annuel</option>
-                                    </select>
+                            <div class="flex items-center bg-gray-50 dark:bg-gray-800/50 p-1.5 rounded-2xl border border-gray-100 dark:border-gray-700/50 shadow-inner">
+                                <form action="/admin/dashboard#overview" method="GET" id="chart-filters" class="flex items-center gap-1">
+                                    <div class="flex items-center bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 px-2 py-1">
+                                        <svg class="w-3.5 h-3.5 text-gray-400 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                        </svg>
+                                        <select name="view" onchange="this.form.submit()" class="bg-transparent border-0 text-[10px] font-bold uppercase tracking-wider focus:ring-0 cursor-pointer py-0">
+                                            <option value="month" {% if current_view == 'month' %}selected{% endif %}>Quotidien</option>
+                                            <option value="year" {% if current_view == 'year' %}selected{% endif %}>Mensuel</option>
+                                        </select>
+                                    </div>
                                     
                                     {% if current_view == 'month' %}
-                                    <select name="month" onchange="this.form.submit()" class="bg-gray-100 dark:bg-gray-800 border-0 text-[10px] font-black uppercase tracking-wider rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-blue-500/20 transition-all cursor-pointer">
-                                        {% for m in range(1, 13) %}
-                                        <option value="{{ m }}" {% if current_month == m %}selected{% endif %}>
-                                            {{ ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"][m-1] }}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
+                                    <div class="flex items-center bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 px-2 py-1 ml-1">
+                                        <select name="month" onchange="this.form.submit()" class="bg-transparent border-0 text-[10px] font-bold uppercase tracking-wider focus:ring-0 cursor-pointer py-0">
+                                            {% for m in range(1, 13) %}
+                                            <option value="{{ m }}" {% if current_month == m %}selected{% endif %}>
+                                                {{ ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"][m-1] }}
+                                            </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                     {% endif %}
                                     
-                                    <select name="year" onchange="this.form.submit()" class="bg-gray-100 dark:bg-gray-800 border-0 text-[10px] font-black uppercase tracking-wider rounded-lg px-3 py-1.5 focus:ring-2 focus:ring-blue-500/20 transition-all cursor-pointer">
-                                        {% for y in years_range %}
-                                        <option value="{{ y }}" {% if current_year == y %}selected{% endif %}>{{ y }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    <div class="flex items-center bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-100 dark:border-gray-800 px-2 py-1 ml-1">
+                                        <select name="year" onchange="this.form.submit()" class="bg-transparent border-0 text-[10px] font-bold uppercase tracking-wider focus:ring-0 cursor-pointer py-0">
+                                            {% for y in years_range %}
+                                            <option value="{{ y }}" {% if current_year == y %}selected{% endif %}>{{ y }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
                                 </form>
                             </div>
                         </div>
