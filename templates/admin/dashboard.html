@@ -228,7 +228,7 @@
             <div class="w-10"></div>
         </header>
 
-        <div class="p-4 sm:p-6 lg:p-8 w-full max-w-7xl mx-auto">
+        <div class="p-4 sm:p-6 lg:p-8 w-full max-w-6xl mx-auto">
             {% if request.query_params.get('mfa_success') %}
             <div
                 class="mb-8 p-4 bg-green-50 border-l-4 border-green-500 text-green-700 flex items-center shadow-sm rounded-r-lg animate-fade-in">
@@ -398,7 +398,7 @@
             </section>
 
             <!-- SECTION: HERO-CONFIG -->
-            <section id="section-hero-config" class="content-section space-y-8 animate-in">
+            <section id="section-hero-config" class="content-section space-y-6 animate-in">
                 <header class="mb-6">
                     <h1 class="text-3xl font-black text-gray-900 dark:text-white">Bandeau d'Accueil</h1>
                     <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez le contenu des textes principaux affichés à l'arrivée sur le site.</p>
@@ -406,7 +406,7 @@
 
                 <div class="grid grid-cols-1 gap-8">
                     <div
-                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
+                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                         <form action="/admin/dashboard" method="POST" class="space-y-8">
                             <!-- Hero Section Config -->
                             <div>
@@ -517,7 +517,7 @@
             </section>
 
             <!-- SECTION: WHY (Pourquoi Nous ?) -->
-            <section id="section-why" class="content-section space-y-8 animate-in">
+            <section id="section-why" class="content-section space-y-6 animate-in">
                 <header class="mb-6">
                     <h1 class="text-3xl font-black text-gray-900 dark:text-white">Section "Pourquoi Nous ?"</h1>
                     <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez vos arguments de vente et la photo d'illustration associée.</p>
@@ -525,7 +525,7 @@
 
                 <div class="grid grid-cols-1 gap-8">
                     <div
-                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
+                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                         <form action="/admin/dashboard" method="POST" class="space-y-8">
                             <div>
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -689,14 +689,14 @@
         </section>
 
         <!-- SECTION: MODAL-CONFIG (Communauté & Popup) -->
-        <section id="section-modal-config" class="content-section space-y-8 animate-in">
+        <section id="section-modal-config" class="content-section space-y-6 animate-in">
             <header class="mb-6">
                 <h1 class="text-3xl font-black text-gray-900 dark:text-white">Communauté & Popup Lead Capture</h1>
                 <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez le contenu de la fenêtre surgissante qui propose une réduction aux nouveaux visiteurs.</p>
             </header>
 
             <div class="grid grid-cols-1 gap-8">
-                <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                     <form action="/admin/modal-config" method="POST" class="space-y-8">
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -737,7 +737,7 @@
                 </div>
 
                 <!-- Modal Image Management -->
-                <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
                         <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">📸</span>
                         Image de Fond de la Popup
@@ -785,7 +785,7 @@
         </section>
 
         <!-- SECTION: SCHOOL (École & Design) -->
-        <section id="section-school" class="content-section space-y-8 animate-in">
+        <section id="section-school" class="content-section space-y-6 animate-in">
             <header class="mb-6">
                 <h1 class="text-3xl font-black text-gray-900 dark:text-white">École & Design</h1>
                 <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez les informations de contact, le logo et les couleurs du site.</p>
@@ -795,7 +795,7 @@
                 <!-- Contact Config -->
                 <div class="space-y-8">
                     <div
-                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
+                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                         <form action="/admin/dashboard" method="POST" class="space-y-6">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
                                 <span
@@ -930,7 +930,7 @@
 
 
         <!-- SECTION: PLANNING RAPIDE -->
-        <section id="section-planning-config" class="content-section space-y-8 animate-in">
+        <section id="section-planning-config" class="content-section space-y-6 animate-in">
             <header class="mb-6">
                 <h1 class="text-3xl font-black text-gray-900 dark:text-white">Planning Rapide</h1>
                 <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez les cours du jour qui s'affichent sous forme de bulles dans le Hero (Accueil).</p>
@@ -1058,7 +1058,7 @@
         </section>
 
         <!-- SECTION: SERVICES -->
-        <section id="section-services" class="content-section space-y-8 animate-in">
+        <section id="section-services" class="content-section space-y-6 animate-in">
             <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                     <h1 class="text-3xl font-black text-gray-900 dark:text-white">Gestion des Formules</h1>
@@ -1130,7 +1130,7 @@
 
 
         <!-- SECTION: RESERVATIONS -->
-        <section id="section-reservations" class="content-section space-y-8 animate-in">
+        <section id="section-reservations" class="content-section space-y-6 animate-in">
             <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                     <h1 class="text-3xl font-black text-gray-900 dark:text-white">Réservations de Cours</h1>
@@ -1281,7 +1281,7 @@
         </section>
 
         <!-- SECTION: MESSAGES -->
-        <section id="section-messages" class="content-section space-y-8 animate-in">
+        <section id="section-messages" class="content-section space-y-6 animate-in">
             <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                     <h1 class="text-3xl font-black text-gray-900 dark:text-white">Messages de Contact</h1>
@@ -1410,7 +1410,7 @@
         </section>
 
         <!-- SECTION: LEADS (COMMUNITY) -->
-        <section id="section-leads" class="content-section space-y-8 animate-in">
+        <section id="section-leads" class="content-section space-y-6 animate-in">
             <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                 <div>
                     <h1 class="text-3xl font-black text-gray-900 dark:text-white">Membres de la Communauté</h1>
@@ -1539,7 +1539,7 @@
         </section>
 
         <!-- SECTION: SECURITY -->
-        <section id="section-security" class="content-section space-y-8 animate-in">
+        <section id="section-security" class="content-section space-y-6 animate-in">
             <header class="mb-6">
                 <h1 class="text-3xl font-black text-gray-900 dark:text-white">Sécurité & Compte</h1>
                 <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez votre mot de passe et votre double authentification.</p>
