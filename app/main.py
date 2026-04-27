@@ -1186,7 +1186,7 @@ async def reservation_edit(
     phone: str = Form(...),
     service_id: int = Form(...),
     booking_date: str = Form(None),
-    people_count: int = Form(1),
+    people_count: int = Form(None),
     level: str = Form(None),
     db: Session = Depends(get_db)
 ):
