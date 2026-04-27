@@ -61,8 +61,13 @@
         <div class="mt-10 flex flex-wrap justify-center gap-4 animate-in fade-in slide-in-from-bottom" style="--tw-enter-opacity: 0; --tw-enter-translate-y: 1rem; animation-delay: 300ms; animation-fill-mode: both;">
             {% for sch in schedules %}
             <button onclick="bookDailyCourse('{{ sch.course_title|escape }}', '{{ sch.date_text }}', '{{ sch.time_text }}')" class="glass border border-white/10 px-4 py-3 rounded-2xl flex items-start space-x-4 text-left hover:bg-white/20 hover:shadow-lg hover:shadow-accent-500/20 transition-all cursor-pointer transform hover:-translate-y-1 duration-300 max-w-sm w-full group">
-                <div class="w-12 h-12 rounded-full bg-accent-500 text-white flex items-center justify-center font-bold text-sm ring-2 ring-accent-400/30 group-hover:ring-accent-400 transition-all shadow-[0_0_15px_rgba(var(--tw-colors-accent-500),0.3)] flex-shrink-0 mt-1">
+                <div class="w-12 h-12 rounded-full bg-accent-500 text-white flex items-center justify-center font-bold text-sm ring-2 ring-accent-400/30 group-hover:ring-accent-400 transition-all shadow-[0_0_15px_rgba(var(--tw-colors-accent-500),0.3)] flex-shrink-0 mt-1 relative">
                     {{ sch.time_text }}
+                    {% if sch.discount_percent and sch.discount_percent > 0 %}
+                    <div class="absolute -top-1 -right-1 bg-red-600 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black shadow-lg animate-pulse ring-1 ring-white">
+                        -{{ sch.discount_percent }}%
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="flex-1">
                     <div class="text-sm font-bold text-white tracking-wide mb-0.5">{{ sch.course_title }}</div>
