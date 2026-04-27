@@ -2179,44 +2179,43 @@
                     grid: { display: false }
                 }
             }
-        }
-    });
+        });
         {% endif %}
 
-    {% if popup_stats %}
-    const popupCtx = document.getElementById('popupConversionChart').getContext('2d');
-    new Chart(popupCtx, {
-        type: 'doughnut',
-        data: {
-            labels: ['Remplis', 'Fermés', 'Autres'],
-            datasets: [{
-                data: [
-                    {{ popup_stats.fills }}, 
-                    {{ popup_stats.closes }}, 
-                    {{ popup_others }}
-                ],
-                backgroundColor: ['#10b981', '#f97316', '#e5e7eb'],
-                borderWidth: 0,
-                hoverOffset: 15
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-                legend: {
-                    position: 'right',
-                    labels: {
-                        usePointStyle: true,
-                        padding: 20,
-                        font: { size: 11, weight: 'bold' }
-                    }
-                }
+        {% if popup_stats %}
+        const popupCtx = document.getElementById('popupConversionChart').getContext('2d');
+        new Chart(popupCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Remplis', 'Fermés', 'Autres'],
+                datasets: [{
+                    data: [
+                        {{ popup_stats["fills"] }}, 
+                        {{ popup_stats["closes"] }}, 
+                        {{ popup_others }}
+                    ],
+                    backgroundColor: ['#10b981', '#f97316', '#e5e7eb'],
+                    borderWidth: 0,
+                    hoverOffset: 15
+                }]
             },
-            cutout: '75%'
-        }
-    });
-    {% endif %}
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                        labels: {
+                            usePointStyle: true,
+                            padding: 20,
+                            font: { size: 11, weight: 'bold' }
+                        }
+                    }
+                },
+                cutout: '75%'
+            }
+        });
+        {% endif %}
     });
 
     // Close modals on escape key
