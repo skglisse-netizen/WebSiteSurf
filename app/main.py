@@ -86,6 +86,15 @@ def init_db():
         db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS objective TEXT"))
         db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS source VARCHAR DEFAULT 'contact'"))
         
+        # Explicit creation of popup_events table for some DB environments
+        db.execute(text("""
+            CREATE TABLE IF NOT EXISTS popup_events (
+                id SERIAL PRIMARY KEY,
+                event_type VARCHAR,
+                created_at VARCHAR
+            )
+        """))
+        
         db.commit()
 
         # Seed Admin user
@@ -518,10 +527,14 @@ async def dashboard_page(
             labels.append(month_names[m-1])
             data_counts.append(month_totals[m])
 
-    # Popup Stats
-    popup_fills = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "fill").count()
-    popup_closes = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "close").count()
-    popup_views = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "view").count()
+    # Popup Stats (Safety wrapped for DB sync)
+    popup_stats = {"fills": 0, "closes": 0, "views": 0}
+    try:
+        popup_stats["fills"] = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "fill").count()
+        popup_stats["closes"] = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "close").count()
+        popup_stats["views"] = db.query(models.PopupEvent).filter(models.PopupEvent.event_type == "view").count()
+    except Exception as e:
+        print(f"Stats error (likely table missing): {e}")
 
     return templates.TemplateResponse(
         request=request, 
@@ -541,11 +554,7 @@ async def dashboard_page(
             "current_month": month,
             "current_year": year,
             "years_range": range(now.year - 2, now.year + 1),
-            "popup_stats": {
-                "fills": popup_fills,
-                "closes": popup_closes,
-                "views": popup_views
-            }
+            "popup_stats": popup_stats
         }
     )
 
