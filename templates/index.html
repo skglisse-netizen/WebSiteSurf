@@ -86,17 +86,13 @@
                                 {% endif %}
                                 
                                 <!-- Top Badges -->
+                                {% if sch.discount_percent and sch.discount_percent > 0 %}
                                 <div class="absolute top-4 left-4 flex flex-col gap-2">
-                                    <div class="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-lg border border-white/20 inline-flex items-center gap-2 shadow-lg w-max">
-                                        <svg class="w-3.5 h-3.5 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                                        <span class="text-xs font-black">{{ sch.time_text }}</span>
-                                    </div>
-                                    {% if sch.discount_percent and sch.discount_percent > 0 %}
                                     <div class="bg-red-500 text-white px-3 py-1.5 rounded-lg border border-red-400/50 inline-flex items-center shadow-lg w-max">
                                         <span class="text-xs font-black">-{{ sch.discount_percent }}%</span>
                                     </div>
-                                    {% endif %}
                                 </div>
+                                {% endif %}
                                 
                                 <!-- Course Title over image on mobile only -->
                                 <div class="absolute bottom-4 left-4 right-4 sm:hidden">
@@ -114,8 +110,8 @@
                                             <svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                         </div>
                                         <div class="flex flex-col">
-                                            <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">Date Prévue</span>
-                                            <span class="text-xs font-bold text-gray-200">{{ sch.date_text }}</span>
+                                            <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold">Date & Heure</span>
+                                            <span class="text-xs font-bold text-gray-200">{{ sch.date_text }} à {{ sch.time_text }}</span>
                                         </div>
                                     </div>
                                     
