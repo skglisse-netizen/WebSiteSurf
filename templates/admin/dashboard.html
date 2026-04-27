@@ -1155,7 +1155,7 @@
                             {% for inquiry in res_list[:50] %}
                             <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
                                 <td class="px-4 py-3 whitespace-nowrap text-[11px] text-gray-500 dark:text-gray-400">
-                                    {{ inquiry.created_at if inquiry.created_at is defined else "N/A" }}
+                                    {{ inquiry.created_at or "N/A" }}
                                 </td>
                                 <td class="px-4 py-3">
                                     <div class="font-bold text-gray-900 dark:text-white text-sm">{{ inquiry.name }}</div>
@@ -1295,7 +1295,7 @@
                             {% for inquiry in msg_list[:50] %}
                             <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
                                 <td class="px-4 py-3 whitespace-nowrap text-[11px] text-gray-500 dark:text-gray-400">
-                                    {{ inquiry.created_at if inquiry.created_at is defined else "N/A" }}
+                                    {{ inquiry.created_at or "N/A" }}
                                 </td>
                                 <td class="px-4 py-3">
                                     <div class="font-bold text-gray-900 dark:text-white text-sm">{{ inquiry.name }}</div>
@@ -1398,7 +1398,7 @@
                             {% for inquiry in lead_list[:100] %}
                             <tr class="hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors">
                                 <td class="px-4 py-3 whitespace-nowrap text-[11px] text-gray-500 dark:text-gray-400">
-                                    {{ inquiry.created_at if inquiry.created_at is defined else "N/A" }}
+                                    {{ inquiry.created_at or "N/A" }}
                                 </td>
                                 <td class="px-4 py-3">
                                     <div class="flex items-center gap-2">
