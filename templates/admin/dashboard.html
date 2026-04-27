@@ -1198,17 +1198,6 @@
                                 </td>
                                 <td class="px-4 py-3 text-right whitespace-nowrap">
                                     <div class="flex flex-col items-end gap-2">
-                                        <form action="/admin/inquiries/{{ inquiry.id }}/status" method="POST" class="inline-block">
-                                            <select name="status" onchange="this.form.submit()" 
-                                                class="text-[10px] font-bold uppercase tracking-wider rounded-lg px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500/20 cursor-pointer
-                                                {% if inquiry.status == 'confirme' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
-                                                {% elif inquiry.status == 'annule' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400
-                                                {% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400{% endif %}">
-                                                <option value="en_attente" {% if inquiry.status == 'en_attente' %}selected{% endif %}>En attente</option>
-                                                <option value="confirme" {% if inquiry.status == 'confirme' %}selected{% endif %}>Confirmé</option>
-                                                <option value="annule" {% if inquiry.status == 'annule' %}selected{% endif %}>Annulé</option>
-                                            </select>
-                                        </form>
                                         <div class="flex items-center space-x-2">
                                             <button type="button" onclick="openEditReservationModal(this)"
                                                 data-id="{{ inquiry.id }}" data-name="{{ inquiry.name|escape }}"
@@ -1312,17 +1301,6 @@
                                     </div>
                                 </td>
                                 <td class="px-4 py-3 text-right whitespace-nowrap">
-                                    <form action="/admin/inquiries/{{ inquiry.id }}/status" method="POST" class="inline-block mb-2">
-                                        <select name="status" onchange="this.form.submit()" 
-                                            class="text-[10px] font-bold uppercase tracking-wider rounded-lg px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500/20 cursor-pointer
-                                            {% if inquiry.status == 'confirme' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
-                                            {% elif inquiry.status == 'annule' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400
-                                            {% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400{% endif %}">
-                                            <option value="en_attente" {% if inquiry.status == 'en_attente' %}selected{% endif %}>En attente</option>
-                                            <option value="confirme" {% if inquiry.status == 'confirme' %}selected{% endif %}>Confirmé</option>
-                                            <option value="annule" {% if inquiry.status == 'annule' %}selected{% endif %}>Annulé</option>
-                                        </select>
-                                    </form>
                                         <div class="flex items-center justify-end space-x-2 pt-1 border-t border-transparent">
                                             {% if not inquiry.is_processed %}
                                             <form action="/admin/messages/{{ inquiry.id }}/read" method="POST" class="inline">
