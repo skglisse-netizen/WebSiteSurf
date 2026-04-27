@@ -63,9 +63,18 @@
             <div onclick="bookDailyCourse('{{ sch.course_title|escape }}', '{{ sch.date_text }}', '{{ sch.time_text }}')" 
                  class="group relative flex items-center gap-4 pl-2 pr-6 py-2 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full hover:bg-white/20 hover:scale-105 hover:border-accent-500/50 transition-all duration-300 cursor-pointer shadow-lg hover:shadow-accent-500/10">
                 
-                <!-- Time Badge -->
-                <div class="bg-accent-500 text-white px-4 py-2 rounded-full font-black text-xs shadow-inner">
-                    {{ sch.time_text }}
+                <!-- Time & Image Badge -->
+                <div class="relative flex items-center">
+                    {% if sch.image_filename %}
+                    <img src="/static/uploads/schedules/{{ sch.image_filename }}" class="w-10 h-10 rounded-full object-cover border-2 border-accent-500 shadow-md">
+                    <div class="absolute -bottom-1 -right-1 bg-accent-500 text-white px-2 py-0.5 rounded-full font-black text-[8px] shadow-sm border border-white/20">
+                        {{ sch.time_text }}
+                    </div>
+                    {% else %}
+                    <div class="bg-accent-500 text-white px-4 py-2 rounded-full font-black text-xs shadow-inner">
+                        {{ sch.time_text }}
+                    </div>
+                    {% endif %}
                 </div>
 
                 <!-- Content -->

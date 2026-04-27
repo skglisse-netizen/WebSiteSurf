@@ -927,7 +927,7 @@
                 <!-- Add New -->
                 <div class="lg:col-span-1 space-y-8">
                     <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
-                        <form action="/admin/schedules/add" method="POST" class="space-y-4">
+                        <form action="/admin/schedules/add" method="POST" enctype="multipart/form-data" class="space-y-4">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
                                 <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">➕</span>
                                 Ajouter au Planning
@@ -987,6 +987,11 @@
                                         class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
                                 </div>
                             </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Image d'Illustration</label>
+                                <input type="file" name="image" accept="image/*"
+                                    class="w-full text-xs text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50 cursor-pointer border border-gray-200 dark:border-gray-700 rounded-xl p-2">
+                            </div>
                             <button type="submit"
                                 class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
                                 Publier
@@ -1003,10 +1008,19 @@
                         {% for sch in schedules %}
                             <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border {{ 'border-green-200 dark:border-green-900/50' if sch.is_active else 'border-white/20 dark:border-gray-800/50 opacity-60' }} flex items-start justify-between">
                                 <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 {{ 'bg-green-100 text-green-600' if sch.is_active else 'bg-gray-100 text-gray-400' }} rounded-full flex flex-col items-center justify-center font-bold flex-shrink-0 mt-1 relative">
-                                        <span class="text-xs">{{ sch.time_text }}</span>
+                                    <div class="relative flex-shrink-0">
+                                        {% if sch.image_filename %}
+                                        <img src="/static/uploads/schedules/{{ sch.image_filename }}" class="w-16 h-16 object-cover rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                                        {% else %}
+                                        <div class="w-16 h-16 bg-blue-50 dark:bg-blue-900/20 rounded-xl flex items-center justify-center text-xl">🏄</div>
+                                        {% endif %}
+                                        
+                                        <div class="absolute -bottom-2 -right-2 w-10 h-10 {{ 'bg-blue-600 text-white' if sch.is_active else 'bg-gray-400 text-white' }} rounded-lg flex flex-col items-center justify-center font-bold shadow-md border border-white dark:border-gray-900">
+                                            <span class="text-[9px] uppercase font-black">{{ sch.time_text }}</span>
+                                        </div>
+                                        
                                         {% if sch.discount_percent and sch.discount_percent > 0 %}
-                                        <div class="absolute -top-2 -right-2 bg-red-500 text-white text-[8px] px-1 rounded-full animate-bounce">
+                                        <div class="absolute -top-2 -right-2 bg-red-500 text-white text-[9px] px-1.5 py-0.5 rounded-full font-black shadow-lg animate-bounce">
                                             -{{ sch.discount_percent }}%
                                         </div>
                                         {% endif %}

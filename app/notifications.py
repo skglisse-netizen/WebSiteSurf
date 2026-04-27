@@ -68,3 +68,116 @@ def format_inquiry_payload(inquiry: Any, service_title: str = None) -> Dict[str,
     except Exception as e:
         logger.error(f"Error formatting inquiry payload: {e}")
         return {"error": str(e), "type": "Error"}
+
+async def send_whatsapp_notification(payload: Dict[str, Any]):
+    """
+    Sends a WhatsApp notification using a service like UltraMsg.
+    Expects WHATSAPP_API_URL, WHATSAPP_TOKEN, and WHATSAPP_TO_PHONE in .env
+    """
+    url = os.getenv("WHATSAPP_API_URL")
+    token = os.getenv("WHATSAPP_TOKEN")
+    to_phone = os.getenv("WHATSAPP_TO_PHONE")
+    
+    if not all([url, token, to_phone]):
+        logger.debug("WhatsApp notification skipped: credentials missing in environment.")
+        return False
+
+    # Format a human-readable message for WhatsApp
+    msg_type = payload.get("type", "Message")
+    name = payload.get("name", "Anonyme")
+    phone = payload.get("phone", "N/A")
+    message = payload.get("message", "")
+    service = payload.get("service", "Non spécifié")
+    
+    text = f"🔔 *Nouveau {msg_type}* 🌊\n\n"
+    text += f"👤 *Nom:* {name}\n"
+    text += f"📞 *Tel:* {phone}\n"
+    text += f"🏄 *Service:* {service}\n"
+    
+    if payload.get("booking_date") and payload.get("booking_date") != "N/A":
+        text += f"📅 *Date:* {payload.get('booking_date')}\n"
+        
+    if payload.get("people_count"):
+        text += f"👥 *Personnes:* {payload.get('people_count')}\n"
+
+    if message and message != "Pas de message":
+        text += f"\n📝 *Message:* {message}\n"
+        
+    text += f"\n🔗 [Dashboard]({payload.get('admin_url')})"
+
+    try:
+        async with httpx.AsyncClient() as client:
+            # UltraMsg style payload (token, to, body)
+            # Most common APIs use these fields or can be adapted
+            data = {
+                "token": token,
+                "to": to_phone,
+                "body": text
+            }
+            # Some APIs might need JSON, others Form Data. UltraMsg uses Form Data (data=) or JSON.
+            # We'll use JSON for better compatibility with modern APIs.
+            response = await client.post(url, json=data, timeout=10.0)
+            
+            # If JSON fails, try Form Data (fallback for some older WhatsApp API wrappers)
+            if response.status_code >= 400:
+                response = await client.post(url, data=data, timeout=10.0)
+                
+            response.raise_for_status()
+            logger.info(f"WhatsApp notification sent successfully.")
+            return True
+    except Exception as e:
+        logger.error(f"Failed to send WhatsApp notification: {str(e)}")
+    
+    return False
+async def send_telegram_notification(payload: Dict[str, Any]):
+    """
+    Sends a Telegram notification using the Telegram Bot API.
+    Expects TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID in .env
+    """
+    token = os.getenv("TELEGRAM_BOT_TOKEN")
+    chat_id = os.getenv("TELEGRAM_CHAT_ID")
+    
+    if not all([token, chat_id]):
+        logger.debug("Telegram notification skipped: credentials missing in environment.")
+        return False
+
+    # Format a human-readable message for Telegram (Markdown)
+    msg_type = payload.get("type", "Message")
+    name = payload.get("name", "Anonyme")
+    phone = payload.get("phone", "N/A")
+    message = payload.get("message", "")
+    service = payload.get("service", "Non spécifié")
+    
+    text = f"🔔 *Nouveau {msg_type}* 🌊\n\n"
+    text += f"👤 *Nom:* {name}\n"
+    text += f"📞 *Tel:* {phone}\n"
+    text += f"🏄 *Service:* {service}\n"
+    
+    if payload.get("booking_date") and payload.get("booking_date") != "N/A":
+        text += f"📅 *Date:* {payload.get('booking_date')}\n"
+        
+    if payload.get("people_count"):
+        text += f"👥 *Personnes:* {payload.get('people_count')}\n"
+
+    if message and message != "Pas de message":
+        text += f"\n📝 *Message:* {message}\n"
+        
+    text += f"\n[Ouvrir le Dashboard]({payload.get('admin_url')})"
+
+    url = f"https://api.telegram.org/bot{token}/sendMessage"
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            data = {
+                "chat_id": chat_id,
+                "text": text,
+                "parse_mode": "Markdown"
+            }
+            response = await client.post(url, json=data, timeout=10.0)
+            response.raise_for_status()
+            logger.info(f"Telegram notification sent successfully.")
+            return True
+    except Exception as e:
+        logger.error(f"Failed to send Telegram notification: {str(e)}")
+    
+    return False

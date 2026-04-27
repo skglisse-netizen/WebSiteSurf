@@ -19,8 +19,10 @@ from .auth import get_current_user, verify_password, create_access_token, get_pa
 # Ensure upload directories exist
 UPLOAD_DIR = "static/uploads/hero"
 LOGO_DIR = "static/uploads/logo"
+SCHEDULE_IMG_DIR = "static/uploads/schedules"
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 os.makedirs(LOGO_DIR, exist_ok=True)
+os.makedirs(SCHEDULE_IMG_DIR, exist_ok=True)
 
 def secure_filename_lite(filename: str) -> str:
     import re
@@ -72,6 +74,8 @@ def init_db():
         "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS description TEXT",
         "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS spots_available INTEGER DEFAULT 10",
         "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS level TEXT",
+        "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS image_filename VARCHAR",
+        "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS discount_percent INTEGER DEFAULT 0",
         "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_title VARCHAR DEFAULT 'Rejoignez la Communauté'",
         "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_subtitle TEXT DEFAULT 'Dites-nous en un peu plus sur vous pour débloquer votre réduction.'",
         "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_promo_text VARCHAR DEFAULT 'Rejoignez notre communauté de passionnés et profitez d''une réduction immédiate sur votre prochain cours !'",
@@ -253,6 +257,7 @@ async def contact_form(
     
     payload = notifications.format_inquiry_payload(inquiry, service_title)
     background_tasks.add_task(notifications.send_n8n_notification, payload, webhook_target)
+    background_tasks.add_task(notifications.send_telegram_notification, payload)
 
     return RedirectResponse(url="/?success=reservation#accueil", status_code=303)
 
@@ -286,6 +291,7 @@ async def community_join(
     # Send notification
     payload = notifications.format_inquiry_payload(inquiry, "Rejoint la Communauté")
     background_tasks.add_task(notifications.send_n8n_notification, payload, "contact")
+    background_tasks.add_task(notifications.send_telegram_notification, payload)
 
     # Track fill event
     import datetime
@@ -342,6 +348,7 @@ async def footer_contact(
     # Send notification via n8n (Async)
     payload = notifications.format_inquiry_payload(inquiry, "Contact Footer")
     background_tasks.add_task(notifications.send_n8n_notification, payload, "contact")
+    background_tasks.add_task(notifications.send_telegram_notification, payload)
 
     return RedirectResponse(url="/?success=contact#accueil", status_code=303)
 
@@ -1213,6 +1220,7 @@ async def schedule_add(
     spots_available: int = Form(10),
     level: List[str] = Form(None),
     discount_percent: int = Form(0),
+    image: UploadFile = File(None),
     db: Session = Depends(get_db)
 ):
     user = get_current_user(request, db)
@@ -1220,6 +1228,15 @@ async def schedule_add(
         return RedirectResponse(url="/admin/login", status_code=302)
 
     level_str = ",".join(level) if level else None
+    
+    image_filename = None
+    if image and image.filename:
+        safe_name = secure_filename_lite(image.filename)
+        unique_name = f"{uuid.uuid4().hex}_{safe_name}"
+        file_path = os.path.join(SCHEDULE_IMG_DIR, unique_name)
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(image.file, buffer)
+        image_filename = unique_name
 
     db.add(models.CourseSchedule(
         date_text=date_text, 
@@ -1228,7 +1245,8 @@ async def schedule_add(
         description=description,
         spots_available=spots_available,
         level=level_str,
-        discount_percent=discount_percent
+        discount_percent=discount_percent,
+        image_filename=image_filename
     ))
     db.commit()
     return RedirectResponse(url="/admin/dashboard#planning-config", status_code=302)
