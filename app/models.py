@@ -34,6 +34,7 @@ class Inquiry(Base):
     source = Column(String, default="contact") # contact, lead, reservation
     
     is_processed = Column(Boolean, default=False)
+    created_at = Column(String, nullable=True)
 
     service = relationship("Service")
 

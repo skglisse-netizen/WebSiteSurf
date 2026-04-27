@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends, Request, Form, File, UploadFile, BackgroundTasks
-from datetime import timedelta
+from datetime import timedelta, datetime
+import datetime as dt_module
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -234,7 +235,8 @@ async def contact_form(
         booking_date=booking_date,
         people_count=people_count,
         level=level,
-        source="reservation" if (service_id or booking_date) else "contact"
+        source="reservation" if (service_id or booking_date) else "contact",
+        created_at=dt_module.datetime.now().strftime("%Y-%m-%d %H:%M")
     )
     db.add(inquiry)
     db.commit()
@@ -274,7 +276,8 @@ async def community_join(
         objective=objective,
         level=level,
         status="en_attente",
-        source="lead"
+        source="lead",
+        created_at=dt_module.datetime.now().strftime("%Y-%m-%d %H:%M")
     )
     db.add(inquiry)
     db.commit()
@@ -325,7 +328,8 @@ async def footer_contact(
     inquiry = models.Inquiry(
         name=f"{name} (Footer)", 
         email=email, 
-        message=message
+        message=message,
+        created_at=dt_module.datetime.now().strftime("%Y-%m-%d %H:%M")
     )
     db.add(inquiry)
     db.commit()

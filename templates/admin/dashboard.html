@@ -1418,16 +1418,22 @@
                     <table id="lead-table" class="w-full text-left relative">
                         <thead class="sticky top-0 z-10 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
                             <tr>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Membre</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Niveau & Objectif</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Coordonnées</th>
-                                <th class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest text-right">Actions</th>
+                                <th class="px-4 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Date</th>
+                                <th class="px-4 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Nom Complet</th>
+                                <th class="px-4 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Email</th>
+                                <th class="px-4 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Téléphone</th>
+                                <th class="px-4 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Niveau</th>
+                                <th class="px-4 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">Objectif souhaité</th>
+                                <th class="px-4 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest text-right">Actions</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
                             {% set lead_list = inquiries | selectattr('source', 'equalto', 'lead') | list %}
                             {% for inquiry in lead_list[:100] %}
                             <tr class="hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors">
+                                <td class="px-4 py-3 whitespace-nowrap text-[11px] text-gray-500 dark:text-gray-400">
+                                    {{ inquiry.created_at or "N/A" }}
+                                </td>
                                 <td class="px-4 py-3">
                                     <div class="flex items-center gap-2">
                                         <div class="font-semibold text-sm text-gray-900 dark:text-white">{{ inquiry.name }}</div>
@@ -1435,20 +1441,22 @@
                                         <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-[8px] font-black rounded-md uppercase tracking-widest">Validé</span>
                                         {% endif %}
                                     </div>
-                                    <div class="text-[10px] text-gray-400 dark:text-gray-500">{{ inquiry.email }}</div>
+                                </td>
+                                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
+                                    {{ inquiry.email }}
+                                </td>
+                                <td class="px-4 py-3 text-sm font-bold text-blue-600 dark:text-blue-400">
+                                    {{ inquiry.phone }}
                                 </td>
                                 <td class="px-4 py-3">
-                                    <div class="mb-1">
-                                        <span class="px-2 py-0.5 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] font-bold rounded-full uppercase tracking-widest">
-                                            {{ inquiry.level }}
-                                        </span>
-                                    </div>
-                                    <div class="text-xs bg-gray-50 dark:bg-gray-800/50 px-2 py-1.5 rounded-lg border border-gray-100 dark:border-gray-800 max-w-sm italic text-gray-500 dark:text-gray-400">
+                                    <span class="px-2 py-0.5 bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 text-[10px] font-bold rounded-full uppercase tracking-widest whitespace-nowrap">
+                                        {{ inquiry.level }}
+                                    </span>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <div class="text-xs bg-gray-50 dark:bg-gray-800/50 px-2 py-1.5 rounded-lg border border-gray-100 dark:border-gray-800 max-w-[200px] truncate italic text-gray-500 dark:text-gray-400" title="{{ inquiry.objective }}">
                                         "{{ inquiry.objective }}"
                                     </div>
-                                </td>
-                                <td class="px-4 py-3 whitespace-nowrap">
-                                    <div class="text-xs text-blue-600 dark:text-blue-400 font-bold">{{ inquiry.phone }}</div>
                                 </td>
                                 <td class="px-4 py-3 text-right whitespace-nowrap">
                                     <div class="flex items-center justify-end space-x-2">
@@ -1495,7 +1503,7 @@
                             </tr>
                             {% else %}
                             <tr>
-                                <td colspan="4" class="px-4 py-8 text-center text-gray-400 dark:text-gray-600 italic text-sm">Aucun membre n'a rejoint la communauté pour le moment.</td>
+                                <td colspan="7" class="px-4 py-8 text-center text-gray-400 dark:text-gray-600 italic text-sm">Aucun membre n'a rejoint la communauté pour le moment.</td>
                             </tr>
                             {% endfor %}
                         </tbody>
