@@ -406,7 +406,7 @@
 
                 <div class="grid grid-cols-1 gap-8">
                     <div
-                        class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                         <form action="/admin/dashboard" method="POST" class="space-y-8">
                             <!-- Hero Section Config -->
                             <div>
@@ -525,7 +525,7 @@
 
                 <div class="grid grid-cols-1 gap-8">
                     <div
-                        class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                         <form action="/admin/dashboard" method="POST" class="space-y-8">
                             <div>
                                 <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
@@ -795,7 +795,7 @@
                 <!-- Contact Config -->
                 <div class="space-y-8">
                     <div
-                        class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
+                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                         <form action="/admin/dashboard" method="POST" class="space-y-6">
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
                                 <span
@@ -893,7 +893,7 @@
 
                 <!-- Logo Config -->
                 <div
-                    class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6 flex flex-col items-center justify-center text-center">
+                    class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 flex flex-col items-center justify-center text-center">
                     <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Logo de l'École</h3>
                     {% if config.logo_filename %}
                     <div class="mb-8 p-6 bg-gray-50 dark:bg-gray-800/50 rounded-2xl relative group">
@@ -1007,7 +1007,7 @@
                     {% if schedules %}
                         <div class="space-y-4">
                         {% for sch in schedules %}
-                            <div class="bg-white dark:bg-gray-900 p-4 rounded-xl shadow-sm border {{ 'border-green-200 dark:border-green-900/50' if sch.is_active else 'border-gray-200 dark:border-gray-800 opacity-60' }} flex items-start justify-between">
+                            <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border {{ 'border-green-200 dark:border-green-900/50' if sch.is_active else 'border-white/20 dark:border-gray-800/50 opacity-60' }} flex items-start justify-between">
                                 <div class="flex items-start space-x-4">
                                     <div class="w-12 h-12 {{ 'bg-green-100 text-green-600' if sch.is_active else 'bg-gray-100 text-gray-400' }} rounded-full flex flex-col items-center justify-center font-bold flex-shrink-0 mt-1">
                                         <span class="text-xs">{{ sch.time_text }}</span>
@@ -1077,7 +1077,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {% for svc in services %}
                 <div
-                    class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden group flex flex-col h-full">
+                    class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 overflow-hidden group flex flex-col h-full">
                     <div class="relative h-48 bg-gray-100 dark:bg-gray-800">
                         {% if svc.image_url %}
                         <img src="{{ svc.image_url }}" class="w-full h-full object-cover">
@@ -1148,7 +1148,7 @@
             </header>
 
             <div
-                class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+                class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 overflow-hidden">
                 <div class="overflow-x-auto overflow-y-auto max-h-[600px] custom-scrollbar">
                     <table class="w-full text-left relative">
                         <thead
@@ -1298,7 +1298,7 @@
             </header>
 
             <div
-                class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+                class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 overflow-hidden">
                 <div class="overflow-x-auto overflow-y-auto max-h-[600px] custom-scrollbar">
                     <table id="msg-table" class="w-full text-left relative">
                         <thead
@@ -1483,7 +1483,7 @@
 
             </div>
 
-            <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
+            <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 overflow-hidden">
                 <div class="overflow-x-auto overflow-y-auto max-h-[600px] custom-scrollbar">
                     <table id="lead-table" class="w-full text-left relative">
                         <thead class="sticky top-0 z-10 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
@@ -1547,7 +1547,7 @@
 
             <div class="max-w-2xl mx-auto">
                 <div
-                    class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border {{ 'border-green-100 dark:border-green-900/30 bg-green-50/30 dark:bg-green-900/10' if user.mfa_enabled else 'border-yellow-100 dark:border-yellow-900/30 bg-yellow-50/20 dark:bg-yellow-900/10' }} p-8">
+                    class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-xl border {{ 'border-green-100 dark:border-green-900/30' if user.mfa_enabled else 'border-yellow-100 dark:border-yellow-900/30' }}">
                     <div class="flex items-start justify-between mb-8">
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">Double Authentification (MFA)
