@@ -975,10 +975,17 @@
                                     </label>
                                 </div>
                             </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Places Disponibles</label>
-                                <input type="number" name="spots_available" value="10" min="1" required
-                                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Places</label>
+                                    <input type="number" name="spots_available" value="10" min="1" required
+                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Réduction (%)</label>
+                                    <input type="number" name="discount_percent" value="0" min="0" max="100" required
+                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
+                                </div>
                             </div>
                             <button type="submit"
                                 class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
@@ -996,8 +1003,13 @@
                         {% for sch in schedules %}
                             <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border {{ 'border-green-200 dark:border-green-900/50' if sch.is_active else 'border-white/20 dark:border-gray-800/50 opacity-60' }} flex items-start justify-between">
                                 <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 {{ 'bg-green-100 text-green-600' if sch.is_active else 'bg-gray-100 text-gray-400' }} rounded-full flex flex-col items-center justify-center font-bold flex-shrink-0 mt-1">
+                                    <div class="w-12 h-12 {{ 'bg-green-100 text-green-600' if sch.is_active else 'bg-gray-100 text-gray-400' }} rounded-full flex flex-col items-center justify-center font-bold flex-shrink-0 mt-1 relative">
                                         <span class="text-xs">{{ sch.time_text }}</span>
+                                        {% if sch.discount_percent and sch.discount_percent > 0 %}
+                                        <div class="absolute -top-2 -right-2 bg-red-500 text-white text-[8px] px-1 rounded-full animate-bounce">
+                                            -{{ sch.discount_percent }}%
+                                        </div>
+                                        {% endif %}
                                     </div>
                                     <div class="flex flex-col">
                                         <h4 class="font-bold text-gray-900 dark:text-white">{{ sch.course_title }}</h4>
@@ -1071,9 +1083,15 @@
                         {% else %}
                         <div class="w-full h-full flex items-center justify-center text-4xl">🏄</div>
                         {% endif %}
-                        <div
-                            class="absolute top-4 right-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-sm rounded-lg px-2 py-1 font-bold text-blue-600 dark:text-blue-400 text-sm">
-                            {{ svc.price }} MAD
+                        <div class="absolute top-4 right-4 flex flex-col items-end gap-2">
+                            <div class="bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-sm rounded-lg px-2 py-1 font-bold text-blue-600 dark:text-blue-400 text-sm">
+                                {{ svc.price }} MAD
+                            </div>
+                            {% if svc.discount_percent and svc.discount_percent > 0 %}
+                            <div class="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full shadow-lg animate-pulse">
+                                -{{ svc.discount_percent }}% OFF
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                     <div class="px-6 pb-6 pt-3 flex-1 flex flex-col">

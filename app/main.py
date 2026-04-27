@@ -1212,6 +1212,7 @@ async def schedule_add(
     description: str = Form(None),
     spots_available: int = Form(10),
     level: List[str] = Form(None),
+    discount_percent: int = Form(0),
     db: Session = Depends(get_db)
 ):
     user = get_current_user(request, db)
@@ -1226,7 +1227,8 @@ async def schedule_add(
         course_title=course_title,
         description=description,
         spots_available=spots_available,
-        level=level_str
+        level=level_str,
+        discount_percent=discount_percent
     ))
     db.commit()
     return RedirectResponse(url="/admin/dashboard#planning-config", status_code=302)
