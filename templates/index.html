@@ -95,11 +95,11 @@
                             </div>
 
                             <!-- Details Body -->
-                            <div class="p-4 sm:p-5 flex flex-col grow justify-between bg-gradient-to-b from-transparent to-black/20 relative z-10 w-full">
+                            <div class="p-3 sm:p-4 flex flex-col grow justify-between bg-gradient-to-b from-transparent to-black/20 relative z-10 w-full">
                                 <div>
-                                    <h3 class="text-lg font-black text-white group-hover:text-accent-400 transition-colors mb-3 drop-shadow-md leading-tight truncate" title="{{ sch.course_title }}">{{ sch.course_title }}</h3>
+                                    <h3 class="text-lg font-black text-white group-hover:text-accent-400 transition-colors mb-2 drop-shadow-md leading-tight truncate" title="{{ sch.course_title }}">{{ sch.course_title }}</h3>
                                     
-                                    <div class="flex items-center gap-3 mb-3 pb-3 border-b border-white/10">
+                                    <div class="flex items-center gap-3 mb-2 pb-2 border-b border-white/10">
                                         <div class="w-8 h-8 rounded-full bg-accent-500/20 flex items-center justify-center border border-accent-500/30 shrink-0">
                                             <svg class="w-4 h-4 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                         </div>
@@ -110,7 +110,7 @@
                                     </div>
                                     
                                     {% if sch.description %}
-                                    <p class="text-xs text-gray-300 mb-3 line-clamp-2 leading-relaxed">{{ sch.description }}</p>
+                                    <p class="text-xs text-gray-300 mb-2 line-clamp-2 leading-relaxed">{{ sch.description }}</p>
                                     {% endif %}
                                     
                                     {% if sch.level %}
@@ -124,7 +124,7 @@
                                     {% endif %}
                                 </div>                                
                                 <!-- Action Area -->
-                                <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                                <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/10">
                                     <div class="flex flex-col">
                                         <span class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Disponibilité</span>
                                         <div class="flex items-center gap-1.5 mt-0.5">
