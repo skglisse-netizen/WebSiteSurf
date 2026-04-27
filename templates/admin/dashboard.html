@@ -685,593 +685,149 @@
                     </div>
                     </form>
                 </div>
-        </div>
-        </section>
+            </section>
 
         <!-- SECTION: MODAL-CONFIG (Communauté & Popup) -->
-        <section id="section-modal-config" class="content-section space-y-6 animate-in">
-            <header class="mb-6">
-                <h1 class="text-3xl font-black text-gray-900 dark:text-white">Communauté & Popup Lead Capture</h1>
-                <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez le contenu de la fenêtre surgissante qui propose une réduction aux nouveaux visiteurs.</p>
+        <section id="section-modal-config" class="content-section space-y-4 animate-in px-2 sm:px-6">
+            <header class="mb-3">
+                <h1 class="text-xl font-black text-gray-900 dark:text-white">Popup Lead Capture</h1>
+                <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm">Gérez la fenêtre surgissante de réduction.</p>
             </header>
 
-            <div class="grid grid-cols-1 gap-8">
-                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
-                    <form action="/admin/modal-config" method="POST" class="space-y-8">
+            <div class="grid grid-cols-1 gap-4">
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-4 rounded-2xl shadow-md border border-white/20 dark:border-gray-800/50">
+                    <form action="/admin/modal-config" method="POST" class="space-y-4">
                         <div>
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-4 flex items-center">
                                 <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">🎁</span>
                                 Textes de la Popup
                             </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-11">
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Titre de la Popup</label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pl-11">
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Titre</label>
                                     <input type="text" name="modal_title" value="{{ config.modal_title }}"
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                                </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Sous-Titre (Description courte)</label>
-                                    <input type="text" name="modal_subtitle" value="{{ config.modal_subtitle }}"
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                                </div>
-                                <div class="md:col-span-2">
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Texte Promotionnel (Côté image)</label>
-                                    <textarea name="modal_promo_text" rows="3"
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">{{ config.modal_promo_text }}</textarea>
+                                        class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border text-sm">
                                 </div>
                                 <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Pourcentage de réduction (%)</label>
+                                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Sous-Titre</label>
+                                    <input type="text" name="modal_subtitle" value="{{ config.modal_subtitle }}"
+                                        class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border text-sm">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Promo</label>
+                                    <textarea name="modal_promo_text" rows="2"
+                                        class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border text-sm">{{ config.modal_promo_text }}</textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-semibold text-gray-700 dark:text-gray-300 mb-1">Réduction (%)</label>
                                     <input type="number" name="modal_discount_percent" value="{{ config.modal_discount_percent }}"
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                                        class="w-full rounded-lg border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-2 border text-sm">
                                 </div>
                             </div>
-
-                            <div class="flex justify-end pt-4 border-t border-gray-100 dark:border-gray-800 mt-6">
+                            <div class="flex justify-end pt-3 border-t border-gray-100 dark:border-gray-800 mt-4">
                                 <button type="submit"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
-                                    Enregistrer les réglages
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-xl transition text-sm">
+                                    Enregistrer
                                 </button>
                             </div>
                         </div>
                     </form>
-                </div>
-
-                <!-- Modal Image Management -->
-                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                        <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">📸</span>
-                        Image de Fond de la Popup
-                    </h3>
-                    <div class="flex flex-col md:flex-row gap-8 items-start pl-11">
-                        {% if config.modal_image_filename %}
-                        <div class="relative w-full md:w-64 aspect-[4/5] rounded-2xl overflow-hidden border border-gray-200 dark:border-gray-700 shadow-lg">
-                            <img src="/static/uploads/modal/{{ config.modal_image_filename }}" class="w-full h-full object-cover">
-                            <button type="button" onclick="confirmDeleteModalImage()"
-                                class="absolute top-3 right-3 bg-red-500 text-white p-2 rounded-xl shadow-xl hover:bg-red-600 transition transform hover:scale-110">
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z">
-                                    </path>
-                                </svg>
-                            </button>
-                        </div>
-                        {% else %}
-                        <div class="w-full md:w-64 aspect-[4/5] rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 flex flex-col items-center justify-center text-gray-400 bg-gray-50 dark:bg-gray-800/30">
-                            <svg class="w-12 h-12 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                </path>
-                            </svg>
-                            <span class="text-xs font-bold uppercase tracking-widest">Aucune image</span>
-                        </div>
-                        {% endif %}
-
-                        <div class="flex-1 space-y-4">
-                            <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800/50">
-                                <p class="text-sm text-blue-700 dark:text-blue-300 leading-relaxed">
-                                    <strong>Conseil :</strong> Utilisez une image verticale ou un portrait de haute qualité. Elle s'affichera sur la partie gauche de la popup sur ordinateur et en fond sur mobile.
-                                </p>
-                            </div>
-                            <div class="flex items-center space-x-3">
-                                <input type="file" id="modal_image_input" accept="image/*"
-                                    class="flex-1 text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2.5 file:px-6 file:rounded-xl file:border-0 file:bg-gray-900 dark:file:bg-white file:text-white dark:file:text-gray-900 file:font-bold hover:file:opacity-90 cursor-pointer">
-                                <button type="button" onclick="uploadModalImage()"
-                                    class="bg-blue-600 dark:bg-indigo-600 text-white font-bold py-2.5 px-6 rounded-xl hover:opacity-90 transition shadow-md">Uploader</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </section>
 
         <!-- SECTION: SCHOOL (École & Design) -->
-        <section id="section-school" class="content-section space-y-6 animate-in">
-            <header class="mb-6">
-                <h1 class="text-3xl font-black text-gray-900 dark:text-white">École & Design</h1>
-                <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez les informations de contact, le logo et les couleurs du site.</p>
+        <section id="section-school" class="content-section space-y-4 animate-in px-2 sm:px-6">
+            <header class="mb-3">
+                <h1 class="text-xl font-black text-gray-900 dark:text-white">École & Design</h1>
+                <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm">Contacts, logo et couleurs.</p>
             </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- Contact Config -->
-                <div class="space-y-8">
-                    <div
-                        class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
-                        <form action="/admin/dashboard" method="POST" class="space-y-6">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                                <span
-                                    class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">📍</span>
-                                Informations de Contact
-                            </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pl-11">
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Nom
-                                        commercial</label>
-                                    <input type="text" name="school_name" value="{{ config.school_name }}"
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Email</label>
-                                    <input type="email" name="contact_email" value="{{ config.contact_email }}"
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                                </div>
-                                <div class="md:col-span-2">
-                                    <label
-                                        class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Adresse</label>
-                                    <input type="text" name="contact_address" value="{{ config.contact_address }}"
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Téléphone</label>
-                                    <input type="text" name="contact_phone" value="{{ config.contact_phone }}"
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                                </div>
-                            </div>
-
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mt-10 mb-6 flex items-center">
-                                <span
-                                    class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">🎨</span>
-                                Couleurs du Thème
-                            </h3>
-                            <div class="grid grid-cols-2 gap-4 pl-11">
-                                <div>
-                                    <label
-                                        class="block text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Navbar
-                                        Fond</label>
-                                    <input type="color" name="navbar_bg_color" value="{{ config.navbar_bg_color }}"
-                                        class="w-full h-10 rounded cursor-pointer">
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Navbar
-                                        Texte</label>
-                                    <input type="color" name="navbar_text_color" value="{{ config.navbar_text_color }}"
-                                        class="w-full h-10 rounded cursor-pointer">
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Footer
-                                        Fond</label>
-                                    <input type="color" name="footer_bg_color" value="{{ config.footer_bg_color }}"
-                                        class="w-full h-10 rounded cursor-pointer">
-                                </div>
-                                <div>
-                                    <label
-                                        class="block text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase mb-2">Footer
-                                        Texte</label>
-                                    <input type="color" name="footer_text_color" value="{{ config.footer_text_color }}"
-                                        class="w-full h-10 rounded cursor-pointer">
-                                </div>
-                            </div>
-
-                            <!-- Hidden Fields -->
-                            <input type="hidden" name="hero_title" value="{{ config.hero_title }}">
-                            <input type="hidden" name="hero_subtitle" value="{{ config.hero_subtitle }}">
-                            <input type="hidden" name="hero_button_text" value="{{ config.hero_button_text }}">
-                            <input type="hidden" name="contact_button_text" value="{{ config.contact_button_text }}">
-                            <input type="hidden" name="why_title" value="{{ config.why_title }}">
-                            <input type="hidden" name="why_description" value="{{ config.why_description }}">
-                            {% for i in [1,2,3] %}
-                            <input type="hidden" name="why_feature{{ i }}_icon"
-                                value="{{ config['why_feature'~i~'_icon'] }}">
-                            <input type="hidden" name="why_feature{{ i }}_title"
-                                value="{{ config['why_feature'~i~'_title'] }}">
-                            <input type="hidden" name="why_feature{{ i }}_desc"
-                                value="{{ config['why_feature'~i~'_desc'] }}">
-                            {% endfor %}
-
-                            <div class="flex justify-end pt-6 border-t border-gray-100 dark:border-gray-800 mt-6">
-                                <button type="submit"
-                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
-                                    Enregistrer École & Design
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-
-                <!-- Logo Config -->
-                <div
-                    class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-8 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 flex flex-col items-center justify-center text-center">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Logo de l'École</h3>
-                    {% if config.logo_filename %}
-                    <div class="mb-8 p-6 bg-gray-50 dark:bg-gray-800/50 rounded-2xl relative group">
-                        <img src="/static/uploads/logo/{{ config.logo_filename }}" alt="Logo"
-                            class="h-20 md:h-28 object-contain">
-                        <form action="/admin/logo/delete" method="POST" onsubmit="return confirm('Supprimer ce logo ?')"
-                            class="absolute top-2 right-2">
-                            <button type="submit"
-                                class="bg-red-50 text-red-500 p-1.5 rounded-full hover:bg-red-500 hover:text-white transition shadow-sm">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z">
-                                    </path>
-                                </svg>
-                            </button>
-                        </form>
-                    </div>
-                    {% endif %}
-                    <form action="/admin/logo/upload" method="POST" enctype="multipart/form-data"
-                        class="w-full space-y-4">
-                        <div
-                            class="border-2 border-dashed border-gray-200 dark:border-gray-700 rounded-xl p-4 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition cursor-pointer relative">
-                            <input type="file" name="file" accept="image/*" required
-                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer">
-                            <div class="text-blue-500 text-xs font-bold uppercase">Uploader Nouveau Logo</div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-4 rounded-2xl shadow-md border border-white/20 dark:border-gray-800/50">
+                    <form action="/admin/dashboard" method="POST" class="space-y-4">
+                        <h3 class="text-sm font-bold text-gray-900 dark:text-white mb-4 flex items-center">
+                            <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">📍</span>
+                            Informations
+                        </h3>
+                        <div class="grid grid-cols-2 gap-4 pl-11">
+                            <input type="text" name="school_name" value="{{ config.school_name }}" placeholder="Nom" class="p-2 border rounded-lg text-sm bg-gray-50 dark:bg-gray-800">
+                            <input type="text" name="contact_email" value="{{ config.contact_email }}" placeholder="Email" class="p-2 border rounded-lg text-sm bg-gray-50 dark:bg-gray-800">
+                            <input type="text" name="contact_phone" value="{{ config.contact_phone }}" placeholder="Tel" class="p-2 border rounded-lg text-sm bg-gray-50 dark:bg-gray-800">
+                            <input type="text" name="contact_address" value="{{ config.contact_address }}" placeholder="Adresse" class="col-span-2 p-2 border rounded-lg text-sm bg-gray-50 dark:bg-gray-800">
                         </div>
-                        <button type="submit"
-                            class="w-full bg-blue-600 text-white font-bold py-3 rounded-xl shadow-md">Appliquer
-                            Logo</button>
+                        <div class="flex justify-end pt-3 border-t mt-4">
+                            <button type="submit" class="bg-blue-600 text-white font-bold py-2 px-6 rounded-xl text-sm">Enregistrer</button>
+                        </div>
+                    </form>
+                </div>
+                <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-4 rounded-2xl shadow-md border border-white/20 dark:border-gray-800/50 flex flex-col items-center justify-center text-center">
+                    <h3 class="text-sm font-bold mb-4">Logo</h3>
+                    <form action="/admin/logo/upload" method="POST" enctype="multipart/form-data">
+                        <input type="file" name="file" accept="image/*" class="text-xs mb-2">
+                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded-xl text-sm">Appliquer</button>
                     </form>
                 </div>
             </div>
         </section>
 
-
         <!-- SECTION: PLANNING RAPIDE -->
-        <section id="section-planning-config" class="content-section space-y-6 animate-in">
-            <header class="mb-6">
-                <h1 class="text-3xl font-black text-gray-900 dark:text-white">Planning Rapide</h1>
-                <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez les cours du jour qui s'affichent sous forme de bulles dans le Hero (Accueil).</p>
+        <section id="section-planning-config" class="content-section space-y-4 animate-in px-2 sm:px-6">
+            <header class="mb-3">
+                <h1 class="text-xl font-black text-gray-900 dark:text-white">Planning Rapide</h1>
+                <p class="text-gray-500 dark:text-gray-400 mt-1 text-sm">Cours du jour.</p>
             </header>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Add New -->
-                <div class="lg:col-span-1 space-y-8">
-                    <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 p-6">
-                        <form action="/admin/schedules/add" method="POST" class="space-y-4">
-                            <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4 flex items-center">
-                                <span class="w-8 h-8 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3 text-sm">➕</span>
-                                Ajouter au Planning
-                            </h3>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Jour / Date</label>
-                                    <input type="date" name="date_text" required
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                                </div>
-                                <div>
-                                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Heure</label>
-                                    <input type="time" name="time_text" required
-                                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Nom du Cours</label>
-                                <input type="text" name="course_title" placeholder="Ex: Initiation Surf" required
-                                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Description</label>
-                                <textarea name="description" rows="2" placeholder="Brève description du cours..."
-                                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border"></textarea>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Niveaux acceptés</label>
-                                <div class="grid grid-cols-1 gap-2 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700">
-                                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
-                                        <input type="checkbox" name="level" value="Ma première fois (Jamais surfé)" class="rounded text-blue-600">
-                                        <span>Ma première fois (Jamais surfé)</span>
-                                    </label>
-                                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
-                                        <input type="checkbox" name="level" value="Initié (Déjà pris des cours)" class="rounded text-blue-600">
-                                        <span>Initié (Déjà pris des cours)</span>
-                                    </label>
-                                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
-                                        <input type="checkbox" name="level" value="Débutant (Prend ses propres vagues)" class="rounded text-blue-600">
-                                        <span>Débutant (Prend ses propres vagues)</span>
-                                    </label>
-                                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
-                                        <input type="checkbox" name="level" value="Intermédiaire (Perfectionnement)" class="rounded text-blue-600">
-                                        <span>Intermédiaire (Perfectionnement)</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Places Disponibles</label>
-                                <input type="number" name="spots_available" value="10" min="1" required
-                                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
-                            </div>
-                            <button type="submit"
-                                class="w-full bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-3 px-8 rounded-xl transition shadow-lg active:scale-[0.98]">
-                                Publier
-                            </button>
-                        </form>
-                    </div>
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div class="lg:col-span-1 bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-4">
+                    <form action="/admin/schedules/add" method="POST" class="space-y-3">
+                        <div class="grid grid-cols-2 gap-2">
+                            <input type="date" name="date_text" required class="p-2 border rounded-lg text-xs bg-gray-50">
+                            <input type="time" name="time_text" required class="p-2 border rounded-lg text-xs bg-gray-50">
+                        </div>
+                        <input type="text" name="course_title" placeholder="Cours" required class="w-full p-2 border rounded-lg text-xs bg-gray-50">
+                        <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg text-xs">Publier</button>
+                    </form>
                 </div>
-
-                <!-- List -->
-                <div class="lg:col-span-2 space-y-4">
-                    <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-4">Cours actuellement programmés</h3>
-                    {% if schedules %}
-                        <div class="space-y-4">
-                        {% for sch in schedules %}
-                            <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border {{ 'border-green-200 dark:border-green-900/50' if sch.is_active else 'border-white/20 dark:border-gray-800/50 opacity-60' }} flex items-start justify-between">
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 {{ 'bg-green-100 text-green-600' if sch.is_active else 'bg-gray-100 text-gray-400' }} rounded-full flex flex-col items-center justify-center font-bold flex-shrink-0 mt-1">
-                                        <span class="text-xs">{{ sch.time_text }}</span>
-                                    </div>
-                                    <div class="flex flex-col">
-                                        <h4 class="font-bold text-gray-900 dark:text-white">{{ sch.course_title }}</h4>
-                                        <div class="text-xs text-gray-500 font-medium font-mono mb-1">{{ sch.date_text }}</div>
-                                        <p class="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 md:max-w-md">{{ sch.description or 'Aucune description fournie.' }}</p>
-                                        
-                                        {% if sch.level %}
-                                        <div class="mt-2 flex flex-wrap gap-1">
-                                            {% for lvl in sch.level.split(',') %}
-                                            <span class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded-full border border-blue-100 dark:border-blue-800/50">
-                                                {{ lvl }}
-                                            </span>
-                                            {% endfor %}
-                                        </div>
-                                        {% endif %}
-
-                                        <div class="mt-3 inline-flex items-center text-xs font-bold {{ 'text-blue-600 dark:text-blue-400' if sch.spots_available > 0 else 'text-red-500' }}">
-                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5V4a2 2 0 00-2-2H4a2 2 0 00-2 2v16h5m8 0v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2"></path></svg>
-                                            {{ sch.spots_available }} places restantes
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="flex flex-col space-y-2 items-end ml-4">
-                                    <form action="/admin/schedules/{{ sch.id }}/toggle" method="POST">
-                                        <button type="submit" class="w-full text-center px-3 py-1.5 text-xs font-bold rounded-lg transition {{ 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' if sch.is_active else 'bg-green-100 text-green-700 hover:bg-green-200' }}">
-                                            {{ 'Désactiver' if sch.is_active else 'Activer' }}
-                                        </button>
-                                    </form>
-                                    <form action="/admin/schedules/{{ sch.id }}/delete" method="POST" onsubmit="return confirm('Supprimer ce cours du planning ?')">
-                                        <button type="submit" class="w-full text-center px-3 py-1.5 bg-red-50 text-red-600 hover:bg-red-100 text-xs font-bold rounded-lg transition">
-                                            Supprimer
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        {% endfor %}
-                        </div>
-                    {% else %}
-                        <div class="p-8 text-center border-2 border-dashed border-gray-200 dark:border-gray-800 rounded-2xl text-gray-500">
-                            Aucun cours programmé.
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: SERVICES -->
-        <section id="section-services" class="content-section space-y-6 animate-in">
-            <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <h1 class="text-3xl font-black text-gray-900 dark:text-white">Gestion des Formules</h1>
-                    <p class="text-gray-500 dark:text-gray-400 mt-2">Ajoutez et modifiez vos cours de surf et packs.</p>
-                </div>
-                <button onclick="document.getElementById('add-service-modal').classList.remove('hidden')"
-                    class="bg-blue-600 hover:bg-blue-700 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-blue-500/20 flex items-center transition active:scale-95">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                    </svg>
-                    Nouvelle Formule
-                </button>
-            </header>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {% for svc in services %}
-                <div
-                    class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 overflow-hidden group flex flex-col h-full">
-                    <div class="relative h-48 bg-gray-100 dark:bg-gray-800">
-                        {% if svc.image_url %}
-                        <img src="{{ svc.image_url }}" class="w-full h-full object-cover">
-                        {% else %}
-                        <div class="w-full h-full flex items-center justify-center text-4xl">🏄</div>
-                        {% endif %}
-                        <div
-                            class="absolute top-4 right-4 bg-white/95 dark:bg-gray-900/95 backdrop-blur shadow-sm rounded-lg px-2 py-1 font-bold text-blue-600 dark:text-blue-400 text-sm">
-                            {{ svc.price }} MAD
-                        </div>
-                    </div>
-                    <div class="px-6 pb-6 pt-3 flex-1 flex flex-col">
-                        <h3 class="font-bold text-lg mb-2 text-gray-900 dark:text-white">{{ svc.title }}</h3>
-                        <p class="text-sm text-gray-500 dark:text-gray-400 mb-4 line-clamp-2">{{ svc.description }}</p>
-
-                        {% if svc.level %}
-                        <div class="flex flex-wrap gap-1 mb-4">
-                            {% for lvl in svc.level.split(',') %}
-                            <span class="px-2 py-0.5 bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-[10px] font-bold rounded-full border border-blue-100 dark:border-blue-800/50">
-                                {{ lvl }}
-                            </span>
-                            {% endfor %}
-                        </div>
-                        {% endif %}
-
-                        <div
-                            class="mt-auto pt-4 border-t border-gray-50 dark:border-gray-800 flex items-center justify-between">
-                            <button type="button" onclick="openEditModal(this)" data-id="{{ svc.id }}"
-                                data-title="{{ svc.title|escape }}" data-desc="{{ svc.description|escape }}"
-                                data-price="{{ svc.price }}" data-discount="{{ svc.discount_percent }}"
-                                data-level="{{ svc.level or '' }}"
-                                class="text-blue-600 dark:text-blue-400 font-bold text-sm hover:underline">Modifier</button>
-                            <form action="/admin/services/{{ svc.id }}/delete" method="POST"
-                                onsubmit="return confirm('Archiver cette formule ?')">
-                                <button type="submit"
-                                    class="text-gray-300 dark:text-gray-600 hover:text-red-500 transition">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z">
-                                        </path>
-                                    </svg>
-                                </button>
+                <div class="lg:col-span-2 space-y-2">
+                    {% for sch in schedules %}
+                        <div class="bg-white/80 backdrop-blur-md p-3 rounded-xl border flex items-center justify-between text-xs">
+                            <span class="font-bold">{{ sch.course_title }}</span>
+                            <span class="text-gray-500">{{ sch.time_text }}</span>
+                            <form action="/admin/schedules/{{ sch.id }}/delete" method="POST">
+                                <button type="submit" class="text-red-500 font-bold">X</button>
                             </form>
                         </div>
-                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
         </section>
 
-
         <!-- SECTION: RESERVATIONS -->
-        <section id="section-reservations" class="content-section space-y-6 animate-in">
-            <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <h1 class="text-3xl font-black text-gray-900 dark:text-white">Réservations de Cours</h1>
-                    <p class="text-gray-500 dark:text-gray-400 mt-2">Gérez les inscriptions à vos cours de surf.</p>
-                </div>
-                <div class="relative max-w-xs w-full mx-auto lg:mx-0">
-                    <input type="text" onkeyup="filterTable('res-table', this.value)" 
-                        placeholder="Rechercher un nom, email..." 
-                        class="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                    <svg class="w-4 h-4 absolute left-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
+        <section id="section-reservations" class="content-section space-y-2 animate-in px-2 sm:px-6">
+            <header class="mb-2">
+                <h1 class="text-xl font-black text-gray-900 dark:text-white">Réservations</h1>
             </header>
-            </header>
-
-            <div
-                class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 overflow-hidden">
-                <div class="overflow-x-auto overflow-y-auto max-h-[600px] custom-scrollbar">
-                    <table class="w-full text-left relative">
-                        <thead
-                            class="sticky top-0 z-10 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
+            <div class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-xl border border-white/20 overflow-hidden">
+                <div class="overflow-x-auto max-h-[300px]">
+                    <table class="w-full text-left text-xs">
+                        <thead class="bg-gray-50 dark:bg-gray-800 border-b">
                             <tr>
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                                    Client</th>
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                                    Prestation</th>
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                                    Détails de réservation</th>
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                                    Message</th>
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest text-right">
-                                    Statut & Actions</th>
+                                <th class="px-3 py-2">Client</th>
+                                <th class="px-3 py-2">Prestation</th>
+                                <th class="px-3 py-2 text-right">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-                            {% set res_list = inquiries | selectattr('source', 'equalto', 'reservation') | list %}
-                            {% for inquiry in res_list[:50] %}
-                            <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
-                                <td class="px-6 py-5">
-                                    <div class="font-bold text-gray-900 dark:text-white">{{ inquiry.name }}</div>
-                                    <div class="text-xs text-blue-600 dark:text-blue-400 font-medium">{{ inquiry.phone
-                                        }}</div>
-                                    <div class="text-[10px] text-gray-400 dark:text-gray-500 font-mono">{{ inquiry.email
-                                        }}</div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div class="text-sm font-bold text-gray-800 dark:text-gray-200">{{
-                                        inquiry.service.title if inquiry.service else 'Non spécifié' }}</div>
-                                    <div class="text-xs text-gray-500 dark:text-gray-400 font-medium">{{ inquiry.level
-                                        }}</div>
-                                </td>
-                                <td class="px-6 py-5">
-                                    <div
-                                        class="flex items-center space-x-2 text-xs font-bold text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-900/20 px-2 py-1 rounded w-fit mb-1">
-                                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path
-                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                            </path>
-                                        </svg>
-                                        <span>{{ inquiry.booking_date }}</span>
-                                    </div>
-                                    <div class="text-xs text-gray-600 dark:text-gray-400 font-semibold">{{
-                                        inquiry.people_count }} Personnes</div>
-                                </td>
-                                <td
-                                    class="px-6 py-5 text-sm text-gray-500 dark:text-gray-400 font-medium italic max-w-xl">
-                                    {{ (inquiry.message or '')|truncate(100) }}
-                                </td>
-                                <td class="px-6 py-5 text-right whitespace-nowrap">
-                                    <form action="/admin/inquiries/{{ inquiry.id }}/status" method="POST" class="inline-block mb-2">
-                                        <select name="status" onchange="this.form.submit()" 
-                                            class="text-[10px] font-bold uppercase tracking-wider rounded-lg px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500/20 cursor-pointer
-                                            {% if inquiry.status == 'confirme' %}bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400
-                                            {% elif inquiry.status == 'annule' %}bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400
-                                            {% else %}bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400{% endif %}">
-                                            <option value="en_attente" {% if inquiry.status == 'en_attente' %}selected{% endif %}>En attente</option>
-                                            <option value="confirme" {% if inquiry.status == 'confirme' %}selected{% endif %}>Confirmé</option>
-                                            <option value="annule" {% if inquiry.status == 'annule' %}selected{% endif %}>Annulé</option>
-                                        </select>
+                        <tbody>
+                            {% for inquiry in inquiries | selectattr('source', 'equalto', 'reservation') %}
+                            <tr class="border-b hover:bg-gray-50">
+                                <td class="px-3 py-2 font-bold">{{ inquiry.name }}</td>
+                                <td class="px-3 py-2">{{ inquiry.service.title }}</td>
+                                <td class="px-3 py-2 text-right">
+                                    <form action="/admin/reservations/{{ inquiry.id }}/delete" method="POST">
+                                        <button type="submit" class="text-red-500 font-bold">Supprimer</button>
                                     </form>
-                                        <div class="flex items-center space-x-2 pt-1">
-                                            <form action="/admin/reservations/{{ inquiry.id }}/validate" method="POST"
-                                                class="inline">
-                                                <button type="submit"
-                                                    class="text-green-600 hover:text-green-800 dark:hover:text-green-400 transition"
-                                                    title="Valider">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M5 13l4 4L19 7"></path>
-                                                    </svg>
-                                                </button>
-                                            </form>
-                                            <button type="button" onclick="openEditReservationModal(this)"
-                                                data-id="{{ inquiry.id }}" data-name="{{ inquiry.name|escape }}"
-                                                data-email="{{ inquiry.email|escape }}"
-                                                data-phone="{{ inquiry.phone|escape }}"
-                                                data-service-id="{{ inquiry.service_id }}"
-                                                data-date="{{ inquiry.booking_date }}"
-                                                data-people="{{ inquiry.people_count }}"
-                                                data-level="{{ inquiry.level|escape }}"
-                                                class="text-blue-600 hover:text-blue-800 dark:hover:text-blue-400 transition"
-                                                title="Modifier">
-                                                <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
-                                                    </path>
-                                                </svg>
-                                            </button>
-                                            <form action="/admin/reservations/{{ inquiry.id }}/delete" method="POST"
-                                                class="inline"
-                                                onsubmit="return confirm('Détruire cette réservation définitivement ?')">
-                                                <button type="submit"
-                                                    class="text-red-500 hover:text-red-700 dark:hover:text-red-400 transition"
-                                                    title="Supprimer">
-                                                    <svg class="w-5 h-5" fill="none" stroke="currentColor"
-                                                        viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            </form>
-                                        </div>
-                                    </div>
                                 </td>
-                            </tr>
-                            {% else %}
-                            <tr>
-                                <td colspan="5"
-                                    class="px-6 py-12 text-center text-gray-400 dark:text-gray-600 italic font-medium">
-                                    Aucune réservation pour le moment.</td>
                             </tr>
                             {% endfor %}
                         </tbody>
@@ -1281,62 +837,23 @@
         </section>
 
         <!-- SECTION: MESSAGES -->
-        <section id="section-messages" class="content-section space-y-6 animate-in">
-            <header class="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-                <div>
-                    <h1 class="text-3xl font-black text-gray-900 dark:text-white">Messages de Contact</h1>
-                    <p class="text-gray-500 dark:text-gray-400 mt-2">Demandes de renseignements généraux.</p>
-                </div>
-                <div class="relative max-w-xs w-full mx-auto lg:mx-0">
-                    <input type="text" onkeyup="filterTable('msg-table', this.value)" 
-                        placeholder="Rechercher un message..." 
-                        class="w-full bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl py-2.5 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
-                    <svg class="w-4 h-4 absolute left-3 top-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-                    </svg>
-                </div>
-            </header>
-
-            <div
-                class="bg-white/80 dark:bg-gray-900/80 backdrop-blur-md rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50 overflow-hidden">
-                <div class="overflow-x-auto overflow-y-auto max-h-[600px] custom-scrollbar">
-                    <table id="msg-table" class="w-full text-left relative">
-                        <thead
-                            class="sticky top-0 z-10 bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm">
-                            <tr>
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                                    Client</th>
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                                    Message</th>
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest">
-                                    Coordonnées</th>
-                                <th
-                                    class="px-6 py-4 text-xs font-bold text-gray-400 dark:text-gray-500 uppercase tracking-widest text-right">
-                                    Statut & Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-                            {% set msg_list = inquiries | selectattr('source', 'equalto', 'contact') | list %}
                             {% for inquiry in msg_list[:50] %}
                             <tr class="hover:bg-blue-50/30 dark:hover:bg-blue-900/10 transition-colors">
-                                <td class="px-6 py-5">
-                                    <div class="font-bold text-gray-900 dark:text-white">{{ inquiry.name }}</div>
+                                <td class="px-4 py-3">
+                                    <div class="font-semibold text-sm text-gray-900 dark:text-white">{{ inquiry.name }}</div>
                                     <div class="text-[10px] text-gray-400 dark:text-gray-500">{{ inquiry.email }}</div>
                                 </td>
-                                <td class="px-6 py-5">
+                                <td class="px-4 py-3">
                                     <div
-                                        class="text-sm {% if not inquiry.is_processed %}font-bold text-gray-900 dark:text-white{% else %}text-gray-700 dark:text-gray-300{% endif %} bg-gray-50 dark:bg-gray-800/50 p-4 rounded-xl border border-gray-100 dark:border-gray-800 max-w-2xl">
+                                        class="text-xs {% if not inquiry.is_processed %}font-bold text-gray-900 dark:text-white{% else %}text-gray-600 dark:text-gray-300{% endif %} bg-gray-50 dark:bg-gray-800/50 px-3 py-2 rounded-lg border border-gray-100 dark:border-gray-800 max-w-xl">
                                         {{ inquiry.message }}
                                     </div>
                                 </td>
-                                <td class="px-6 py-5 whitespace-nowrap">
+                                <td class="px-4 py-3 whitespace-nowrap">
                                     <div class="text-xs text-blue-600 dark:text-blue-400 font-bold">{{ inquiry.phone }}
                                     </div>
                                 </td>
-                                <td class="px-6 py-5 text-right whitespace-nowrap">
+                                <td class="px-4 py-3 text-right whitespace-nowrap">
                                     <form action="/admin/inquiries/{{ inquiry.id }}/status" method="POST" class="inline-block mb-2">
                                         <select name="status" onchange="this.form.submit()" 
                                             class="text-[10px] font-bold uppercase tracking-wider rounded-lg px-2 py-1 border-0 focus:ring-2 focus:ring-blue-500/20 cursor-pointer
