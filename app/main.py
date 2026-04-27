@@ -1033,6 +1033,28 @@ async def message_mark_read(request: Request, inquiry_id: int, db: Session = Dep
         db.commit()
     return RedirectResponse(url="/admin/dashboard#messages", status_code=302)
 
+@app.post("/admin/leads/{inquiry_id}/validate")
+async def lead_validate(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        inquiry.is_processed = True
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#leads", status_code=302)
+
+@app.post("/admin/leads/{inquiry_id}/unvalidate")
+async def lead_unvalidate(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        inquiry.is_processed = False
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#leads", status_code=302)
+
 @app.post("/admin/messages/{inquiry_id}/unread")
 async def message_mark_unread(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
     user = get_current_user(request, db)
@@ -1054,6 +1076,41 @@ async def message_delete(request: Request, inquiry_id: int, db: Session = Depend
         db.delete(inquiry)
         db.commit()
     return RedirectResponse(url="/admin/dashboard#messages", status_code=302)
+
+@app.post("/admin/leads/{inquiry_id}/delete")
+async def lead_delete(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        db.delete(inquiry)
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#leads", status_code=302)
+
+@app.post("/admin/leads/{inquiry_id}/edit")
+async def lead_edit(
+    request: Request, 
+    inquiry_id: int,
+    name: str = Form(...),
+    email: str = Form(...),
+    phone: str = Form(...),
+    level: str = Form(None),
+    objective: str = Form(None),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        inquiry.name = name
+        inquiry.email = email
+        inquiry.phone = phone
+        inquiry.level = level
+        inquiry.objective = objective
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#leads", status_code=302)
 
 @app.post("/admin/inquiries/{inquiry_id}/status")
 async def inquiry_update_status(

@@ -1429,7 +1429,12 @@
                             {% for inquiry in lead_list[:100] %}
                             <tr class="hover:bg-emerald-50/30 dark:hover:bg-emerald-900/10 transition-colors">
                                 <td class="px-4 py-3">
-                                    <div class="font-semibold text-sm text-gray-900 dark:text-white">{{ inquiry.name }}</div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="font-semibold text-sm text-gray-900 dark:text-white">{{ inquiry.name }}</div>
+                                        {% if inquiry.is_processed %}
+                                        <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-[8px] font-black rounded-md uppercase tracking-widest">Validé</span>
+                                        {% endif %}
+                                    </div>
                                     <div class="text-[10px] text-gray-400 dark:text-gray-500">{{ inquiry.email }}</div>
                                 </td>
                                 <td class="px-4 py-3">
@@ -1446,9 +1451,40 @@
                                     <div class="text-xs text-blue-600 dark:text-blue-400 font-bold">{{ inquiry.phone }}</div>
                                 </td>
                                 <td class="px-4 py-3 text-right whitespace-nowrap">
-                                    <div class="flex items-center justify-end">
-                                        <form action="/admin/messages/{{ inquiry.id }}/delete" method="POST" onsubmit="return confirm('Supprimer ce membre ?')">
-                                            <button type="submit" class="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition">
+                                    <div class="flex items-center justify-end space-x-2">
+                                        {% if not inquiry.is_processed %}
+                                        <form action="/admin/leads/{{ inquiry.id }}/validate" method="POST" class="inline">
+                                            <button type="submit" class="p-1.5 text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition" title="Valider ce prospect">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                        {% else %}
+                                        <form action="/admin/leads/{{ inquiry.id }}/unvalidate" method="POST" class="inline">
+                                            <button type="submit" class="p-1.5 text-gray-400 hover:text-orange-500 hover:bg-orange-50 dark:hover:bg-orange-900/20 rounded-lg transition" title="Invalider (Remettre en attente)">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                                                </svg>
+                                            </button>
+                                        </form>
+                                        {% endif %}
+
+                                        <button type="button" onclick="openEditLeadModal(this)"
+                                            data-id="{{ inquiry.id }}" 
+                                            data-name="{{ inquiry.name|escape }}"
+                                            data-email="{{ inquiry.email|escape }}"
+                                            data-phone="{{ inquiry.phone|escape }}"
+                                            data-level="{{ inquiry.level|escape }}"
+                                            data-objective="{{ inquiry.objective|escape }}"
+                                            class="p-1.5 text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition" title="Modifier">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                            </svg>
+                                        </button>
+
+                                        <form action="/admin/leads/{{ inquiry.id }}/delete" method="POST" onsubmit="return confirm('Supprimer ce membre ?')" class="inline">
+                                            <button type="submit" class="p-1.5 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition" title="Supprimer">
                                                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v2m3 4s-1 1 1 1h3z"></path>
                                                 </svg>
@@ -1738,6 +1774,60 @@
             <button type="submit"
                 class="w-full bg-blue-600 dark:bg-indigo-600 dark:hover:bg-indigo-500 text-white font-bold py-4 rounded-xl shadow-lg mt-4">Enregistrer les
                 modifications</button>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Lead Modal -->
+<div id="edit-lead-modal"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div
+        class="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-lg shadow-2xl animate-modal-in border border-gray-100 dark:border-gray-800">
+        <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+            <h2 class="text-xl font-bold dark:text-white">Modifier le Membre</h2>
+            <button type="button" onclick="document.getElementById('edit-lead-modal').classList.add('hidden')"
+                class="text-gray-400 hover:text-gray-600 dark:hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+        <form id="edit-lead-form" action="" method="POST" class="p-6 space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Nom Complet</label>
+                    <input type="text" name="name" id="lead-edit-name" required
+                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Email</label>
+                    <input type="email" name="email" id="lead-edit-email" required
+                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Téléphone</label>
+                    <input type="text" name="phone" id="lead-edit-phone" required
+                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Niveau</label>
+                    <select name="level" id="lead-edit-level"
+                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10">
+                        <option value="Ma première fois (Jamais surfé)">Ma première fois (Jamais surfé)</option>
+                        <option value="Initié (Déjà pris des cours)">Initié (Déjà pris des cours)</option>
+                        <option value="Débutant (Prend ses propres vagues)">Débutant (Prend ses propres vagues)</option>
+                        <option value="Intermédiaire (Perfectionnement)">Intermédiaire (Perfectionnement)</option>
+                    </select>
+                </div>
+                <div class="col-span-2">
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Objectif principal</label>
+                    <textarea name="objective" id="lead-edit-objective" rows="3"
+                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border focus:ring-4 focus:ring-blue-500/10"></textarea>
+                </div>
+            </div>
+            <button type="submit"
+                class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4">Mettre à jour le prospect</button>
         </form>
     </div>
 </div>
@@ -2047,6 +2137,17 @@
         document.getElementById('res-edit-people').value = btn.getAttribute('data-people');
         document.getElementById('res-edit-level').value = btn.getAttribute('data-level');
         document.getElementById('edit-reservation-modal').classList.remove('hidden');
+    }
+
+    function openEditLeadModal(btn) {
+        const form = document.getElementById('edit-lead-form');
+        form.action = '/admin/leads/' + btn.getAttribute('data-id') + '/edit';
+        document.getElementById('lead-edit-name').value = btn.getAttribute('data-name');
+        document.getElementById('lead-edit-email').value = btn.getAttribute('data-email');
+        document.getElementById('lead-edit-phone').value = btn.getAttribute('data-phone');
+        document.getElementById('lead-edit-level').value = btn.getAttribute('data-level');
+        document.getElementById('lead-edit-objective').value = btn.getAttribute('data-objective');
+        document.getElementById('edit-lead-modal').classList.remove('hidden');
     }
 
     function openEditModal(btn) {
