@@ -240,6 +240,7 @@ async def contact_form(
         booking_date=booking_date,
         people_count=people_count,
         level=level,
+        schedule_id=schedule_id,
         source="reservation" if (service_id or booking_date) else "contact",
         created_at=dt_module.datetime.now().strftime("%Y-%m-%d %H:%M")
     )
@@ -1145,7 +1146,21 @@ async def inquiry_update_status(
     
     inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
     if inquiry:
+        old_status = inquiry.status
         inquiry.status = status
+        
+        # Adjust CourseSchedule spots if applicable
+        if inquiry.schedule_id:
+            schedule = db.query(models.CourseSchedule).filter(models.CourseSchedule.id == inquiry.schedule_id).first()
+            if schedule:
+                deduction = inquiry.people_count if inquiry.people_count else 1
+                if status == "annule" and old_status != "annule":
+                    # Re-add spots on cancellation
+                    schedule.spots_available += deduction
+                elif old_status == "annule" and status != "annule":
+                    # Re-deduct spots if moved back from cancelled
+                    schedule.spots_available = max(0, schedule.spots_available - deduction)
+
         # Update is_processed based on status for backward compatibility
         if status in ["confirme", "annule"]:
             inquiry.is_processed = True
@@ -1186,6 +1201,13 @@ async def reservation_delete(request: Request, inquiry_id: int, db: Session = De
         return RedirectResponse(url="/admin/login", status_code=302)
     inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
     if inquiry:
+        # Re-add spots if not already cancelled and it's a schedule reservation
+        if inquiry.schedule_id and inquiry.status != "annule":
+            schedule = db.query(models.CourseSchedule).filter(models.CourseSchedule.id == inquiry.schedule_id).first()
+            if schedule:
+                deduction = inquiry.people_count if inquiry.people_count else 1
+                schedule.spots_available += deduction
+        
         db.delete(inquiry)
         db.commit()
     return RedirectResponse(url="/admin/dashboard#reservations", status_code=302)

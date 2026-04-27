@@ -26,6 +26,7 @@ class Inquiry(Base):
     
     # New reservation fields
     service_id = Column(Integer, ForeignKey("services.id"), nullable=True)
+    schedule_id = Column(Integer, ForeignKey("course_schedules.id"), nullable=True)
     booking_date = Column(String, nullable=True)
     people_count = Column(Integer, nullable=True)
     level = Column(String, nullable=True)
@@ -38,6 +39,7 @@ class Inquiry(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     service = relationship("Service")
+    schedule = relationship("CourseSchedule")
 
 class User(Base):
     __tablename__ = "users"
