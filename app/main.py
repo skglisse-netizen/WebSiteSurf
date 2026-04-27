@@ -14,7 +14,7 @@ import pyotp
 from . import models, schemas, notifications
 from sqlalchemy import text
 from .database import engine, get_db, SessionLocal
-from .auth import get_current_user, verify_password, create_access_token, get_password_hash
+from .auth import get_current_user, verify_password, create_access_token, get_password_hash, ACCESS_TOKEN_EXPIRE_MINUTES
 
 # Ensure upload directories exist
 UPLOAD_DIR = "static/uploads/hero"
@@ -383,7 +383,7 @@ async def login_post(request: Request, username: str = Form(...), password: str 
 
     access_token = create_access_token(data={"sub": user.username})
     response = RedirectResponse(url="/admin/dashboard", status_code=302)
-    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
+    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60)
     return response
 
 @app.get("/admin/login/mfa", response_class=HTMLResponse)
@@ -417,7 +417,7 @@ async def login_mfa_post(request: Request, code: str = Form(...), db: Session = 
     # Final JWT
     access_token = create_access_token(data={"sub": user.username})
     response = RedirectResponse(url="/admin/dashboard", status_code=302)
-    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True)
+    response.set_cookie(key="access_token", value=f"Bearer {access_token}", httponly=True, max_age=ACCESS_TOKEN_EXPIRE_MINUTES * 60)
     response.delete_cookie("mfa_pending_token")
     return response
 
