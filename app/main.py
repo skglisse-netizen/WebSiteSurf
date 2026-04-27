@@ -425,14 +425,19 @@ async def mfa_disable(request: Request, db: Session = Depends(get_db)):
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.get("/admin/dashboard", response_class=HTMLResponse)
-async def dashboard_page(request: Request, db: Session = Depends(get_db)):
+async def dashboard_page(
+    request: Request, 
+    db: Session = Depends(get_db),
+    view: str = "month",
+    month: int = None,
+    year: int = None
+):
     user = get_current_user(request, db)
     if not user:
         return RedirectResponse(url="/admin/login", status_code=302)
     
     config = db.query(models.SiteConfig).first()
     if not config:
-        # Emergency fallback to avoid crash
         config = models.SiteConfig(school_name="Moroccan Wave Vibes")
         db.add(config)
         db.commit()
@@ -442,25 +447,50 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
     hero_images = db.query(models.HeroImage).filter(models.HeroImage.config_id == config.id).all()
     services = db.query(models.Service).all()
     schedules = db.query(models.CourseSchedule).all()
-    recent_activities = db.query(models.Inquiry).order_by(models.Inquiry.id.desc()).limit(5).all()
+    recent_activities = db.query(models.Inquiry).order_by(models.Inquiry.id.desc()).limit(10).all()
     
     import datetime
     import json
-    today = datetime.date.today()
+    import calendar
+    
+    now = datetime.datetime.now()
+    if year is None: year = now.year
+    if month is None: month = now.month
+    
     labels = []
     data_counts = []
     
-    # 14 derniers jours
-    visits = db.query(models.DailyVisit).order_by(models.DailyVisit.date.desc()).limit(14).all()
-    visits_dict = {v.date: v.count for v in visits}
-    
-    # Format the past 14 days correctly
-    for i in range(13, -1, -1):
-        day_date = today - datetime.timedelta(days=i)
-        day_str = day_date.isoformat()
-        day_label = day_date.strftime("%d/%m") # Format court pour le graphique
-        labels.append(day_label)
-        data_counts.append(visits_dict.get(day_str, 0))
+    if view == "month":
+        # Get number of days in selected month
+        _, last_day = calendar.monthrange(year, month)
+        
+        # Query visits for this month
+        month_prefix = f"{year:04d}-{month:02d}"
+        visits = db.query(models.DailyVisit).filter(models.DailyVisit.date.like(f"{month_prefix}%")).all()
+        visits_dict = {v.date: v.count for v in visits}
+        
+        for day in range(1, last_day + 1):
+            day_str = f"{month_prefix}-{day:02d}"
+            labels.append(f"{day:02d}")
+            data_counts.append(visits_dict.get(day_str, 0))
+            
+    else: # View == "year"
+        # Query visits for this year
+        year_prefix = f"{year:04d}"
+        visits = db.query(models.DailyVisit).filter(models.DailyVisit.date.like(f"{year_prefix}%")).all()
+        
+        month_totals = {m: 0 for m in range(1, 13)}
+        for v in visits:
+            # v.date is YYYY-MM-DD
+            try:
+                v_month = int(v.date.split("-")[1])
+                month_totals[v_month] += v.count
+            except: continue
+            
+        month_names = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"]
+        for m in range(1, 13):
+            labels.append(month_names[m-1])
+            data_counts.append(month_totals[m])
 
     return templates.TemplateResponse(
         request=request, 
@@ -475,7 +505,11 @@ async def dashboard_page(request: Request, db: Session = Depends(get_db)):
             "schedules": schedules,
             "recent_activities": recent_activities,
             "chart_labels": json.dumps(labels),
-            "chart_data": json.dumps(data_counts)
+            "chart_data": json.dumps(data_counts),
+            "current_view": view,
+            "current_month": month,
+            "current_year": year,
+            "years_range": range(now.year - 2, now.year + 1)
         }
     )
 
