@@ -72,47 +72,78 @@
                         <div class="text-[10px] font-bold text-accent-400/60 uppercase tracking-widest hidden sm:block">Mise à jour en temps réel</div>
                     </div>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                         {% for sch in schedules %}
                         <div onclick="bookDailyCourse('{{ sch.course_title|escape }}', '{{ sch.date_text }}', '{{ sch.time_text }}')" 
-                             class="group/item relative flex items-center gap-4 p-3 bg-white/5 border border-white/5 rounded-2xl hover:bg-white/10 hover:border-white/20 transition-all duration-300 cursor-pointer overflow-hidden">
+                             class="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden hover:bg-white/10 hover:border-accent-500/50 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-500 cursor-pointer flex flex-col h-full">
                             
-                            <!-- Background Image Preview (Subtle) -->
-                            {% if sch.image_filename %}
-                            <div class="absolute inset-0 opacity-0 group-hover/item:opacity-10 transition-opacity duration-500">
-                                <img src="/static/uploads/schedules/{{ sch.image_filename }}" class="w-full h-full object-cover scale-110 group-hover/item:scale-100 transition-transform duration-700">
-                            </div>
-                            {% endif %}
-
-                            <!-- Visual Column -->
-                            <div class="relative z-10 flex-shrink-0">
+                            <!-- Image Header -->
+                            <div class="relative h-40 overflow-hidden shrink-0">
                                 {% if sch.image_filename %}
-                                <div class="relative">
-                                    <img src="/static/uploads/schedules/{{ sch.image_filename }}" class="w-14 h-14 rounded-xl object-cover border border-white/10 shadow-lg group-hover/item:scale-110 transition-transform duration-500">
-                                    <div class="absolute -bottom-1 -right-1 bg-accent-500 text-white px-2 py-0.5 rounded-lg font-black text-[9px] shadow-lg border border-white/20">
-                                        {{ sch.time_text }}
-                                    </div>
-                                </div>
+                                <img src="/static/uploads/schedules/{{ sch.image_filename }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                 {% else %}
-                                <div class="w-14 h-14 bg-accent-500/20 rounded-xl flex items-center justify-center border border-accent-500/30 group-hover/item:bg-accent-500/40 transition-colors">
-                                    <span class="text-sm font-black text-accent-400">{{ sch.time_text }}</span>
-                                </div>
+                                <div class="w-full h-full bg-gradient-to-br from-blue-900/60 to-slate-900/80 group-hover:scale-110 transition-transform duration-700"></div>
                                 {% endif %}
-                            </div>
-
-                            <!-- Content Column -->
-                            <div class="relative z-10 flex flex-col flex-grow">
-                                <div class="flex items-center gap-2 mb-1">
-                                    <h3 class="text-sm font-bold text-white tracking-tight leading-tight group-hover/item:text-accent-400 transition-colors">{{ sch.course_title }}</h3>
+                                
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+                                
+                                <!-- Top Badges -->
+                                <div class="absolute top-4 left-4 flex gap-2">
+                                    <div class="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-xl border border-white/20 flex items-center gap-2 shadow-lg">
+                                        <svg class="w-3.5 h-3.5 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                        <span class="text-xs font-black">{{ sch.time_text }}</span>
+                                    </div>
                                     {% if sch.discount_percent and sch.discount_percent > 0 %}
-                                    <span class="bg-red-500/90 text-white text-[8px] font-black px-1.5 py-0.5 rounded-md">
-                                        -{{ sch.discount_percent }}%
-                                    </span>
+                                    <div class="bg-red-500 text-white px-3 py-1.5 rounded-xl border border-red-400/50 flex items-center shadow-lg">
+                                        <span class="text-xs font-black">-{{ sch.discount_percent }}%</span>
+                                    </div>
                                     {% endif %}
                                 </div>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-[10px] font-medium text-white/40 uppercase tracking-wider">{{ sch.date_text }}</span>
-                                    <div class="text-[9px] font-bold text-accent-500/80">RÉSERVER ➔</div>
+                                
+                                <!-- Bottom Gradient Content -->
+                                <div class="absolute bottom-4 left-4 right-4">
+                                    <h3 class="text-lg font-black text-white group-hover:text-accent-400 transition-colors drop-shadow-md">{{ sch.course_title }}</h3>
+                                </div>
+                            </div>
+
+                            <!-- Details Body -->
+                            <div class="p-5 flex flex-col grow justify-between bg-gradient-to-b from-transparent to-black/20">
+                                <div>
+                                    <div class="flex items-center gap-3 mb-4">
+                                        <div class="w-10 h-10 rounded-full bg-accent-500/20 flex items-center justify-center border border-accent-500/30">
+                                            <svg class="w-5 h-5 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                                        </div>
+                                        <div class="flex flex-col">
+                                            <span class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Date Prévue</span>
+                                            <span class="text-sm font-bold text-gray-200">{{ sch.date_text }}</span>
+                                        </div>
+                                    </div>
+                                    
+                                    {% if sch.level %}
+                                    <div class="flex flex-wrap gap-1 mb-2">
+                                        {% for lvl in sch.level.split(',') %}
+                                        <span class="px-2 py-1 bg-blue-500/10 text-blue-300 text-[9px] font-bold rounded-md border border-blue-500/20 uppercase tracking-wider">
+                                            {{ lvl }}
+                                        </span>
+                                        {% endfor %}
+                                    </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <!-- Action Area -->
+                                <div class="flex items-center justify-between mt-4 pt-4 border-t border-white/10">
+                                    <div class="flex flex-col">
+                                        <span class="text-[10px] text-gray-400 uppercase tracking-widest font-bold">Disponibilité</span>
+                                        <div class="flex items-center gap-1.5 mt-0.5">
+                                            <div class="w-2 h-2 rounded-full {{ 'bg-green-500 animate-pulse' if sch.spots_available > 0 else 'bg-red-500' }}"></div>
+                                            <span class="text-xs font-black {{ 'text-green-400' if sch.spots_available > 0 else 'text-red-400' }}">
+                                                {{ sch.spots_available }} places
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="w-10 h-10 rounded-full bg-accent-500 text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-accent-400 transition-all shadow-lg shadow-accent-500/30">
+                                        <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
+                                    </div>
                                 </div>
                             </div>
                         </div>
