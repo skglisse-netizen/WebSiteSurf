@@ -72,10 +72,10 @@
                         <div class="text-[10px] font-bold text-accent-400/60 uppercase tracking-widest hidden sm:block">Mise à jour en temps réel</div>
                     </div>
 
-                    <div class="grid grid-cols-1 gap-4">
+                    <div class="flex overflow-x-auto gap-6 pb-6 snap-x snap-mandatory [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
                         {% for sch in schedules %}
                         <div onclick="bookDailyCourse('{{ sch.course_title|escape }}', '{{ sch.date_text }}', '{{ sch.time_text }}')" 
-                             class="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:bg-white/10 hover:border-accent-500/50 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] hover:-translate-y-1 transition-all duration-500 cursor-pointer flex flex-col sm:flex-row h-full">
+                             class="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:bg-white/10 hover:border-accent-500/50 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] hover:-translate-y-1 transition-all duration-500 cursor-pointer flex flex-col sm:flex-row h-auto w-[85vw] sm:w-[500px] lg:w-[600px] shrink-0 snap-center">
                             
                             <!-- Image Header (Left side on desktop) -->
                             <div class="relative w-full sm:w-1/2 shrink-0 h-48 sm:h-auto">
