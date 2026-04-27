@@ -289,7 +289,14 @@
             function showModal() {
                 if (modal) {
                     modal.style.display = 'flex';
-                    setTimeout(() => modal.classList.add('active'), 10);
+                    setTimeout(() => {
+                        modal.classList.add('active');
+                        const container = document.getElementById('modal-container');
+                        if (container) {
+                            container.classList.remove('scale-95', 'opacity-0', 'translate-y-10');
+                            container.classList.add('scale-100', 'opacity-100', 'translate-y-0');
+                        }
+                    }, 10);
                     if (openBtn) openBtn.classList.add('scale-0', 'opacity-0');
                     
                     // Track view event
@@ -303,6 +310,11 @@
 
             function hideModal() {
                 if (modal) {
+                    const container = document.getElementById('modal-container');
+                    if (container) {
+                        container.classList.add('scale-95', 'opacity-0', 'translate-y-10');
+                        container.classList.remove('scale-100', 'opacity-100', 'translate-y-0');
+                    }
                     modal.classList.remove('active');
                     setTimeout(() => {
                         modal.style.display = 'none';
@@ -324,7 +336,7 @@
             
             // Show automatically if first time or after 24h
             if (!lastShown || (now - lastShown > 86400000)) {
-                setTimeout(showModal, 3000);
+                setTimeout(showModal, 2000);
             }
 
             if (closeBtn) closeBtn.addEventListener('click', hideModal);
@@ -349,7 +361,7 @@
     {% if not request.url.path.startswith('/admin') %}
     <!-- Community Modal -->
     <div id="community-modal" class="fixed inset-0 z-[100] items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity duration-500" style="display: none">
-        <div class="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row transform transition-all duration-500 scale-95 opacity-0 active:scale-100 active:opacity-100" id="modal-container">
+        <div class="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row transform transition-all duration-500 scale-95 opacity-0 translate-y-10" id="modal-container">
             <!-- Left Side: Image & Promo -->
             <div class="hidden md:block w-1/2 modal-bg-image relative">
                 <div class="absolute inset-0 bg-gradient-to-t from-primary-900/80 to-transparent flex flex-col justify-end p-8 text-white">
@@ -416,27 +428,6 @@
         </div>
     </div>
 
-    <script>
-        // Trigger modal container animation
-        const observerModal = new MutationObserver((mutations) => {
-            mutations.forEach((mutation) => {
-                const modal = document.getElementById('community-modal');
-                if (modal && mutation.target === modal && mutation.target.classList.contains('active')) {
-                    const container = document.getElementById('modal-container');
-                    if (container) {
-                        setTimeout(() => {
-                            container.classList.remove('scale-95', 'opacity-0');
-                            container.classList.add('scale-100', 'opacity-100');
-                        }, 50);
-                    }
-                }
-            });
-        });
-        const modalElem = document.getElementById('community-modal');
-        if (modalElem) {
-            observerModal.observe(modalElem, { attributes: true });
-        }
-    </script>
     {% endif %}
 </body>
 </html>
