@@ -226,6 +226,7 @@ async def contact_form(
     booking_date: Optional[str] = Form(None),
     people_count: Optional[int] = Form(None),
     level: Optional[str] = Form(None),
+    schedule_id: Optional[int] = Form(None),
     background_tasks: BackgroundTasks = BackgroundTasks(),
     db: Session = Depends(get_db)
 ):
@@ -245,6 +246,14 @@ async def contact_form(
     db.add(inquiry)
     db.commit()
     db.refresh(inquiry)
+    
+    # Deduct availability from CourseSchedule if this is a quick schedule booking
+    if schedule_id:
+        schedule = db.query(models.CourseSchedule).filter(models.CourseSchedule.id == schedule_id).first()
+        if schedule and schedule.spots_available > 0:
+            deduction = people_count if people_count else 1
+            schedule.spots_available = max(0, schedule.spots_available - deduction)
+            db.commit()
     
     # Reload the page with a success message
     services = db.query(models.Service).filter(models.Service.is_active == True).all()

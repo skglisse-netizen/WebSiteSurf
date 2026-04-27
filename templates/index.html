@@ -73,7 +73,7 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                         {% for sch in schedules %}
-                        <div onclick="bookDailyCourse('{{ sch.course_title|escape }}', '{{ sch.date_text }}', '{{ sch.time_text }}')" 
+                        <div onclick="bookDailyCourse('{{ sch.id }}', '{{ sch.course_title|escape }}', '{{ sch.date_text }}', '{{ sch.time_text }}')" 
                              class="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-xl overflow-hidden hover:bg-white/10 hover:border-accent-500/50 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] hover:-translate-y-1 transition-all duration-500 cursor-pointer flex flex-col h-full">
                             
                             <!-- Image Header -->
@@ -293,6 +293,7 @@
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-primary-500 to-accent-500"></div>
 
             <form action="/reservation" method="POST" class="space-y-4 relative z-10">
+                <input type="hidden" name="schedule_id" id="schedule_id" value="">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                         <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Nom complet *</label>
@@ -423,7 +424,7 @@
             }
         });
 
-        function bookDailyCourse(title, dateStr, timeStr) {
+        function bookDailyCourse(id, title, dateStr, timeStr) {
             // Scroll to the reservation section safely
             const resSection = document.getElementById('reservation');
             if(resSection) {
@@ -437,6 +438,10 @@
             
             // Set service to specific course (value="")
             document.getElementById('service_id').value = "";
+            
+            // Set schedule id
+            const schInput = document.getElementById('schedule_id');
+            if (schInput) schInput.value = id;
             
             // Add details into the message area
             const msgBox = document.getElementById('message');
