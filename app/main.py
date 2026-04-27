@@ -33,70 +33,68 @@ def secure_filename_lite(filename: str) -> str:
 def init_db():
     db = SessionLocal()
     try:
-        # Tables creation
         models.Base.metadata.create_all(bind=engine)
-        
-        # Migrations and sync
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS school_name VARCHAR DEFAULT 'Moroccan Wave Vibes'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_address VARCHAR DEFAULT 'Plage de Mehdia, Kenitra, Maroc'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_phone VARCHAR DEFAULT '+212 6 00 00 00 00'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_email VARCHAR DEFAULT 'contact@mwv.sytes.net'"))
-        db.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS contact_email VARCHAR DEFAULT 'contact@mwv.sytes.net'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS navbar_bg_color VARCHAR DEFAULT '#ffffff'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS navbar_text_color VARCHAR DEFAULT '#1f2937'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS footer_bg_color VARCHAR DEFAULT '#111827'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS footer_text_color VARCHAR DEFAULT '#ffffff'"))
-        db.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS mfa_secret VARCHAR DEFAULT NULL"))
-        db.execute(text("ALTER TABLE users ADD COLUMN IF NOT EXISTS mfa_enabled BOOLEAN DEFAULT FALSE"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS logo_filename VARCHAR DEFAULT NULL"))
-        db.execute(text("ALTER TABLE services ADD COLUMN IF NOT EXISTS discount_percent NUMERIC(5,2) DEFAULT 0"))
-        db.execute(text("ALTER TABLE services ADD COLUMN IF NOT EXISTS level VARCHAR"))
-        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS status VARCHAR DEFAULT 'en_attente'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_title VARCHAR DEFAULT 'Pourquoi rider avec nous ?'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_description TEXT DEFAULT ''"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_image_filename VARCHAR DEFAULT NULL"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature1_icon VARCHAR DEFAULT '👨‍🏫'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature1_title VARCHAR DEFAULT 'Moniteurs Diplômés d''État'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature1_desc VARCHAR DEFAULT ''"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature2_icon VARCHAR DEFAULT '🏄'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature2_title VARCHAR DEFAULT 'Matériel Premium'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature2_desc VARCHAR DEFAULT ''"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature3_icon VARCHAR DEFAULT '🌊'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature3_title VARCHAR DEFAULT 'Choix des Spots'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature3_desc VARCHAR DEFAULT ''"))
-        
-        # Reservation fields
-        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS service_id INTEGER REFERENCES services(id)"))
-        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS booking_date VARCHAR"))
-        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS people_count INTEGER"))
-        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS level VARCHAR"))
-        
-        # Course Schedules fields
-        db.execute(text("ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS description TEXT"))
-        db.execute(text("ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS spots_available INTEGER DEFAULT 10"))
-        db.execute(text("ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS level TEXT"))
-        
-        # Modal fields
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_title VARCHAR DEFAULT 'Rejoignez la Communauté'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_subtitle TEXT DEFAULT 'Dites-nous en un peu plus sur vous pour débloquer votre réduction.'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_promo_text VARCHAR DEFAULT 'Rejoignez notre communauté de passionnés et profitez d''une réduction immédiate sur votre prochain cours !'"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_discount_percent INTEGER DEFAULT 15"))
-        db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_image_filename VARCHAR DEFAULT NULL"))
-        
-        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS objective TEXT"))
-        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS source VARCHAR DEFAULT 'contact'"))
-        
-        # Explicit creation of popup_events table for some DB environments
-        db.execute(text("""
-            CREATE TABLE IF NOT EXISTS popup_events (
-                id SERIAL PRIMARY KEY,
-                event_type VARCHAR,
-                created_at VARCHAR
-            )
-        """))
-        
-        db.commit()
+    except: pass
 
+    commands = [
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS school_name VARCHAR DEFAULT 'Moroccan Wave Vibes'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_address VARCHAR DEFAULT 'Plage de Mehdia, Kenitra, Maroc'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_phone VARCHAR DEFAULT '+212 6 00 00 00 00'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS contact_email VARCHAR DEFAULT 'contact@mwv.sytes.net'",
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS contact_email VARCHAR DEFAULT 'contact@mwv.sytes.net'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS navbar_bg_color VARCHAR DEFAULT '#ffffff'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS navbar_text_color VARCHAR DEFAULT '#1f2937'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS footer_bg_color VARCHAR DEFAULT '#111827'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS footer_text_color VARCHAR DEFAULT '#ffffff'",
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS mfa_secret VARCHAR DEFAULT NULL",
+        "ALTER TABLE users ADD COLUMN IF NOT EXISTS mfa_enabled BOOLEAN DEFAULT FALSE",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS logo_filename VARCHAR DEFAULT NULL",
+        "ALTER TABLE services ADD COLUMN IF NOT EXISTS discount_percent NUMERIC(5,2) DEFAULT 0",
+        "ALTER TABLE services ADD COLUMN IF NOT EXISTS level VARCHAR",
+        "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS status VARCHAR DEFAULT 'en_attente'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_title VARCHAR DEFAULT 'Pourquoi rider avec nous ?'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_description TEXT DEFAULT ''",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_image_filename VARCHAR DEFAULT NULL",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature1_icon VARCHAR DEFAULT '👨‍🏫'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature1_title VARCHAR DEFAULT 'Moniteurs Diplômés d''État'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature1_desc VARCHAR DEFAULT ''",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature2_icon VARCHAR DEFAULT '🏄'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature2_title VARCHAR DEFAULT 'Matériel Premium'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature2_desc VARCHAR DEFAULT ''",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature3_icon VARCHAR DEFAULT '🌊'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature3_title VARCHAR DEFAULT 'Choix des Spots'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS why_feature3_desc VARCHAR DEFAULT ''",
+        "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS service_id INTEGER REFERENCES services(id)",
+        "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS booking_date VARCHAR",
+        "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS people_count INTEGER",
+        "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS level VARCHAR",
+        "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS description TEXT",
+        "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS spots_available INTEGER DEFAULT 10",
+        "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS level TEXT",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_title VARCHAR DEFAULT 'Rejoignez la Communauté'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_subtitle TEXT DEFAULT 'Dites-nous en un peu plus sur vous pour débloquer votre réduction.'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_promo_text VARCHAR DEFAULT 'Rejoignez notre communauté de passionnés et profitez d''une réduction immédiate sur votre prochain cours !'",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_discount_percent INTEGER DEFAULT 15",
+        "ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_image_filename VARCHAR DEFAULT NULL",
+        "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS objective TEXT",
+        "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS source VARCHAR DEFAULT 'contact'",
+        """
+        CREATE TABLE IF NOT EXISTS popup_events (
+            id SERIAL PRIMARY KEY,
+            event_type VARCHAR,
+            created_at VARCHAR
+        )
+        """
+    ]
+
+    for cmd in commands:
+        try:
+            db.execute(text(cmd))
+            db.commit()
+        except:
+            db.rollback()
+
+    try:
         # Seed Admin user
         admin_user = db.query(models.User).filter_by(username="Administrateur").first()
         if not admin_user:
@@ -108,8 +106,7 @@ def init_db():
         if not site_config:
             db.add(models.SiteConfig())
             db.commit()
-    except Exception as e:
-        print(f"Database Init Notice: {e}")
+    except:
         db.rollback()
     finally:
         db.close()
@@ -554,7 +551,9 @@ async def dashboard_page(
             "current_month": month,
             "current_year": year,
             "years_range": range(now.year - 2, now.year + 1),
-            "popup_stats": popup_stats
+            "popup_stats": popup_stats,
+            "conversion_rate": (popup_stats["fills"] / popup_stats["views"] * 100) if popup_stats["views"] > 0 else 0,
+            "popup_others": max(0, popup_stats["views"] - popup_stats["fills"] - popup_stats["closes"])
         }
     )
 
@@ -574,15 +573,12 @@ async def upload_hero_images(
         if not file.filename:
             continue
             
-        # Use sanitized original filename
         new_filename = secure_filename_lite(file.filename)
         file_path = os.path.join(UPLOAD_DIR, new_filename)
         
-        # Overwrite file on disk
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
             
-        # Add to DB only if it doesn't exist (to avoid duplicates in gallery)
         existing = db.query(models.HeroImage).filter(
             models.HeroImage.filename == new_filename,
             models.HeroImage.config_id == config.id
@@ -592,7 +588,10 @@ async def upload_hero_images(
             hero_img = models.HeroImage(filename=new_filename, config_id=config.id)
             db.add(hero_img)
     
-    db.commit()
+    try:
+        db.commit()
+    except:
+        db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.post("/admin/hero-images/{image_id}/delete")
@@ -605,25 +604,20 @@ async def delete_hero_image(
     if not user:
         return RedirectResponse(url="/admin/login", status_code=302)
         
-    print(f"DEBUG: Attempting to delete hero image with ID {image_id}")
     img = db.query(models.HeroImage).filter(models.HeroImage.id == image_id).first()
     if img:
-        print(f"DEBUG: Found image in DB: {img.filename}")
-        # Delete file
         file_path = os.path.join(UPLOAD_DIR, img.filename)
         if os.path.exists(file_path):
             try:
                 os.remove(file_path)
-                print(f"DEBUG: File deleted from disk: {file_path}")
-            except Exception as e:
-                print(f"DEBUG: Could not delete file from disk (might be in use): {e}")
+            except:
+                pass
         
-        # Delete from DB
         db.delete(img)
-        db.commit()
-        print(f"DEBUG: Image deleted from DB and committed.")
-    else:
-        print(f"DEBUG: Image with ID {image_id} not found in DB.")
+        try:
+            db.commit()
+        except:
+            db.rollback()
         
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
@@ -638,10 +632,8 @@ async def upload_logo(
         return RedirectResponse(url="/admin/login", status_code=302)
     config = db.query(models.SiteConfig).first()
     
-    # Secure name
     new_filename = secure_filename_lite(file.filename)
     
-    # Delete old logo if it has a BROADLY different name or just overwrite if it matches
     if config.logo_filename and config.logo_filename != new_filename:
         old_path = os.path.join(LOGO_DIR, config.logo_filename)
         if os.path.exists(old_path):
@@ -652,7 +644,10 @@ async def upload_logo(
         shutil.copyfileobj(file.file, buffer)
         
     config.logo_filename = new_filename
-    db.commit()
+    try:
+        db.commit()
+    except:
+        db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.post("/admin/logo/delete")
@@ -666,7 +661,10 @@ async def delete_logo(request: Request, db: Session = Depends(get_db)):
         if os.path.exists(file_path):
             os.remove(file_path)
         config.logo_filename = None
-        db.commit()
+        try:
+            db.commit()
+        except:
+            db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.post("/admin/dashboard")
@@ -725,7 +723,10 @@ async def dashboard_update(
     config.why_feature3_icon = why_feature3_icon
     config.why_feature3_title = why_feature3_title
     config.why_feature3_desc = why_feature3_desc
-    db.commit()
+    try:
+        db.commit()
+    except:
+        db.rollback()
     
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
@@ -756,7 +757,10 @@ async def upload_why_image(
         shutil.copyfileobj(file.file, f)
         
     config.why_image_filename = new_filename
-    db.commit()
+    try:
+        db.commit()
+    except:
+        db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.post("/admin/why-image/delete")
@@ -770,7 +774,10 @@ async def delete_why_image(request: Request, db: Session = Depends(get_db)):
         if os.path.exists(f):
             os.remove(f)
         config.why_image_filename = None
-        db.commit()
+        try:
+            db.commit()
+        except:
+            db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 # --- MODAL SECTION ---
@@ -795,7 +802,10 @@ async def modal_config_update(
     config.modal_subtitle = modal_subtitle
     config.modal_promo_text = modal_promo_text
     config.modal_discount_percent = modal_discount_percent
-    db.commit()
+    try:
+        db.commit()
+    except:
+        db.rollback()
     
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
@@ -822,7 +832,10 @@ async def upload_modal_image(
         shutil.copyfileobj(file.file, f)
         
     config.modal_image_filename = new_filename
-    db.commit()
+    try:
+        db.commit()
+    except:
+        db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.post("/admin/modal-image/delete")
@@ -836,7 +849,10 @@ async def delete_modal_image(request: Request, db: Session = Depends(get_db)):
         if os.path.exists(f):
             os.remove(f)
         config.modal_image_filename = None
-        db.commit()
+        try:
+            db.commit()
+        except:
+            db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 # --- SERVICES CRUD ---
@@ -875,7 +891,10 @@ async def service_add(
         image_url=image_url,
         level=level_str
     ))
-    db.commit()
+    try:
+        db.commit()
+    except:
+        db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.post("/admin/services/{service_id}/edit")
@@ -902,7 +921,6 @@ async def service_edit(
         svc.discount_percent = discount_percent
         svc.level = ",".join(level) if level else None
         if image and image.filename:
-            # Delete old image if it exists and is different
             if svc.image_url:
                 old_fname = svc.image_url.split("/")[-1]
                 new_fname = secure_filename_lite(image.filename)
@@ -916,7 +934,10 @@ async def service_edit(
             with open(os.path.join(SERVICE_IMG_DIR, fname), "wb") as f:
                 shutil.copyfileobj(image.file, f)
             svc.image_url = f"/static/uploads/services/{fname}"
-        db.commit()
+        try:
+            db.commit()
+        except:
+            db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.post("/admin/services/{service_id}/delete")
@@ -927,7 +948,6 @@ async def service_delete(request: Request, service_id: int, db: Session = Depend
 
     svc = db.query(models.Service).filter(models.Service.id == service_id).first()
     if svc:
-        # Delete image file
         if svc.image_url:
             fname = svc.image_url.split("/")[-1]
             file_path = os.path.join(SERVICE_IMG_DIR, fname)
@@ -937,7 +957,10 @@ async def service_delete(request: Request, service_id: int, db: Session = Depend
                 except:
                     pass
         db.delete(svc)
-        db.commit()
+        try:
+            db.commit()
+        except:
+            db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
 @app.get("/admin/logout")
