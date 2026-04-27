@@ -110,7 +110,8 @@
                                     </div>
                                     
                                     {% if sch.level %}
-                                    <div class="flex flex-wrap gap-1.5 mb-2">
+                                    <div class="flex items-center flex-wrap gap-1.5 mb-2">
+                                        <span class="text-[9px] text-gray-400 uppercase tracking-widest font-bold mr-1">Niveau :</span>
                                         {% for lvl in sch.level.split(',') %}
                                         <span class="px-2 py-0.5 bg-blue-500/15 text-blue-300 text-[9px] font-bold rounded-md border border-blue-500/20 uppercase tracking-wider">
                                             {{ lvl }}
