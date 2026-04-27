@@ -1047,6 +1047,19 @@
                                     </div>
                                 </div>
                                 <div class="flex flex-col space-y-2 items-end ml-4">
+                                    <button type="button" 
+                                        onclick="openEditScheduleModal(this)"
+                                        data-id="{{ sch.id }}"
+                                        data-date-raw="{{ sch.date_text }}"
+                                        data-time-raw="{{ sch.time_text }}"
+                                        data-title="{{ sch.course_title }}"
+                                        data-desc="{{ sch.description or '' }}"
+                                        data-spots="{{ sch.spots_available }}"
+                                        data-discount="{{ sch.discount_percent }}"
+                                        data-level="{{ sch.level or '' }}"
+                                        class="w-full text-center px-3 py-1.5 bg-blue-50 text-blue-600 hover:bg-blue-100 text-xs font-bold rounded-lg transition">
+                                        Modifier
+                                    </button>
                                     <form action="/admin/schedules/{{ sch.id }}/toggle" method="POST">
                                         <button type="submit" class="w-full text-center px-3 py-1.5 text-xs font-bold rounded-lg transition {{ 'bg-yellow-100 text-yellow-700 hover:bg-yellow-200' if sch.is_active else 'bg-green-100 text-green-700 hover:bg-green-200' }}">
                                             {{ 'Désactiver' if sch.is_active else 'Activer' }}
@@ -1886,6 +1899,88 @@
     </div>
 </div>
 
+<!-- Edit Schedule Modal -->
+<div id="edit-schedule-modal"
+    class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+    <div
+        class="bg-white dark:bg-gray-900 rounded-2xl w-full max-w-lg shadow-2xl animate-modal-in border border-gray-100 dark:border-gray-800">
+        <div class="p-6 border-b border-gray-100 dark:border-gray-800 flex items-center justify-between">
+            <h2 class="text-xl font-bold dark:text-white">Modifier le Cours</h2>
+            <button type="button" onclick="document.getElementById('edit-schedule-modal').classList.add('hidden')"
+                class="text-gray-400 hover:text-gray-600 dark:hover:text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                    </path>
+                </svg>
+            </button>
+        </div>
+        <form id="edit-schedule-form" action="" method="POST" enctype="multipart/form-data" class="p-6 space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Jour / Date</label>
+                    <input type="date" name="date_text" id="sch-edit-date" required
+                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Heure</label>
+                    <input type="time" name="time_text" id="sch-edit-time" required
+                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Nom du Cours</label>
+                <input type="text" name="course_title" id="sch-edit-title" required
+                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Description</label>
+                <textarea name="description" id="sch-edit-desc" rows="2"
+                    class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border"></textarea>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">Niveaux acceptés</label>
+                <div id="sch-edit-level-container" class="grid grid-cols-1 gap-2 bg-gray-50 dark:bg-gray-800/50 p-3 rounded-xl border border-gray-100 dark:border-gray-700">
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Ma première fois (Jamais surfé)" class="rounded text-blue-600">
+                        <span>Ma première fois (Jamais surfé)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Initié (Déjà pris des cours)" class="rounded text-blue-600">
+                        <span>Initié (Déjà pris des cours)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Débutant (Prend ses propres vagues)" class="rounded text-blue-600">
+                        <span>Débutant (Prend ses propres vagues)</span>
+                    </label>
+                    <label class="flex items-center space-x-2 text-xs text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 transition">
+                        <input type="checkbox" name="level" value="Intermédiaire (Perfectionnement)" class="rounded text-blue-600">
+                        <span>Intermédiaire (Perfectionnement)</span>
+                    </label>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Places</label>
+                    <input type="number" name="spots_available" id="sch-edit-spots" min="1" required
+                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Réduction (%)</label>
+                    <input type="number" name="discount_percent" id="sch-edit-discount" min="0" max="100" required
+                        class="w-full rounded-xl border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white p-3 border">
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1">Nouvelle Image (Optionnel)</label>
+                <input type="file" name="image" accept="image/*"
+                    class="w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:bg-blue-50 dark:file:bg-blue-900/30 file:text-blue-700 dark:file:text-blue-400 hover:file:bg-blue-100 dark:hover:file:bg-blue-900/50">
+            </div>
+            <button type="submit"
+                class="w-full bg-blue-600 text-white font-bold py-4 rounded-xl shadow-lg mt-4">Enregistrer les modifications</button>
+        </form>
+    </div>
+</div>
+
 <style>
     /* Glassmorphism Styles */
     .glass-card {
@@ -2184,7 +2279,7 @@
 
     // Close Modals on click outside
     window.addEventListener('click', (e) => {
-        const modals = ['add-course-modal', 'edit-course-modal', 'add-service-modal', 'edit-service-modal', 'edit-reservation-modal'];
+        const modals = ['add-course-modal', 'edit-course-modal', 'add-service-modal', 'edit-service-modal', 'edit-reservation-modal', 'edit-schedule-modal', 'edit-lead-modal'];
         modals.forEach(id => {
             const modal = document.getElementById(id);
             if (e.target === modal) modal.classList.add('hidden');
@@ -2347,6 +2442,26 @@
         });
 
         document.getElementById('edit-service-modal').classList.remove('hidden');
+    }
+
+    function openEditScheduleModal(btn) {
+        const form = document.getElementById('edit-schedule-form');
+        form.action = '/admin/schedules/' + btn.getAttribute('data-id') + '/edit';
+        document.getElementById('sch-edit-date').value = btn.getAttribute('data-date-raw');
+        document.getElementById('sch-edit-time').value = btn.getAttribute('data-time-raw');
+        document.getElementById('sch-edit-title').value = btn.getAttribute('data-title');
+        document.getElementById('sch-edit-desc').value = btn.getAttribute('data-desc');
+        document.getElementById('sch-edit-spots').value = btn.getAttribute('data-spots');
+        document.getElementById('sch-edit-discount').value = btn.getAttribute('data-discount');
+        
+        const levels = (btn.getAttribute('data-level') || "").split(',');
+        const container = document.getElementById('sch-edit-level-container');
+        const checkboxes = container.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(cb => {
+            cb.checked = levels.includes(cb.value);
+        });
+
+        document.getElementById('edit-schedule-modal').classList.remove('hidden');
     }
 
     // Handle initial hash on page load

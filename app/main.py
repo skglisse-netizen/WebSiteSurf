@@ -1251,6 +1251,52 @@ async def schedule_add(
     db.commit()
     return RedirectResponse(url="/admin/dashboard#planning-config", status_code=302)
 
+@app.post("/admin/schedules/{schedule_id}/edit")
+async def schedule_edit(
+    request: Request,
+    schedule_id: int,
+    date_text: str = Form(...),
+    time_text: str = Form(...),
+    course_title: str = Form(...),
+    description: str = Form(None),
+    spots_available: int = Form(10),
+    level: List[str] = Form(None),
+    discount_percent: int = Form(0),
+    image: UploadFile = File(None),
+    db: Session = Depends(get_db)
+):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+
+    sch = db.query(models.CourseSchedule).filter(models.CourseSchedule.id == schedule_id).first()
+    if sch:
+        sch.date_text = date_text
+        sch.time_text = time_text
+        sch.course_title = course_title
+        sch.description = description
+        sch.spots_available = spots_available
+        sch.level = ",".join(level) if level else None
+        sch.discount_percent = discount_percent
+        
+        if image and image.filename:
+            # Delete old image if exists
+            if sch.image_filename:
+                old_path = os.path.join(SCHEDULE_IMG_DIR, sch.image_filename)
+                if os.path.exists(old_path):
+                    try: os.remove(old_path)
+                    except: pass
+            
+            safe_name = secure_filename_lite(image.filename)
+            unique_name = f"{uuid.uuid4().hex}_{safe_name}"
+            file_path = os.path.join(SCHEDULE_IMG_DIR, unique_name)
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(image.file, buffer)
+            sch.image_filename = unique_name
+            
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#planning-config", status_code=302)
+
 @app.post("/admin/schedules/{schedule_id}/toggle")
 async def schedule_toggle(request: Request, schedule_id: int, db: Session = Depends(get_db)):
     user = get_current_user(request, db)
