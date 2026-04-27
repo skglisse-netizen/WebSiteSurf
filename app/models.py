@@ -30,6 +30,9 @@ class Inquiry(Base):
     level = Column(String, nullable=True)
     status = Column(String, default="en_attente") # en_attente, confirme, annule
     
+    objective = Column(Text, nullable=True)
+    source = Column(String, default="contact") # contact, lead, reservation
+    
     is_processed = Column(Boolean, default=False)
 
     service = relationship("Service")

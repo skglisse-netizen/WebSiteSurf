@@ -83,6 +83,9 @@ def init_db():
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_discount_percent INTEGER DEFAULT 15"))
         db.execute(text("ALTER TABLE site_config ADD COLUMN IF NOT EXISTS modal_image_filename VARCHAR DEFAULT NULL"))
         
+        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS objective TEXT"))
+        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS source VARCHAR DEFAULT 'contact'"))
+        
         db.commit()
 
         # Seed Admin user
@@ -224,7 +227,8 @@ async def contact_form(
         service_id=service_id,
         booking_date=booking_date,
         people_count=people_count,
-        level=level
+        level=level,
+        source="reservation" if (service_id or booking_date) else "contact"
     )
     db.add(inquiry)
     db.commit()
@@ -261,9 +265,10 @@ async def community_join(
         name=name,
         email=email,
         phone=phone,
-        message=message,
+        objective=objective,
         level=level,
-        status="en_attente"
+        status="en_attente",
+        source="lead"
     )
     db.add(inquiry)
     db.commit()
