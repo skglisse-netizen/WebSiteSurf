@@ -1152,6 +1152,17 @@ async def reservation_validate(request: Request, inquiry_id: int, db: Session = 
         db.commit()
     return RedirectResponse(url="/admin/dashboard#reservations", status_code=302)
 
+@app.post("/admin/reservations/{inquiry_id}/unvalidate")
+async def reservation_unvalidate(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    inquiry = db.query(models.Inquiry).filter(models.Inquiry.id == inquiry_id).first()
+    if inquiry:
+        inquiry.is_processed = False
+        db.commit()
+    return RedirectResponse(url="/admin/dashboard#reservations", status_code=302)
+
 @app.post("/admin/reservations/{inquiry_id}/delete")
 async def reservation_delete(request: Request, inquiry_id: int, db: Session = Depends(get_db)):
     user = get_current_user(request, db)

@@ -1158,7 +1158,12 @@
                                     {{ inquiry.created_at.strftime('%Y-%m-%d %H:%M') if inquiry.created_at else "N/A" }}
                                 </td>
                                 <td class="px-4 py-3">
-                                    <div class="font-bold text-gray-900 dark:text-white text-sm">{{ inquiry.name }}</div>
+                                    <div class="flex items-center gap-2">
+                                        <div class="font-bold text-gray-900 dark:text-white text-sm">{{ inquiry.name }}</div>
+                                        {% if inquiry.is_processed %}
+                                        <span class="px-1.5 py-0.5 bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 text-[8px] font-black rounded-md uppercase tracking-widest">Validé</span>
+                                        {% endif %}
+                                    </div>
                                 </td>
                                 <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                                     {{ inquiry.email }}
@@ -1199,6 +1204,23 @@
                                 <td class="px-4 py-3 text-right whitespace-nowrap">
                                     <div class="flex flex-col items-end gap-2">
                                         <div class="flex items-center space-x-2">
+                                            {% if not inquiry.is_processed %}
+                                            <form action="/admin/reservations/{{ inquiry.id }}/validate" method="POST" class="inline">
+                                                <button type="submit" class="p-1.5 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition" title="Valider la réservation">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                            {% else %}
+                                            <form action="/admin/reservations/{{ inquiry.id }}/unvalidate" method="POST" class="inline">
+                                                <button type="submit" class="p-1.5 text-gray-400 hover:text-emerald-600 dark:hover:text-emerald-400 rounded-lg transition" title="Annuler la validation">
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m0 0H15"></path>
+                                                    </svg>
+                                                </button>
+                                            </form>
+                                            {% endif %}
                                             <button type="button" onclick="openEditReservationModal(this)"
                                                 data-id="{{ inquiry.id }}" data-name="{{ inquiry.name|escape }}"
                                                 data-email="{{ inquiry.email|escape }}"
