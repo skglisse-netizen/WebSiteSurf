@@ -280,6 +280,7 @@
                 observer.observe(element);
             });
 
+            {% if not request.url.path.startswith('/admin') %}
             // --- Community Modal Logic ---
             const modal = document.getElementById('community-modal');
             const closeBtn = document.getElementById('close-modal');
@@ -319,15 +320,19 @@
                     if (e.target === modal) hideModal();
                 });
             }
+            {% endif %}
         });
     </script>
 
+    {% if not request.url.path.startswith('/admin') %}
     <!-- Floating Community Trigger -->
     <button id="open-community-modal" class="fixed bottom-6 right-6 z-[90] bg-accent-500 hover:bg-accent-600 text-white font-bold py-3 px-6 rounded-full shadow-2xl flex items-center gap-2 transform transition-all duration-500 hover:scale-110 active:scale-95 shadow-accent-500/30">
         <span class="text-xl">🎁</span>
         <span class="hidden sm:inline">Réduction -{{ config.modal_discount_percent }}%</span>
     </button>
+    {% endif %}
 
+    {% if not request.url.path.startswith('/admin') %}
     <!-- Community Modal -->
     <div id="community-modal" class="fixed inset-0 z-[100] items-center justify-center p-4 bg-gray-900/60 backdrop-blur-sm transition-opacity duration-500" style="display: none">
         <div class="relative w-full max-w-4xl bg-white dark:bg-gray-900 rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row transform transition-all duration-500 scale-95 opacity-0 active:scale-100 active:opacity-100" id="modal-container">
@@ -401,16 +406,23 @@
         // Trigger modal container animation
         const observerModal = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
-                if (mutation.target.classList.contains('active')) {
+                const modal = document.getElementById('community-modal');
+                if (modal && mutation.target === modal && mutation.target.classList.contains('active')) {
                     const container = document.getElementById('modal-container');
-                    setTimeout(() => {
-                        container.classList.remove('scale-95', 'opacity-0');
-                        container.classList.add('scale-100', 'opacity-100');
-                    }, 50);
+                    if (container) {
+                        setTimeout(() => {
+                            container.classList.remove('scale-95', 'opacity-0');
+                            container.classList.add('scale-100', 'opacity-100');
+                        }, 50);
+                    }
                 }
             });
         });
-        observerModal.observe(document.getElementById('community-modal'), { attributes: true });
+        const modalElem = document.getElementById('community-modal');
+        if (modalElem) {
+            observerModal.observe(modalElem, { attributes: true });
+        }
     </script>
+    {% endif %}
 </body>
 </html>
