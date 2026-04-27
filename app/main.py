@@ -1019,6 +1019,20 @@ async def service_delete(request: Request, service_id: int, db: Session = Depend
             db.rollback()
     return RedirectResponse(url="/admin/dashboard", status_code=302)
 
+@app.get("/admin/fix-db-schema")
+async def fix_db_schema(request: Request, db: Session = Depends(get_db)):
+    user = get_current_user(request, db)
+    if not user:
+        return RedirectResponse(url="/admin/login", status_code=302)
+    try:
+        from sqlalchemy import text
+        # PostgreSQL syntax for adding column if not exists
+        db.execute(text("ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS created_at VARCHAR;"))
+        db.commit()
+        return HTMLResponse(content="Database schema updated successfully! <a href='/admin/dashboard'>Go back to Dashboard</a>", status_code=200)
+    except Exception as e:
+        return HTMLResponse(content=f"Error updating database: {e}", status_code=500)
+
 @app.get("/admin/logout")
 async def logout():
     response = RedirectResponse(url="/admin/login", status_code=302)
