@@ -1204,6 +1204,23 @@
                                 <td class="px-4 py-3 text-right whitespace-nowrap">
                                     <div class="flex flex-col items-end gap-2">
                                         <div class="flex items-center space-x-2">
+                                            <button onclick="openViewModal(this)"
+                                                data-source="reservation"
+                                                data-id="{{ inquiry.id }}"
+                                                data-name="{{ inquiry.name|escape }}"
+                                                data-email="{{ inquiry.email|escape }}"
+                                                data-phone="{{ inquiry.phone|escape }}"
+                                                data-service="{{ inquiry.service.title if inquiry.service else 'Service Inconnu' }}"
+                                                data-date="{{ inquiry.booking_date }}"
+                                                data-level="{{ inquiry.level|escape }}"
+                                                data-message="{{ inquiry.message|escape }}"
+                                                data-created-at="{{ inquiry.created_at.strftime('%Y-%m-%d %H:%M') if inquiry.created_at else '' }}"
+                                                class="p-1.5 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition" title="Voir détails">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                </svg>
+                                            </button>
                                             {% if not inquiry.is_processed %}
                                             <form action="/admin/reservations/{{ inquiry.id }}/validate" method="POST" class="inline">
                                                 <button type="submit" class="p-1.5 text-emerald-600 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition" title="Valider la réservation">
@@ -1324,6 +1341,20 @@
                                 </td>
                                 <td class="px-4 py-3 text-right whitespace-nowrap">
                                         <div class="flex items-center justify-end space-x-2 pt-1 border-t border-transparent">
+                                            <button onclick="openViewModal(this)"
+                                                data-source="contact"
+                                                data-id="{{ inquiry.id }}"
+                                                data-name="{{ inquiry.name|escape }}"
+                                                data-email="{{ inquiry.email|escape }}"
+                                                data-phone="{{ inquiry.phone|escape }}"
+                                                data-message="{{ inquiry.message|escape }}"
+                                                data-created-at="{{ inquiry.created_at.strftime('%Y-%m-%d %H:%M') if inquiry.created_at else '' }}"
+                                                class="p-1.5 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition" title="Voir détails">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                                </svg>
+                                            </button>
                                             {% if not inquiry.is_processed %}
                                             <form action="/admin/messages/{{ inquiry.id }}/read" method="POST" class="inline">
                                                 <button type="submit" class="p-1.5 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-lg transition" title="Marquer comme lu">
@@ -1349,6 +1380,7 @@
                                                 </button>
                                             </form>
                                         </div>
+                                </td>
                                 </td>
                             </tr>
                             {% else %}
@@ -1426,6 +1458,22 @@
                                 </td>
                                 <td class="px-4 py-3 text-right whitespace-nowrap">
                                     <div class="flex items-center justify-end space-x-2">
+                                        <button onclick="openViewModal(this)"
+                                            data-source="lead"
+                                            data-id="{{ inquiry.id }}"
+                                            data-name="{{ inquiry.name|escape }}"
+                                            data-email="{{ inquiry.email|escape }}"
+                                            data-phone="{{ inquiry.phone|escape }}"
+                                            data-level="{{ inquiry.level|escape }}"
+                                            data-objective="{{ inquiry.objective|escape }}"
+                                            data-message="{{ (inquiry.message|escape) if inquiry.message else '' }}"
+                                            data-created-at="{{ inquiry.created_at.strftime('%Y-%m-%d %H:%M') if inquiry.created_at else '' }}"
+                                            class="p-1.5 text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition" title="Voir détails">
+                                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                                            </svg>
+                                        </button>
                                         {% if not inquiry.is_processed %}
                                         <form action="/admin/leads/{{ inquiry.id }}/validate" method="POST" class="inline">
                                             <button type="submit" class="p-1.5 text-emerald-500 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition" title="Valider ce prospect">
@@ -2079,6 +2127,45 @@
     function toggleSidebar() {
         const sidebar = document.getElementById('sidebar');
         sidebar.classList.toggle('-translate-x-full');
+    }
+
+    function openViewModal(btn) {
+        const modal = document.getElementById('view-details-modal');
+        const source = btn.getAttribute('data-source');
+        
+        // Populate basic info
+        document.getElementById('view-source-badge').textContent = source === 'reservation' ? 'Réservation de cours' : (source === 'lead' ? 'Membre Communauté' : 'Message Contact');
+        document.getElementById('view-name').textContent = btn.getAttribute('data-name');
+        document.getElementById('view-email').textContent = btn.getAttribute('data-email');
+        document.getElementById('view-phone').textContent = btn.getAttribute('data-phone');
+        document.getElementById('view-created-at').textContent = btn.getAttribute('data-created-at') || 'N/A';
+        document.getElementById('view-message').textContent = btn.getAttribute('data-message') || 'Aucun message particulier.';
+        
+        // Handle conditional fields
+        const bookingDate = btn.getAttribute('data-date');
+        const service = btn.getAttribute('data-service');
+        const level = btn.getAttribute('data-level');
+        const objective = btn.getAttribute('data-objective');
+        
+        toggleBox('view-booking-box', bookingDate);
+        if(bookingDate) document.getElementById('view-booking-date').textContent = bookingDate;
+        
+        toggleBox('view-service-box', service);
+        if(service) document.getElementById('view-service').textContent = service;
+        
+        toggleBox('view-level-box', level);
+        if(level) document.getElementById('view-level').textContent = level;
+        
+        toggleBox('view-objective-box', objective);
+        if(objective) document.getElementById('view-objective').textContent = objective;
+        
+        modal.classList.remove('hidden');
+    }
+    
+    function toggleBox(id, value) {
+        const el = document.getElementById(id);
+        if (value && value !== 'None' && value !== 'null' && value !== '') el.classList.remove('hidden');
+        else el.classList.add('hidden');
     }
 
     function showSection(sectionId) {
