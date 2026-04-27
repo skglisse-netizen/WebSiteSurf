@@ -1431,7 +1431,7 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
                 <div
-                    class="lg:col-span-2 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
+                    class="lg:col-span-3 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md p-6 rounded-3xl shadow-xl border border-white/20 dark:border-gray-800/50">
                     <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
                         <div>
                             <h3 class="text-lg font-bold text-gray-900 dark:text-white">Conversion de la Popup</h3>
@@ -1483,31 +1483,7 @@
                         <canvas id="popupConversionChart"></canvas>
                     </div>
                 </div>
-                
-                <div class="bg-gradient-to-br from-indigo-600 to-blue-700 rounded-3xl p-6 text-white shadow-xl flex flex-col justify-between">
-                    <div>
-                        <h4 class="text-indigo-100 text-xs font-bold uppercase tracking-widest mb-6">Résumé Statistique</h4>
-                        <div class="space-y-4">
-                            <div class="flex justify-between items-end border-b border-white/10 pb-3">
-                                <span class="text-sm font-medium opacity-80">Affichages (Vues)</span>
-                                <span class="text-xl font-black">{{ popup_stats.views }}</span>
-                            </div>
-                            <div class="flex justify-between items-end border-b border-white/10 pb-3">
-                                <span class="text-sm font-medium opacity-80">Formulaires remplis</span>
-                                <span class="text-xl font-black text-emerald-300">{{ popup_stats.fills }}</span>
-                            </div>
-                            <div class="flex justify-between items-end border-b border-white/10 pb-3">
-                                <span class="text-sm font-medium opacity-80">Fermés sans remplir</span>
-                                <span class="text-xl font-black text-orange-300">{{ popup_stats.closes }}</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="mt-6 p-4 bg-white/10 rounded-2xl backdrop-blur-md">
-                        <p class="text-[11px] leading-relaxed opacity-90">
-                            <span class="font-bold">Astuce :</span> Un taux de conversion élevé indique que votre offre de réduction est attractive pour vos visiteurs.
-                        </p>
-                    </div>
-                </div>
+
             </div>
 
             <div class="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-100 dark:border-gray-800 overflow-hidden">
