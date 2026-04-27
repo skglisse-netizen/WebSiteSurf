@@ -71,6 +71,7 @@ def init_db():
         "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS booking_date VARCHAR",
         "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS people_count INTEGER",
         "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS level VARCHAR",
+        "ALTER TABLE inquiries ADD COLUMN IF NOT EXISTS schedule_id INTEGER REFERENCES course_schedules(id)",
         "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS description TEXT",
         "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS spots_available INTEGER DEFAULT 10",
         "ALTER TABLE course_schedules ADD COLUMN IF NOT EXISTS level TEXT",
