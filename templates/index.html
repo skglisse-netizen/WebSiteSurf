@@ -72,45 +72,47 @@
                         <div class="text-[10px] font-bold text-accent-400/60 uppercase tracking-widest hidden sm:block">Mise à jour en temps réel</div>
                     </div>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         {% for sch in schedules %}
                         <div onclick="bookDailyCourse('{{ sch.course_title|escape }}', '{{ sch.date_text }}', '{{ sch.time_text }}')" 
-                             class="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden hover:bg-white/10 hover:border-accent-500/50 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-500 cursor-pointer flex flex-col h-full">
+                             class="group relative bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl overflow-hidden hover:bg-white/10 hover:border-accent-500/50 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)] hover:-translate-y-2 transition-all duration-500 cursor-pointer flex flex-col sm:flex-row h-full">
                             
-                            <!-- Image Header -->
-                            <div class="relative h-56 overflow-hidden shrink-0">
+                            <!-- Image Header (Left side on desktop) -->
+                            <div class="relative w-full sm:w-2/5 shrink-0 h-48 sm:h-auto">
                                 {% if sch.image_filename %}
-                                <img src="/static/uploads/schedules/{{ sch.image_filename }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <img src="/static/uploads/schedules/{{ sch.image_filename }}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                 {% else %}
-                                <div class="w-full h-full bg-gradient-to-br from-blue-900/60 to-slate-900/80 group-hover:scale-110 transition-transform duration-700"></div>
+                                <div class="absolute inset-0 w-full h-full bg-gradient-to-br from-blue-900/60 to-slate-900/80 group-hover:scale-110 transition-transform duration-700"></div>
                                 {% endif %}
                                 
-                                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent"></div>
+                                <div class="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40 to-transparent sm:bg-gradient-to-r sm:from-transparent sm:via-gray-900/40 sm:to-gray-900/90"></div>
                                 
                                 <!-- Top Badges -->
-                                <div class="absolute top-4 left-4 flex gap-2">
-                                    <div class="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-xl border border-white/20 flex items-center gap-2 shadow-lg">
+                                <div class="absolute top-4 left-4 flex flex-col gap-2">
+                                    <div class="bg-black/60 backdrop-blur-md text-white px-3 py-1.5 rounded-xl border border-white/20 inline-flex items-center gap-2 shadow-lg w-max">
                                         <svg class="w-3.5 h-3.5 text-accent-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
                                         <span class="text-xs font-black">{{ sch.time_text }}</span>
                                     </div>
                                     {% if sch.discount_percent and sch.discount_percent > 0 %}
-                                    <div class="bg-red-500 text-white px-3 py-1.5 rounded-xl border border-red-400/50 flex items-center shadow-lg">
+                                    <div class="bg-red-500 text-white px-3 py-1.5 rounded-xl border border-red-400/50 inline-flex items-center shadow-lg w-max">
                                         <span class="text-xs font-black">-{{ sch.discount_percent }}%</span>
                                     </div>
                                     {% endif %}
                                 </div>
                                 
-                                <!-- Bottom Gradient Content -->
-                                <div class="absolute bottom-4 left-4 right-4">
-                                    <h3 class="text-xl font-black text-white group-hover:text-accent-400 transition-colors drop-shadow-md leading-tight">{{ sch.course_title }}</h3>
+                                <!-- Course Title over image on mobile only -->
+                                <div class="absolute bottom-4 left-4 right-4 sm:hidden">
+                                    <h3 class="text-xl font-black text-white drop-shadow-md leading-tight">{{ sch.course_title }}</h3>
                                 </div>
                             </div>
 
-                            <!-- Details Body -->
-                            <div class="p-5 flex flex-col grow justify-between bg-gradient-to-b from-transparent to-black/20">
+                            <!-- Details Body (Right side on desktop) -->
+                            <div class="p-5 flex flex-col grow justify-between bg-gradient-to-b sm:bg-gradient-to-r from-transparent to-black/20 relative z-10 w-full">
                                 <div>
+                                    <h3 class="hidden sm:block text-xl font-black text-white group-hover:text-accent-400 transition-colors mb-4 drop-shadow-md leading-tight">{{ sch.course_title }}</h3>
+                                    
                                     <div class="flex items-center gap-3 mb-4 pb-4 border-b border-white/10">
-                                        <div class="w-10 h-10 rounded-full bg-accent-500/20 flex items-center justify-center border border-accent-500/30">
+                                        <div class="w-10 h-10 rounded-full bg-accent-500/20 flex items-center justify-center border border-accent-500/30 shrink-0">
                                             <svg class="w-5 h-5 text-accent-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                                         </div>
                                         <div class="flex flex-col">
@@ -144,7 +146,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="w-10 h-10 rounded-full bg-accent-500 text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-accent-400 transition-all shadow-lg shadow-accent-500/30">
+                                    <div class="w-10 h-10 rounded-full bg-accent-500 text-white flex items-center justify-center group-hover:scale-110 group-hover:bg-accent-400 transition-all shadow-lg shadow-accent-500/30 shrink-0 ml-3">
                                         <svg class="w-5 h-5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7"/></svg>
                                     </div>
                                 </div>
