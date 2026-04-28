@@ -154,6 +154,8 @@ async def send_telegram_notification(payload: Dict[str, Any]):
     
     if source == "lead":
         text = f"🔥 *Nouveau Membre Communauté* 🌊\n\n"
+    elif source == "footer":
+        text = f"🔔 *Nouveau {msg_type} (Footer)* 🌊\n\n"
     else:
         text = f"🔔 *Nouveau {msg_type}* 🌊\n\n"
         

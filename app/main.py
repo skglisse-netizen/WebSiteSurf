@@ -344,10 +344,11 @@ async def footer_contact(
     db: Session = Depends(get_db)
 ):
     inquiry = models.Inquiry(
-        name=f"{name} (Footer)", 
+        name=name, 
         email=email, 
         phone=phone,
         message=message,
+        source="footer",
         created_at=dt_module.datetime.now().strftime("%Y-%m-%d %H:%M")
     )
     db.add(inquiry)
