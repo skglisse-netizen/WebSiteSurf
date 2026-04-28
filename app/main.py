@@ -338,6 +338,7 @@ async def footer_contact(
     request: Request,
     name: str = Form(...),
     email: str = Form(...),
+    phone: str = Form(...),
     message: str = Form(...),
     background_tasks: BackgroundTasks = BackgroundTasks(),
     db: Session = Depends(get_db)
@@ -345,6 +346,7 @@ async def footer_contact(
     inquiry = models.Inquiry(
         name=f"{name} (Footer)", 
         email=email, 
+        phone=phone,
         message=message,
         created_at=dt_module.datetime.now().strftime("%Y-%m-%d %H:%M")
     )
